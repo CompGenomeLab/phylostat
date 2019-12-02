@@ -5799,7 +5799,7 @@ var TreeCompare = function() {
                                 depth: d.parent.depth,
                             }
                         }
-                        d.select(this).transition().style("fill", "yellow")
+                        str = JSON.stringify(str, undefined, 2)
                         document.getElementById('select2').value = str
                         commonAncestor()
                     }
