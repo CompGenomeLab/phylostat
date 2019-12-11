@@ -1,11 +1,11 @@
-# Phylo.io
+# phylostat
 A web app and library for visualising and comparing phylogenetic trees.
 
 ## Demo
-The app can be accessed at [phylo.io](http://phylo.io).
+The app can be accessed at [phylostat](http://phylostat.adebalilab.org).
 
 ## Dependencies
-Phylo.IO requires JQuery, D3js, UnderscoreJS, canvas-toBlob, FileSavier, circular-json and spin:
+phylostat requires JQuery, D3js, UnderscoreJS, canvas-toBlob, FileSavier, circular-json and spin:
 ```html
 <script src="//peterolson.github.com/BigInteger.js/BigInteger.min.js"></script>
 <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
@@ -23,7 +23,7 @@ Phylo.IO requires JQuery, D3js, UnderscoreJS, canvas-toBlob, FileSavier, circula
 ```
 
 ## Initialisation
-An instance of Phylo.IO is created using the init method:
+An instance of phylostat is created using the init method:
 ```js
     var treecomp = TreeCompare().init();
 ```
