@@ -6,19 +6,22 @@
 	.st0{fill:#808285;}
 	.st1{font-family:'MyriadPro-Regular';}
 	.st2{font-size:21.1195px;}
-	.st3{fill:none;stroke:#808285;stroke-width:1.2872;stroke-linecap:round;stroke-miterlimit:10;}
-	.st4{font-size:6.9668px;}
+	.st3{fill:none;stroke:#214554;stroke-width:1.2872;stroke-linecap:round;stroke-miterlimit:10;}
+	.st4{fill:none;stroke:#602519;stroke-width:1.2872;stroke-linecap:round;stroke-miterlimit:10;}
+	.st5{fill:none;stroke:#808285;stroke-width:1.2872;stroke-linecap:round;stroke-miterlimit:10;}
+	.st6{fill:#602519;}
+	.st7{font-size:6.9668px;}
 </style>
 <title>logo_export</title>
 <text transform="matrix(1 0 0 1 25.1351 17.0859)" class="st0 st1 st2">phylostat</text>
 <line class="st3" x1="1.9" y1="6.4" x2="1.8" y2="16.3"/>
-<line class="st3" x1="2" y1="6.3" x2="9.2" y2="6.4"/>
-<line class="st3" x1="9.3" y1="3.8" x2="9.3" y2="8.8"/>
-<line class="st3" x1="12.5" y1="3.9" x2="9.7" y2="3.8"/>
-<line class="st3" x1="14.3" y1="8.8" x2="9.6" y2="8.8"/>
-<line class="st3" x1="2" y1="6.3" x2="9.2" y2="6.4"/>
-<line class="st3" x1="9.3" y1="3.8" x2="9.3" y2="8.8"/>
-<line class="st3" x1="15.8" y1="3.9" x2="9.7" y2="3.8"/>
+<line class="st4" x1="2" y1="6.3" x2="9.2" y2="6.4"/>
+<line class="st4" x1="9.3" y1="3.8" x2="9.3" y2="8.8"/>
+<line class="st4" x1="12.5" y1="3.9" x2="9.7" y2="3.8"/>
+<line class="st4" x1="14.3" y1="8.8" x2="9.6" y2="8.8"/>
+<line class="st4" x1="2" y1="6.3" x2="9.2" y2="6.4"/>
+<line class="st4" x1="9.3" y1="3.8" x2="9.3" y2="8.8"/>
+<line class="st4" x1="15.8" y1="3.9" x2="9.7" y2="3.8"/>
 <line class="st3" x1="1.9" y1="16.6" x2="5.4" y2="16.6"/>
 <line class="st3" x1="5.7" y1="14.1" x2="5.7" y2="19.1"/>
 <line class="st3" x1="8.8" y1="14.1" x2="6" y2="14.1"/>
@@ -26,10 +29,8 @@
 <line class="st3" x1="1.9" y1="16.6" x2="5.3" y2="16.6"/>
 <line class="st3" x1="5.7" y1="14.1" x2="5.7" y2="19.1"/>
 <line class="st3" x1="8.8" y1="14.1" x2="6" y2="14.1"/>
-<line class="st3" x1="19" y1="6.9" x2="19" y2="17.4"/>
-<line class="st3" x1="18.9" y1="17.5" x2="17.3" y2="17.5"/>
-<line class="st3" x1="19" y1="6.8" x2="17.4" y2="6.8"/>
-<g>
-	<text transform="matrix(1 7.071076e-03 -7.071076e-03 1 20.3871 15.9375)" class="st0 st1 st4">*</text>
-</g>
+<line class="st5" x1="19" y1="6.9" x2="19" y2="17.4"/>
+<line class="st5" x1="18.9" y1="17.5" x2="17.3" y2="17.5"/>
+<line class="st5" x1="19" y1="6.8" x2="17.4" y2="6.8"/>
+<text transform="matrix(1 7.071076e-03 -7.071076e-03 1 20.3871 15.9375)" class="st6 st1 st7">*</text>
 </svg>
