@@ -519,6 +519,14 @@ circle.node.select{
     fill: green !important;
 }
 
+circle.node.multiSelect1{
+    fill: red !important
+}
+
+circle.node.multiSelect2{
+    fill: blue !important
+}
+
 circle.node.search {
     fill: orange !important;
 }

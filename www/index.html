@@ -270,7 +270,7 @@
                     </li>
 
                     <li>
-                        <div class="multiSelection">
+                        <div class="multiSelection" id="mSelected" style="display: none;">
                             <div style=" display: flex;">
                                 <div class="firstOne" style="float: left; margin-right: 30px;">
                                     <div class="firstSelection">
@@ -1041,6 +1041,9 @@
                 }
             }
             //    });
+
+            hiddenDiv = document.getElementById("mSelected");
+            hiddenDiv.style.display = "inline";
         }
 
         /*------

@@ -3907,11 +3907,13 @@ var TreeCompare = function() {
             str = JSON.stringify(str, undefined, 2)
             document.getElementById('ancestor12').value = str
             distSelected(st)
+            distFromLeaves(st)
         }
         else{
             document.getElementById('ancestor12').value = ""
             document.getElementById('dist12').value = ""
         }
+
     }
 
     //Finding distance of the multiselected
@@ -3928,6 +3930,103 @@ var TreeCompare = function() {
             selectedTwo = selectedTwo.parent
         }
         document.getElementById('dist12').value = dist
+    }
+
+    //Distance from leaves
+    function distFromLeaves(ancs){
+        
+        var ttest = require('ttest')
+        selectedOne = multiSelected[0]
+        leavesOne = selectedOne.leaves
+        leavesOneEachother = []
+        leavesOneDist = []
+        selectedTwo = multiSelected[1]
+        leavesTwo = selectedTwo.leaves
+        leavesTwoEachother = []
+        leavesTwoDist = []
+
+
+        console.log(leavesOne)
+        console.log(leavesTwo)
+
+
+        for(i = 0; i<leavesOne.length; i++){
+            distance = 0
+            temp = leavesOne[i]
+            while(temp != ancs){
+                distance += temp.length
+                temp = temp.parent
+            }
+            var tmp = {
+                From: leavesOne[i].name,
+                Distance: distance
+            }
+            leavesOneDist.push(tmp)
+        }
+        for(i = 0; i<leavesTwo.length; i++){
+            distance = 0
+            temp = leavesTwo[i]
+            while(temp != ancs){
+                distance += temp.length
+                temp = temp.parent
+            }
+            var tmp = {
+                From: leavesTwo[i].name,
+                Distance: distance
+            }
+            leavesTwoDist.push(tmp)
+
+        }
+        
+        console.log("--------------------------------------")
+        console.log(leavesOneDist)
+        console.log(leavesTwoDist)
+        const stat1 = ttest(leavesOneDist,leavesTwo)
+        console.log(stat1.pValue())
+
+        turn = 0
+        count = 0
+        end = (leavesOne.length)*(leavesOne.length-1)/2
+        while(true){            
+            for(i = turn+1; i<leavesOne.length; i++){
+                str = leavesOne[turn].name + "---" + leavesOne[i].name
+                dis = leavesOne[turn].length + leavesOne[i].length
+                var tmp = {
+                    Between: str,
+                    Distance: dis
+                }
+                leavesOneEachother.push(tmp)
+                count += 1
+            }
+            turn +=1 
+            if(count == end){
+                break
+            }
+        }
+        turn = 0
+        count = 0
+        end = (leavesTwo.length)*(leavesTwo.length-1)/2
+        while(true){  
+            for(i = turn+1; i<leavesTwo.length; i++){
+                str = leavesTwo[turn].name + "---" + leavesTwo[i].name
+                dis = leavesTwo[turn].length + leavesTwo[i].length
+                var tmp = {
+                    Between: str,
+                    Distance: dis
+                }
+                leavesTwoEachother.push(tmp)
+                count += 1
+            }
+            turn +=1 
+            if(count == end){
+                break
+            }
+        } 
+        
+        console.log("--------------------------------------")
+        console.log(leavesOneEachother)
+        console.log(leavesTwoEachother)
+
     }
 
     function createTreeDownload(canvasId, downloadClass){
@@ -5772,6 +5871,9 @@ var TreeCompare = function() {
                                 depth: d.parent.depth,
                             }
                         }
+                       /* toColor = document.getElementById(d.ID)
+                        toColor.classList.toggle("multiSelect1")*/
+                        console.log(d)
                         str = JSON.stringify(str, undefined, 2)
                         document.getElementById('select1').value = str
                         commonAncestor()
@@ -5799,6 +5901,9 @@ var TreeCompare = function() {
                                 depth: d.parent.depth,
                             }
                         }
+                        /*toColor = document.getElementById(d.ID)
+                        toColor.classList.toggle("multiSelect2")*/
+
                         str = JSON.stringify(str, undefined, 2)
                         document.getElementById('select2').value = str
                         commonAncestor()
@@ -5814,6 +5919,11 @@ var TreeCompare = function() {
                         return 'Remove selection >'
                     },
                     function(){
+                        /*toColor1 = document.getElementById(multiSelected[0].ID)
+                        toColor1.classList.toggle("multiSelect1")
+                        toColor2 = document.getElementById(multiSelected[1].ID)
+                        toColor2.classList.toggle("multiSelect2")
+                        toColor2.classList.toggle("multiSelect1")*/
                         multiSelected.shift()
                         document.getElementById('select1').value = document.getElementById('select2').value 
                         document.getElementById('select2').value = ""
@@ -5829,6 +5939,8 @@ var TreeCompare = function() {
                         return 'Remove selection >'
                     },
                     function(){
+                        /*toColor = document.getElementById(multiSelected[1].ID)
+                        toColor.classList.toggle("multiSelect2")*/
                         multiSelected.pop();
                         document.getElementById('select2').value = ""
 
@@ -5844,6 +5956,10 @@ var TreeCompare = function() {
                         return 'Remove all selection >'
                     },
                     function(){
+                        /*toColor1 = document.getElementById(multiSelected[0].ID)
+                        toColor1.classList.toggle("multiSelect1")
+                        toColor2 = document.getElementById(multiSelected[1].ID)
+                        toColor2.classList.toggle("multiSelect2")*/
                         multiSelected.pop();
                         document.getElementById('select1').value = ""
                         multiSelected.pop();
