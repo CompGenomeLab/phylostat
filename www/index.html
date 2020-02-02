@@ -4,16 +4,18 @@
 <head>
     <title>phylostat</title>
     <meta charset="UTF-8">
-    <script src="//peterolson.github.com/BigInteger.js/BigInteger.min.js"></script>
     <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="js/treecompare.js"></script>
     <script type="text/javascript" src="http://underscorejs.org/underscore-min.js"></script>
     <script type="text/javascript" src="js/spin.min.js"></script>
     <script type="text/javascript" src="js/d3.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/circular-json.js"></script>
     <script type="text/javascript" src="js/canvas-toBlob.js"></script>
     <script type="text/javascript" src="js/FileSaver.min.js"></script>
+    <script type="text/javascript" src="js/BigInteger.min.js"></script>
+    <script type="text/javascript" src="js/jstat.min.js"></script>
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css"
         integrity="sha384-v2Tw72dyUXeU3y4aM2Y0tBJQkGfplr39mxZqlTBDUZAb9BGoC40+rdFCG0m10lXk" crossorigin="anonymous">
@@ -278,7 +280,7 @@
                                     </div>
                                     <div>
                                         <textarea id="select1" rows="2" columns="80" readonly
-                                            style="width: 150px; height: 200px;"></textarea>
+                                            style="width: 150px; height: 200px; background-color: #e7e7e7;"></textarea>
                                     </div>
                                 </div>
 
@@ -288,7 +290,7 @@
                                     </div>
                                     <div>
                                         <textarea id="select2" rows="2" columns="80" readonly
-                                            style="width: 150px; height: 200px;"></textarea>
+                                            style="width: 150px; height: 200px; background-color: #e7e7e7"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -296,7 +298,8 @@
                                 <label>Distance From Each Other: </label>
                             </div>
                             <div>
-                                <textarea id="dist12" rows="1" columns="80" readonly style="width: 330px;"></textarea>
+                                <textarea id="dist12" rows="1" columns="80" readonly
+                                    style="width: 330px; background-color: #e7e7e7"></textarea>
                             </div>
 
                             <div class="commonAncestor">
@@ -304,7 +307,16 @@
                             </div>
                             <div>
                                 <textarea id="ancestor12" rows="2" columns="80" readonly
-                                    style="width: 330px; height: 100px !important;"></textarea>
+                                    style="width: 330px; height: 100px !important; background-color: #e7e7e7"></textarea>
+                            </div>
+                            <div class="boxplot">
+                                <label>BoxPlot: </label>
+                            </div>
+                            <div id="boxPlotID" style="background-color: #e7e7e7; height: 300px;">
+
+                            </div>
+                            <div id="hiddenForBoxPlot" style="display: none;">
+                                <textarea id="hiddenForBoxPlotVal" readonly onchange="plotIt()">false</textarea>
                             </div>
                         </div>
                     </li>
@@ -502,6 +514,49 @@
             </div>
         </div>
     </div>
+
+    <style>
+    .modebar-group{
+        width: 35px !important;
+        height: 35px !important;
+    }
+
+    .modebar-btn{
+        display:block;
+    }
+
+    </style>
+
+    <script>
+        function plotIt() {
+            var y0, y1 = TreeCompare().boxPlotEachOther;
+            console.log("yooooo", y0, y1)
+
+            var trace1 = {
+                y: y0,
+                type: 'box'
+            };
+
+            var trace2 = {
+                y: y1,
+                type: 'box'
+            };
+
+            var data = [trace1, trace2];
+            if (document.getElementById("hiddenForBoxPlotVal").value == "true") {
+
+                Plotly.newPlot('boxPlotID', data);
+            }
+            else if (document.getElementById("hiddenForBoxPlotVal").value == "false") {
+                Plotly.newPlot('boxPlotID', null);
+            }
+            else {
+                console.log("what the actual fuck")
+            }
+        }
+
+    </script>
+
     <script type="text/javascript">
         function haveUndo() {
 

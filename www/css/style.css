@@ -520,11 +520,11 @@ circle.node.select{
 }
 
 circle.node.multiSelect1{
-    fill: red !important
+    fill: cyan !important
 }
 
 circle.node.multiSelect2{
-    fill: blue !important
+    fill: orange !important
 }
 
 circle.node.search {
