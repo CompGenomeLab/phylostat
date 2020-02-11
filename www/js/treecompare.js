@@ -1976,10 +1976,13 @@ var TreeCompare = function () {
 
         // Add text to nodes and leaves
         nodeUpdate.select("circle")
-            .attr("r", 4)
             .style("fill", function (d) {
-                if (multiSelected[0] == d) return "#1f77b4";
-                if (multiSelected[1] == d) return "#ff7f0e";
+                if (multiSelected[0] == d) {
+                    return "#1f77b4";
+                };
+                if (multiSelected[1] == d) {
+                    return "#ff7f0e";
+                };
             });
 
         nodeUpdate.select("text")
@@ -2354,6 +2357,69 @@ var TreeCompare = function () {
             }
 
             colorLinkNodeOver(d);
+        }
+
+        function nodeSelected(d) {
+            //function to color subtree downstream of a selected node in green
+            function colorSelected(n) {
+                if (n == multiSelected[0]) {
+                    if (n.children) {
+                        for (var i = 0; i < n.children.length; i++) {
+                            d3.select("#" + n.ID + "_" + n.children[i].ID).classed("multiSelect1", true);
+                            colorSelected(n.children[i]);
+                        }
+                    }
+                    if (!settings.enableFisheyeZoom) { //as long as fishEyeZoom is turned off
+                        d3.select("g").select("#" + n.ID).classed("multiSelect1", true);
+                        d3.select("#" + n.ID).select("text").classed("multiSelect1", true);
+                        d3.select("#" + n.ID).select("circle").classed("multiSelect1", true);
+                        d3.select("#" + n.ID).select("path").classed("multiSelect1", true);
+                        d3.select("#" + n.ID).select(".triangleText").classed("multiSelect1", true);
+                        d3.select("#" + n.ID).select(".triangle").classed("multiSelect1", true);
+                    }
+                }
+
+                else if (n == multiSelected[1]) {
+                    if (n.children) {
+                        for (var i = 0; i < n.children.length; i++) {
+                            d3.select("#" + n.ID + "_" + n.children[i].ID).classed("multiSelect2", true);
+                            colorSelected(n.children[i]);
+                        }
+                    }
+                    if (!settings.enableFisheyeZoom) { //as long as fishEyeZoom is turned off
+                        d3.select("g").select("#" + n.ID).classed("multiSelect2", true);
+                        d3.select("#" + n.ID).select("text").classed("multiSelect2", true);
+                        d3.select("#" + n.ID).select("circle").classed("multiSelect2", true);
+                        d3.select("#" + n.ID).select("path").classed("multiSelect2", true);
+                        d3.select("#" + n.ID).select(".triangleText").classed("multiSelect2", true);
+                        d3.select("#" + n.ID).select(".triangle").classed("multiSelect2", true);
+                    }
+                }
+            }
+            colorSelected(d);
+        }
+
+        function nodeunSelected(d) {
+            function colorSelected(n) {
+                if (n != multiSelected[0] && n != multiSelected[1]) {
+
+                    if (n.children) {
+                        for (var i = 0; i < n.children.length; i++) {
+                            d3.select("#" + n.ID + "_" + n.children[i].ID).classed("select", false);
+                            colorSelected(n.children[i]);
+                        }
+                    }
+                    if (!settings.enableFisheyeZoom) {
+                        d3.select("g").select("#" + n.ID).classed("select", false);
+                        d3.select("#" + n.ID).select("text").classed("select", false);
+                        d3.select("#" + n.ID).select("circle").classed("select", false);
+                        d3.select("#" + n.ID).select("path").classed("select", false);
+                        d3.select("#" + n.ID).select(".triangleText").classed("select", false);
+                        d3.select("#" + n.ID).select(".triangle").classed("select", false);
+                    }
+                }
+            }
+            colorSelected(d);
         }
 
 
@@ -3938,6 +4004,7 @@ var TreeCompare = function () {
             document.getElementById('ancestor12').value = ""
             document.getElementById('dist12').value = ""
             boxPlotEachOther(null, null)
+            boxPlotLeaves(null, null)
         }
 
     }
@@ -3991,6 +4058,41 @@ var TreeCompare = function () {
             jOne = jStat(one);
             console.log("ttest:", jStat.ttest(jOne, 1))
             Plotly.newPlot('boxPlotID', data);
+        }
+    }
+
+    function boxPlotLeaves(one, two) {
+        console.log("one,two: ", one, two)
+        if (one == null && two == null) {
+            Plotly.newPlot('boxPlot2ID', null);
+        }
+        else {
+            tempOne = []
+            for (i = 0; i < one.length; i++) {
+                tempOne.push(one[i].Distance)
+            }
+            tempTwo = []
+            for (i = 0; i < two.length; i++) {
+                tempTwo.push(two[i].Distance)
+            }
+            one = tempOne
+            two = tempTwo
+            var trace1 = {
+                y: one,
+                name: multiSelected[0].ID,
+                type: 'box'
+            };
+
+            var trace2 = {
+                y: two,
+                name: multiSelected[1].ID,
+                type: 'box'
+            };
+
+            var data = [trace1, trace2];
+            jOne = jStat(one);
+            console.log("ttest:", jStat.ttest(jOne, 1))
+            Plotly.newPlot('boxPlot2ID', data);
         }
     }
 
@@ -4085,7 +4187,7 @@ var TreeCompare = function () {
         console.log("--------------------------------------")
         console.log(leavesOneEachother)
         console.log(leavesTwoEachother)
-
+        boxPlotLeaves(leavesOneEachother, leavesTwoEachother)
     }
 
     function createTreeDownload(canvasId, downloadClass) {
@@ -5934,7 +6036,7 @@ var TreeCompare = function () {
                         console.log(d)
                         str = JSON.stringify(str, undefined, 2)
                         document.getElementById('select1').value = str
-                        
+
                         update(tree.root, tree.data);
                         commonAncestor()
                     }
@@ -6024,7 +6126,7 @@ var TreeCompare = function () {
                         document.getElementById('select1').value = ""
                         multiSelected.pop();
                         document.getElementById('select2').value = ""
-                        
+
                         update(tree.root, tree.data);
                         commonAncestor()
                     }
