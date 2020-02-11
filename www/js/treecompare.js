@@ -4055,8 +4055,45 @@ var TreeCompare = function () {
             };
 
             var data = [trace1, trace2];
-            jOne = jStat(one);
-            console.log("ttest:", jStat.ttest(jOne, 1))
+            mean1 = 0
+            mean2 = 0
+
+            for(i = 0; i<one.length; i++){
+                mean1 += one[i]
+            }
+            mean1 = mean1/one.length
+
+            for(i = 0; i<two.length; i++){
+                mean2 += two[i]
+            }
+            mean2 = mean2/two.length
+
+            stdev1 = 0
+            for(i = 0; i<one.length; i++){
+                temp = mean1 - one[i]
+                temp = temp*temp
+                stdev1 += temp
+            }
+            stdev1 = stdev1/one.length
+            stdev1 = Math.sqrt(stdev1)
+
+            stdev2 = 0
+            for(i = 0; i<two.length; i++){
+                temp = mean1 - two[i]
+                temp = temp*temp
+                stdev2 += temp
+            }
+            stdev2 = stdev2/two.length
+            stdev2 = Math.sqrt(stdev2)
+
+            x1 = stdev1*stdev1/one.length
+            x2 = stdev2*stdev2/two.length
+
+            x = Math.sqrt(x1+x2)
+
+            ttest = mean1 - mean2
+            ttest = ttest / x
+            document.getElementById('ttest1').value = ttest
             Plotly.newPlot('boxPlotID', data);
         }
     }
@@ -4090,8 +4127,45 @@ var TreeCompare = function () {
             };
 
             var data = [trace1, trace2];
-            jOne = jStat(one);
-            console.log("ttest:", jStat.ttest(jOne, 1))
+            mean1 = 0
+            mean2 = 0
+
+            for(i = 0; i<one.length; i++){
+                mean1 += one[i]
+            }
+            mean1 = mean1/one.length
+
+            for(i = 0; i<two.length; i++){
+                mean2 += two[i]
+            }
+            mean2 = mean2/two.length
+
+            stdev1 = 0
+            for(i = 0; i<one.length; i++){
+                temp = mean1 - one[i]
+                temp = temp*temp
+                stdev1 += temp
+            }
+            stdev1 = stdev1/one.length
+            stdev1 = Math.sqrt(stdev1)
+
+            stdev2 = 0
+            for(i = 0; i<two.length; i++){
+                temp = mean1 - two[i]
+                temp = temp*temp
+                stdev2 += temp
+            }
+            stdev2 = stdev2/two.length
+            stdev2 = Math.sqrt(stdev2)
+
+            x1 = stdev1*stdev1/one.length
+            x2 = stdev2*stdev2/two.length
+
+            x = Math.sqrt(x1+x2)
+
+            ttest = mean1 - mean2
+            ttest = ttest / x
+            document.getElementById('ttest2').value = ttest
             Plotly.newPlot('boxPlot2ID', data);
         }
     }
