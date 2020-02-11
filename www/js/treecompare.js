@@ -22,6 +22,8 @@ var TreeCompare = function () {
 
     //global variable for multi-selecting
     var multiSelected = [];
+    var multiChildren1 = [];
+    var multiChildren2 = [];
 
 
     /*
@@ -1983,8 +1985,30 @@ var TreeCompare = function () {
                 if (multiSelected[1] == d) {
                     return "#ff7f0e";
                 };
+                if(inChildren1(d)){
+                    return "#1f77b4";
+                };
+                if(inChildren2(d)){
+                    return "#ff7f0e";
+                };                
             });
 
+        function inChildren1(d){
+            for(i = 0; i<multiChildren1.length; i++){
+                if(multiChildren1[i] == d){
+                    return true
+                }
+            }
+            return false
+        }
+        function inChildren2(d){
+            for(i = 0; i<multiChildren2.length; i++){
+                if(multiChildren2[i] == d){
+                    return true
+                }
+            }
+            return false
+        }
         nodeUpdate.select("text")
             .style("fill-opacity", 1)
 
@@ -4058,38 +4082,38 @@ var TreeCompare = function () {
             mean1 = 0
             mean2 = 0
 
-            for(i = 0; i<one.length; i++){
+            for (i = 0; i < one.length; i++) {
                 mean1 += one[i]
             }
-            mean1 = mean1/one.length
+            mean1 = mean1 / one.length
 
-            for(i = 0; i<two.length; i++){
+            for (i = 0; i < two.length; i++) {
                 mean2 += two[i]
             }
-            mean2 = mean2/two.length
+            mean2 = mean2 / two.length
 
             stdev1 = 0
-            for(i = 0; i<one.length; i++){
+            for (i = 0; i < one.length; i++) {
                 temp = mean1 - one[i]
-                temp = temp*temp
+                temp = temp * temp
                 stdev1 += temp
             }
-            stdev1 = stdev1/one.length
+            stdev1 = stdev1 / one.length
             stdev1 = Math.sqrt(stdev1)
 
             stdev2 = 0
-            for(i = 0; i<two.length; i++){
+            for (i = 0; i < two.length; i++) {
                 temp = mean1 - two[i]
-                temp = temp*temp
+                temp = temp * temp
                 stdev2 += temp
             }
-            stdev2 = stdev2/two.length
+            stdev2 = stdev2 / two.length
             stdev2 = Math.sqrt(stdev2)
 
-            x1 = stdev1*stdev1/one.length
-            x2 = stdev2*stdev2/two.length
+            x1 = stdev1 * stdev1 / one.length
+            x2 = stdev2 * stdev2 / two.length
 
-            x = Math.sqrt(x1+x2)
+            x = Math.sqrt(x1 + x2)
 
             ttest = mean1 - mean2
             ttest = ttest / x
@@ -4130,38 +4154,38 @@ var TreeCompare = function () {
             mean1 = 0
             mean2 = 0
 
-            for(i = 0; i<one.length; i++){
+            for (i = 0; i < one.length; i++) {
                 mean1 += one[i]
             }
-            mean1 = mean1/one.length
+            mean1 = mean1 / one.length
 
-            for(i = 0; i<two.length; i++){
+            for (i = 0; i < two.length; i++) {
                 mean2 += two[i]
             }
-            mean2 = mean2/two.length
+            mean2 = mean2 / two.length
 
             stdev1 = 0
-            for(i = 0; i<one.length; i++){
+            for (i = 0; i < one.length; i++) {
                 temp = mean1 - one[i]
-                temp = temp*temp
+                temp = temp * temp
                 stdev1 += temp
             }
-            stdev1 = stdev1/one.length
+            stdev1 = stdev1 / one.length
             stdev1 = Math.sqrt(stdev1)
 
             stdev2 = 0
-            for(i = 0; i<two.length; i++){
+            for (i = 0; i < two.length; i++) {
                 temp = mean1 - two[i]
-                temp = temp*temp
+                temp = temp * temp
                 stdev2 += temp
             }
-            stdev2 = stdev2/two.length
+            stdev2 = stdev2 / two.length
             stdev2 = Math.sqrt(stdev2)
 
-            x1 = stdev1*stdev1/one.length
-            x2 = stdev2*stdev2/two.length
+            x1 = stdev1 * stdev1 / one.length
+            x2 = stdev2 * stdev2 / two.length
 
-            x = Math.sqrt(x1+x2)
+            x = Math.sqrt(x1 + x2)
 
             ttest = mean1 - mean2
             ttest = ttest / x
@@ -6107,7 +6131,30 @@ var TreeCompare = function () {
                             }
                         }
 
-                        console.log(d)
+                        function getChildren(d) {
+                            /*if (d.children) {
+                                for (i = 0; i < d.children.length; i++) {
+                                    multiChildren1.push(d.children[i])
+                                    console.log(d.children[i])
+                                    getChildren(d.children[i])
+                                }
+                            }*/
+                            temp = d.leaves
+                            for(i = 0; i<temp.length; i++){
+                                multiChildren1.push(temp[i])
+                                tmp = temp[i]
+                                while(tmp!=d){
+                                    if(!multiChildren1.includes(tmp)){
+                                        multiChildren1.push(tmp)
+                                    }
+                                    tmp = tmp.parent
+                                }
+                            }
+                        }
+                        console.log("multichildren1: ", multiChildren1)
+                        getChildren(d)
+                        console.log(d.children.length)
+                        console.log("multichildren1: ", multiChildren1)
                         str = JSON.stringify(str, undefined, 2)
                         document.getElementById('select1').value = str
 
@@ -6137,7 +6184,27 @@ var TreeCompare = function () {
                                 depth: d.parent.depth,
                             }
                         }
+                        function getChildren(d) {
+                            /*if (d.children) {
+                                for (i = 0; i < d.children.length; i++) {
+                                    multiChildren2.push(d.children[i])
+                                    getChildren(d.children[i])
+                                }
+                            }*/
+                            temp = d.leaves
+                            for(i = 0; i<temp.length; i++){
+                                multiChildren2.push(temp[i])
+                                tmp = temp[i]
+                                while(tmp!=d){
+                                    if(!multiChildren2.includes(tmp)){
+                                        multiChildren2.push(tmp)
+                                    }
+                                    tmp = tmp.parent
+                                }
+                            }
+                        }
 
+                        getChildren(d)
                         str = JSON.stringify(str, undefined, 2)
                         document.getElementById('select2').value = str
                         update(tree.root, tree.data);
@@ -6154,12 +6221,8 @@ var TreeCompare = function () {
                         return 'Remove selection >'
                     },
                     function () {
-                        /*toColor1 = document.getElementById(multiSelected[0].ID)
-                        toColor1.classList.toggle("multiSelect1")
-                        toColor2 = document.getElementById(multiSelected[1].ID)
-                        toColor2.classList.toggle("multiSelect2")
-                        toColor2.classList.toggle("multiSelect1")*/
                         multiSelected.shift()
+                        multiChildren1 = []
                         document.getElementById('select1').value = document.getElementById('select2').value
                         document.getElementById('select2').value = ""
                         update(tree.root, tree.data);
@@ -6178,6 +6241,7 @@ var TreeCompare = function () {
                         /*toColor = document.getElementById(multiSelected[1].ID)
                         toColor.classList.toggle("multiSelect2")*/
                         multiSelected.pop();
+                        multiChildren2 = []
                         document.getElementById('select2').value = ""
                         update(tree.root, tree.data);
                         commonAncestor()
@@ -6200,6 +6264,8 @@ var TreeCompare = function () {
                         document.getElementById('select1').value = ""
                         multiSelected.pop();
                         document.getElementById('select2').value = ""
+                        multiChildren1 = []
+                        multiChildren2 = []
 
                         update(tree.root, tree.data);
                         commonAncestor()
