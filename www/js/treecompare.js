@@ -1985,25 +1985,25 @@ var TreeCompare = function () {
                 if (multiSelected[1] == d) {
                     return "#ff7f0e";
                 };
-                if(inChildren1(d)){
+                if (inChildren1(d)) {
                     return "#1f77b4";
                 };
-                if(inChildren2(d)){
+                if (inChildren2(d)) {
                     return "#ff7f0e";
-                };                
+                };
             });
 
-        function inChildren1(d){
-            for(i = 0; i<multiChildren1.length; i++){
-                if(multiChildren1[i] == d){
+        function inChildren1(d) {
+            for (i = 0; i < multiChildren1.length; i++) {
+                if (multiChildren1[i] == d) {
                     return true
                 }
             }
             return false
         }
-        function inChildren2(d){
-            for(i = 0; i<multiChildren2.length; i++){
-                if(multiChildren2[i] == d){
+        function inChildren2(d) {
+            for (i = 0; i < multiChildren2.length; i++) {
+                if (multiChildren2[i] == d) {
                     return true
                 }
             }
@@ -3959,6 +3959,69 @@ var TreeCompare = function () {
 
     }
 
+
+    function LogGamma(Z) {
+        with (Math) {
+            var S = 1 + 76.18009173 / Z - 86.50532033 / (Z + 1) + 24.01409822 / (Z + 2) - 1.231739516 / (Z + 3) + .00120858003 / (Z + 4) - .00000536382 / (Z + 5);
+            var LG = (Z - .5) * log(Z + 4.5) - (Z + 4.5) + log(S * 2.50662827465);
+        }
+        return LG
+    }
+
+    function Betinc(X, A, B) {
+        var A0 = 0;
+        var B0 = 1;
+        var A1 = 1;
+        var B1 = 1;
+        var M9 = 0;
+        var A2 = 0;
+        var C9;
+        while (Math.abs((A1 - A2) / A1) > .00001) {
+            A2 = A1;
+            C9 = -(A + M9) * (A + B + M9) * X / (A + 2 * M9) / (A + 2 * M9 + 1);
+            A0 = A1 + C9 * A0;
+            B0 = B1 + C9 * B0;
+            M9 = M9 + 1;
+            C9 = M9 * (B - M9) * X / (A + 2 * M9 - 1) / (A + 2 * M9);
+            A1 = A0 + C9 * A1;
+            B1 = B0 + C9 * B1;
+            A0 = A0 / B1;
+            B0 = B0 / B1;
+            A1 = A1 / B1;
+            B1 = 1;
+        }
+        return A1 / A
+    }
+
+    function computePval(X, df) {
+        with (Math) {
+            if (df <= 0) {
+                alert("Degrees of freedom must be positive")
+            } else {
+                A = df / 2;
+                S = A + .5;
+                Z = df / (df + X * X);
+                BT = exp(LogGamma(S) - LogGamma(.5) - LogGamma(A) + A * log(Z) + .5 * log(1 - Z));
+                if (Z < (A + 1) / (S + 2)) {
+                    betacdf = BT * Betinc(Z, A, .5)
+                } else {
+                    betacdf = 1 - BT * Betinc(1 - Z, .5, A)
+                }
+                if (X < 0) {
+                    tcdf = betacdf / 2
+                } else {
+                    tcdf = 1 - betacdf / 2
+                }
+            }
+            tcdf = round(tcdf * 100000) / 100000;
+        }
+        return tcdf
+    }
+
+
+
+
+
     //Finding commmon ancestor
     function commonAncestor() {
         if (multiSelected[0] != null && multiSelected[1] != null) {
@@ -4051,6 +4114,10 @@ var TreeCompare = function () {
     }
 
     function boxPlotEachOther(one, two) {
+        if (two) {
+            df = one.length + two.length - 2
+            console.log("one,two: ", one, two)
+        }
         console.log("one,two: ", one, two)
         if (one == null && two == null) {
             Plotly.newPlot('boxPlotID', null);
@@ -4115,15 +4182,22 @@ var TreeCompare = function () {
 
             x = Math.sqrt(x1 + x2)
 
-            ttest = mean1 - mean2
-            ttest = ttest / x
-            document.getElementById('ttest1').value = ttest
+            tTest = mean1 - mean2
+            tTest = tTest / x
+            document.getElementById('ttest1').value = tTest
             Plotly.newPlot('boxPlotID', data);
+            if (two) {
+                pval = computePval(tTest, df)
+                document.getElementById("pval1").value = pval
+            }
         }
     }
 
     function boxPlotLeaves(one, two) {
-        console.log("one,two: ", one, two)
+        if (two) {
+            df = one.length + two.length - 2
+            console.log("one,two: ", one, two)
+        }
         if (one == null && two == null) {
             Plotly.newPlot('boxPlot2ID', null);
         }
@@ -4187,10 +4261,14 @@ var TreeCompare = function () {
 
             x = Math.sqrt(x1 + x2)
 
-            ttest = mean1 - mean2
-            ttest = ttest / x
-            document.getElementById('ttest2').value = ttest
+            tTest = mean1 - mean2
+            tTest = tTest / x
+            document.getElementById('ttest2').value = tTest
             Plotly.newPlot('boxPlot2ID', data);
+            if (two) {
+                pval = computePval(tTest, df)
+                document.getElementById("pval2").value = pval
+            }
         }
     }
 
@@ -6140,11 +6218,11 @@ var TreeCompare = function () {
                                 }
                             }*/
                             temp = d.leaves
-                            for(i = 0; i<temp.length; i++){
+                            for (i = 0; i < temp.length; i++) {
                                 multiChildren1.push(temp[i])
                                 tmp = temp[i]
-                                while(tmp!=d){
-                                    if(!multiChildren1.includes(tmp)){
+                                while (tmp != d) {
+                                    if (!multiChildren1.includes(tmp)) {
                                         multiChildren1.push(tmp)
                                     }
                                     tmp = tmp.parent
@@ -6192,11 +6270,11 @@ var TreeCompare = function () {
                                 }
                             }*/
                             temp = d.leaves
-                            for(i = 0; i<temp.length; i++){
+                            for (i = 0; i < temp.length; i++) {
                                 multiChildren2.push(temp[i])
                                 tmp = temp[i]
-                                while(tmp!=d){
-                                    if(!multiChildren2.includes(tmp)){
+                                while (tmp != d) {
+                                    if (!multiChildren2.includes(tmp)) {
                                         multiChildren2.push(tmp)
                                     }
                                     tmp = tmp.parent
