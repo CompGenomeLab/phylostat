@@ -1993,6 +1993,38 @@ var TreeCompare = function () {
                 };
             });
 
+        nodeUpdate.select("text")
+            .style("fill", function (d) {
+                if (multiSelected[0] == d) {
+                    return "#1f77b4";
+                };
+                if (multiSelected[1] == d) {
+                    return "#ff7f0e";
+                };
+                if (inChildren1(d)) {
+                    return "#1f77b4";
+                };
+                if (inChildren2(d)) {
+                    return "#ff7f0e";
+                };
+            });
+
+            nodeUpdate.select("text")
+            .style("font-weight", function (d) {
+                if (multiSelected[0] == d) {
+                    return "bold";
+                };
+                if (multiSelected[1] == d) {
+                    return "bold";
+                };
+                if (inChildren1(d)) {
+                    return "bold";
+                };
+                if (inChildren2(d)) {
+                    return "bold";
+                };
+            });
+        
         function inChildren1(d) {
             for (i = 0; i < multiChildren1.length; i++) {
                 if (multiChildren1[i] == d) {
@@ -2213,6 +2245,10 @@ var TreeCompare = function () {
                         return colorScaleRest(parseFloat(e["branchSupport"]) / maxBranchSupport)
                     } else if (e["specifiedBranchColor"] && (settings.internalLabels === "color")) { // color branch according to prespecified rgb values in the nhx file
                         return rgb2hex(e["specifiedBranchColor"])
+                    } else if(inChildren1(e)){
+                        return "#1f77b4";
+                    } else if(inChildren2(e)){
+                        return "#ff7f0e";
                     } else { // return the standard color
                         return "grey"
                     }
@@ -2307,7 +2343,6 @@ var TreeCompare = function () {
                 .attr("d", function (d) {
                     return "M" + d.source.y + "," + d.source.x + "L" + d.source.y + "," + d.target.x + "L" + d.target.y + "," + d.target.x;
                 });
-
 
             // Transition exiting nodes to the parent"s new position.
             link.exit().transition()
