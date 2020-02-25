@@ -4364,13 +4364,10 @@ var TreeCompare = function () {
         
             if (document.getElementById('regExSearch').value) {
                 var regTemp = document.getElementById('regExSearch').value
-                console.log("regTemp: ", regTemp)
                 var regex = new RegExp(regTemp, "i");
-                console.log("regex: ", regex)
             }
             else {
                 var regex = /taxid_[0-9]+/i;
-                console.log("regex: ", regex)
             }
             var one = []
             var two = []
@@ -4407,16 +4404,6 @@ var TreeCompare = function () {
                 }
             }
 
-            console.log("Number of found for first selection is: ", (one.length + common.length))
-            console.log("one: ", one.concat(common))
-            console.log("Number of found for second selection is: ", (two.length + common.length))
-            console.log("two: ", two.concat(common))
-            console.log("Number of found in common for both selection is: ", common.length)
-            console.log("common: ", common)
-            console.log("Number of found for only first selection is: ", one.length)
-            console.log("Only one: ", one)
-            console.log("Number of found for only first selection is: ", two.length)
-            console.log("Only two: ", two)
             var regSearch = {
                 searchOne: one.concat(common),
                 numSearchOne: one.concat(common).length,
