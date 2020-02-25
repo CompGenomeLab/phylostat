@@ -6327,7 +6327,8 @@ var TreeCompare = function () {
                     },
                     function () {
                         multiSelected.shift()
-                        multiChildren1 = []
+                        multiChildren1 = multiChildren2
+                        multiChildren2 = []
                         document.getElementById('select1').value = document.getElementById('select2').value
                         document.getElementById('select2').value = ""
                         update(tree.root, tree.data);
@@ -6358,7 +6359,7 @@ var TreeCompare = function () {
             if (multiSelected[0] && multiSelected[1]) {
                 add_menu_item(".tooltipElem",
                     function () {
-                        return 'Remove all selection >'
+                        return 'Remove all selections >'
                     },
                     function () {
                         /*toColor1 = document.getElementById(multiSelected[0].ID)
