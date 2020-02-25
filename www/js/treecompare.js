@@ -4133,7 +4133,6 @@ var TreeCompare = function () {
 
     //Finding distance of the multiselected
     function distSelected(ancs) {
-        console.log("ancestor: ", ancs)
         selectedOne = multiSelected[0]
         selectedTwo = multiSelected[1]
         dist = 0
@@ -4149,15 +4148,12 @@ var TreeCompare = function () {
     }
 
     function boxPlotEachOther(one, two) {
-        if (two) {
+        if (one == null || two == null) {
+            Plotly.purge('boxPlotID');            
+        }
+        else if(one != null && two != null) {
             df = one.length + two.length - 2
-            console.log("one,two: ", one, two)
-        }
-        console.log("one,two: ", one, two)
-        if (one == null && two == null) {
-            Plotly.newPlot('boxPlotID', null);
-        }
-        else {
+
             tempOne = []
             for (i = 0; i < one.length; i++) {
                 tempOne.push(one[i].Distance)
@@ -4229,14 +4225,12 @@ var TreeCompare = function () {
     }
 
     function boxPlotLeaves(one, two) {
-        if (two) {
-            df = one.length + two.length - 2
-            console.log("one,two: ", one, two)
-        }
         if (one == null && two == null) {
-            Plotly.newPlot('boxPlot2ID', null);
+            Plotly.purge('boxPlot2ID');
         }
-        else {
+        else if(one != null && two != null) {
+            df = one.length + two.length - 2
+
             tempOne = []
             for (i = 0; i < one.length; i++) {
                 tempOne.push(one[i].Distance)
@@ -4319,8 +4313,6 @@ var TreeCompare = function () {
         leavesTwoDist = []
 
 
-        console.log(leavesOne)
-        console.log(leavesTwo)
 
 
         for (i = 0; i < leavesOne.length; i++) {
@@ -4351,9 +4343,6 @@ var TreeCompare = function () {
 
         }
 
-        console.log("--------------------------------------")
-        console.log(leavesOneDist)
-        console.log(leavesTwoDist)
         boxPlotEachOther(leavesOneDist, leavesTwoDist)
 
         turn = 0
@@ -4395,10 +4384,43 @@ var TreeCompare = function () {
             }
         }
 
-        console.log("--------------------------------------")
-        console.log(leavesOneEachother)
-        console.log(leavesTwoEachother)
         boxPlotLeaves(leavesOneEachother, leavesTwoEachother)
+
+        var regex = /taxid_[0-9]+/i; 
+        var taxIdOne = []
+        var taxIdTwo = []
+        for(i = 0; i<leavesOne.length; i++){
+            if(leavesOne[i].name.match(regex)){
+                taxIdOne.push(leavesOne[i].name.match(regex)[0])
+            }
+        }
+        for(i = 0; i<leavesTwo.length; i++){
+            if(leavesTwo[i].name.match(regex)){
+                taxIdTwo.push(leavesTwo[i].name.match(regex)[0])
+            }
+        }
+
+        var taxIdCommon = [];
+        for(i = 0; i<taxIdOne.length; i++){
+            for(j = 0; j<taxIdTwo.length; j++){
+                if(taxIdOne[i]==taxIdTwo[j]){
+                    taxIdCommon.push(taxIdOne[i])
+                    var indexOne = taxIdOne.indexOf(i);
+                    taxIdOne.splice(indexOne, 1);
+                    var indexTwo = taxIdTwo.indexOf(j);
+                    taxIdTwo.splice(indexTwo, 1);
+                }
+            }
+        }
+
+        console.log("Number of TaxIds for first selection is: ",(taxIdOne.length + taxIdCommon.length))
+        console.log("taxIdOne: ", taxIdOne)
+        console.log("Number of TaxIds for second selection is: ",(taxIdTwo.length + taxIdCommon.length))
+        console.log("taxIdTwo: ", taxIdTwo)
+        console.log("Number of TaxIds in common for both selection is: ", taxIdCommon.length)
+        console.log("taxIdCommon: ", taxIdCommon)
+        console.log("Number of TaxIds for only first selection is: ", taxIdOne.length)
+        console.log("Number of TaxIds for only first selection is: ", taxIdTwo.length)
     }
 
     function createTreeDownload(canvasId, downloadClass) {
@@ -6223,6 +6245,7 @@ var TreeCompare = function () {
                     });
             };
 
+
             //Multi selecting, select as first option
             if (!multiSelected[0]) {
                 add_menu_item(".tooltipElem",
@@ -6245,13 +6268,6 @@ var TreeCompare = function () {
                         }
 
                         function getChildren(d) {
-                            /*if (d.children) {
-                                for (i = 0; i < d.children.length; i++) {
-                                    multiChildren1.push(d.children[i])
-                                    console.log(d.children[i])
-                                    getChildren(d.children[i])
-                                }
-                            }*/
                             temp = d.leaves
                             for (i = 0; i < temp.length; i++) {
                                 multiChildren1.push(temp[i])
@@ -6264,10 +6280,7 @@ var TreeCompare = function () {
                                 }
                             }
                         }
-                        console.log("multichildren1: ", multiChildren1)
                         getChildren(d)
-                        console.log(d.children.length)
-                        console.log("multichildren1: ", multiChildren1)
                         str = JSON.stringify(str, undefined, 2)
                         document.getElementById('select1').value = str
 
