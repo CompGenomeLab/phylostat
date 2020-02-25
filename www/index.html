@@ -342,6 +342,13 @@
                                 <textarea id="pval2" cols="80" rows="1" readonly
                                 style="width: 330px; background-color: #e7e7e7"></textarea>
                             </div>
+                            <div class="RegEx">                            
+                                <label>RegEx Search:</label>
+                                <textarea id="regExSearch" cols="80" rows="1"
+                                style="width: 330px; background-color: #e7e7e7"></textarea>                            
+                                <div id="regExCluster" style="background-color: #e7e7e7; height: 300px;"></div>
+                            </div>
+                            
                         </div>
                     </li>
 
@@ -550,37 +557,13 @@
     }
 
     </style>
-
     <script>
-        function plotIt() {
-            var y0, y1 = TreeCompare().boxPlotEachOther;
-            console.log("yooooo", y0, y1)
-
-            var trace1 = {
-                y: y0,
-                type: 'box'
-            };
-
-            var trace2 = {
-                y: y1,
-                type: 'box'
-            };
-
-            var data = [trace1, trace2];
-            if (document.getElementById("hiddenForBoxPlotVal").value == "true") {
-
-                Plotly.newPlot('boxPlotID', data);
-            }
-            else if (document.getElementById("hiddenForBoxPlotVal").value == "false") {
-                Plotly.newPlot('boxPlotID', null);
-            }
-            else {
-                console.log("what the actual fuck")
-            }
-        }
-
+    function regSearch(){
+        TreeCompare().regexSearch()
+        
+    }
     </script>
-
+    
     <script type="text/javascript">
         function haveUndo() {
 

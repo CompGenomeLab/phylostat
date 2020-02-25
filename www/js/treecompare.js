@@ -24,6 +24,8 @@ var TreeCompare = function () {
     var multiSelected = [];
     var multiChildren1 = [];
     var multiChildren2 = [];
+    var leavesOne = [];
+    var leavesTwo = [];
 
 
     /*
@@ -2050,7 +2052,7 @@ var TreeCompare = function () {
                     return "bold";
                 };
             });
-            
+
         nodeUpdate.select("text")
             .style("fill-opacity", 1)
 
@@ -2231,7 +2233,7 @@ var TreeCompare = function () {
                             return "bold";
                         };
                     });
-                    
+
             }
             if (d.children) {
                 d3.select(this).select("path").transition().duration(duration)
@@ -4287,7 +4289,7 @@ var TreeCompare = function () {
         leavesTwo = selectedTwo.leaves
         leavesTwoEachother = []
         leavesTwoDist = []
-
+        regexSearch()
 
 
 
@@ -4361,18 +4363,31 @@ var TreeCompare = function () {
         }
 
         boxPlotLeaves(leavesOneEachother, leavesTwoEachother)
-
-        var regex = /taxid_[0-9]+/i;
+    }
+    function regexSearch() {
+        if (document.getElementById('regExSearch').value) {
+            var regTemp = document.getElementById('regExSearch').value
+            console.log("regTemp: ", regTemp)
+            var regex = new RegExp(regTemp);
+            console.log("regex: ", regex)
+        }
+        else {
+            //var regex = /taxid_[0-9]+/i;
+        }
         var taxIdOne = []
         var taxIdTwo = []
         for (i = 0; i < leavesOne.length; i++) {
             if (leavesOne[i].name.match(regex)) {
-                taxIdOne.push(leavesOne[i].name.match(regex)[0])
+                if (!taxIdOne.includes(leavesOne[i].name.match(regex)[0])) {
+                    taxIdOne.push(leavesOne[i].name.match(regex)[0])
+                }
             }
         }
         for (i = 0; i < leavesTwo.length; i++) {
             if (leavesTwo[i].name.match(regex)) {
-                taxIdTwo.push(leavesTwo[i].name.match(regex)[0])
+                if (!taxIdTwo.includes(leavesTwo[i].name.match(regex)[0])) {
+                    taxIdTwo.push(leavesTwo[i].name.match(regex)[0])
+                }
             }
         }
 
@@ -4392,13 +4407,15 @@ var TreeCompare = function () {
         }
 
         console.log("Number of TaxIds for first selection is: ", (taxIdOne.length + taxIdCommon.length))
-        console.log("taxIdOne: ", taxIdOne)
+        console.log("taxIdOne: ", taxIdOne.concat(taxIdCommon))
         console.log("Number of TaxIds for second selection is: ", (taxIdTwo.length + taxIdCommon.length))
-        console.log("taxIdTwo: ", taxIdTwo)
+        console.log("taxIdTwo: ", taxIdTwo.concat(taxIdCommon))
         console.log("Number of TaxIds in common for both selection is: ", taxIdCommon.length)
         console.log("taxIdCommon: ", taxIdCommon)
         console.log("Number of TaxIds for only first selection is: ", taxIdOne.length)
+        console.log("Only taxIdOne: ", taxIdOne)
         console.log("Number of TaxIds for only first selection is: ", taxIdTwo.length)
+        console.log("Only taxIdTwo: ", taxIdTwo)
     }
 
     function createTreeDownload(canvasId, downloadClass) {
@@ -5986,8 +6003,11 @@ var TreeCompare = function () {
 
             var triWidth = 10;
             var triHeight = 15;
-            var rectWidth = 160;
+            var rectWidth = 170;
             var rectHeight = 120;
+            if (multiSelected[0] && multiSelected[1]) {
+                rectHeight = 120 + 18
+            }
 
             var rpad = 10;
             var tpad = 18;
@@ -6329,6 +6349,8 @@ var TreeCompare = function () {
                         multiSelected.shift()
                         multiChildren1 = multiChildren2
                         multiChildren2 = []
+                        leavesOne = leavesTwo;
+                        leavesTwo = [];
                         document.getElementById('select1').value = document.getElementById('select2').value
                         document.getElementById('select2').value = ""
                         update(tree.root, tree.data);
@@ -6348,6 +6370,7 @@ var TreeCompare = function () {
                         toColor.classList.toggle("multiSelect2")*/
                         multiSelected.pop();
                         multiChildren2 = []
+                        leavesTwo = []
                         document.getElementById('select2').value = ""
                         update(tree.root, tree.data);
                         commonAncestor()
@@ -6372,6 +6395,8 @@ var TreeCompare = function () {
                         document.getElementById('select2').value = ""
                         multiChildren1 = []
                         multiChildren2 = []
+                        leavesOne = []
+                        leavesTwo = []
 
                         update(tree.root, tree.data);
                         commonAncestor()
