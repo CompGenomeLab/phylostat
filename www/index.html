@@ -318,12 +318,12 @@
                             <div>
                                 <label>T-Test Score:</label>
                                 <textarea id="ttest1" cols="80" rows="1" readonly
-                                style="width: 330px; background-color: #e7e7e7"></textarea>
+                                    style="width: 330px; background-color: #e7e7e7"></textarea>
                             </div>
                             <div>
                                 <label>P-Value:</label>
                                 <textarea id="pval1" cols="80" rows="1" readonly
-                                style="width: 330px; background-color: #e7e7e7"></textarea>
+                                    style="width: 330px; background-color: #e7e7e7"></textarea>
                             </div>
                             <div>
                                 <p></p>
@@ -335,20 +335,22 @@
                             <div>
                                 <label>T-Test Score:</label>
                                 <textarea id="ttest2" cols="80" rows="1" readonly
-                                style="width: 330px; background-color: #e7e7e7"></textarea>
+                                    style="width: 330px; background-color: #e7e7e7"></textarea>
                             </div>
                             <div>
                                 <label>P-Value:</label>
                                 <textarea id="pval2" cols="80" rows="1" readonly
-                                style="width: 330px; background-color: #e7e7e7"></textarea>
+                                    style="width: 330px; background-color: #e7e7e7"></textarea>
                             </div>
-                            <div class="RegEx">                            
+                            <div class="RegEx">
                                 <label>RegEx Search:</label>
-                                <textarea id="regExSearch" cols="80" rows="1"
-                                style="width: 330px; background-color: #e7e7e7"></textarea>                            
+                                <textarea id="regExSearch" onchange="regSearch()" cols="80" rows="1"
+                                    placeholder="taxid_[0-9]+"
+                                    onkeydown="if(event.keyCode == 13 && !event.shiftKey){this.blur(); return false;}"
+                                    style="width: 330px; background-color: #e7e7e7"></textarea>
                                 <div id="regExCluster" style="background-color: #e7e7e7; height: 300px;"></div>
                             </div>
-                            
+
                         </div>
                     </li>
 
@@ -507,7 +509,7 @@
         </div>
         <!-- /#sidebar-wrapper -->
         <!-- Page Content -->
-        <div class="modal-container" id="spinner-container" ><span
+        <div class="modal-container" id="spinner-container"><span
                 style="position: relative; margin: 20px 10px 0 0; float: right;">Calculating...</span></div>
         <div id="page-content-wrapper">
             <div id="placeholder">
@@ -547,23 +549,24 @@
     </div>
 
     <style>
-    .modebar-group{
-        width: 35px !important;
-        height: 35px !important;
-    }
+        .modebar-group {
+            width: 35px !important;
+            height: 35px !important;
+        }
 
-    .modebar-btn{
-        display:block;
-    }
-
+        .modebar-btn {
+            display: block;
+        }
     </style>
     <script>
-    function regSearch(){
-        TreeCompare().regexSearch()
-        
-    }
+        function regSearch() {
+            var result = TreeCompare().regexSearch()
+            console.log(result)
+        }
+
+
     </script>
-    
+
     <script type="text/javascript">
         function haveUndo() {
 

@@ -24,8 +24,6 @@ var TreeCompare = function () {
     var multiSelected = [];
     var multiChildren1 = [];
     var multiChildren2 = [];
-    var leavesOne = [];
-    var leavesTwo = [];
 
 
     /*
@@ -2007,7 +2005,6 @@ var TreeCompare = function () {
         nodeUpdate.select("circle")
             .style("fill", function (d) {
                 if (multiSelected[0] == d) {
-                    console.log(d)
                     return "#1f77b4";
                 };
                 if (multiSelected[1] == d) {
@@ -4291,8 +4288,6 @@ var TreeCompare = function () {
         leavesTwoDist = []
         regexSearch()
 
-
-
         for (i = 0; i < leavesOne.length; i++) {
             distance = 0
             temp = leavesOne[i]
@@ -4364,58 +4359,75 @@ var TreeCompare = function () {
 
         boxPlotLeaves(leavesOneEachother, leavesTwoEachother)
     }
+
     function regexSearch() {
-        if (document.getElementById('regExSearch').value) {
-            var regTemp = document.getElementById('regExSearch').value
-            console.log("regTemp: ", regTemp)
-            var regex = new RegExp(regTemp);
-            console.log("regex: ", regex)
-        }
-        else {
-            //var regex = /taxid_[0-9]+/i;
-        }
-        var taxIdOne = []
-        var taxIdTwo = []
-        for (i = 0; i < leavesOne.length; i++) {
-            if (leavesOne[i].name.match(regex)) {
-                if (!taxIdOne.includes(leavesOne[i].name.match(regex)[0])) {
-                    taxIdOne.push(leavesOne[i].name.match(regex)[0])
-                }
+        
+            if (document.getElementById('regExSearch').value) {
+                var regTemp = document.getElementById('regExSearch').value
+                console.log("regTemp: ", regTemp)
+                var regex = new RegExp(regTemp, "i");
+                console.log("regex: ", regex)
             }
-        }
-        for (i = 0; i < leavesTwo.length; i++) {
-            if (leavesTwo[i].name.match(regex)) {
-                if (!taxIdTwo.includes(leavesTwo[i].name.match(regex)[0])) {
-                    taxIdTwo.push(leavesTwo[i].name.match(regex)[0])
-                }
+            else {
+                var regex = /taxid_[0-9]+/i;
+                console.log("regex: ", regex)
             }
-        }
+            var one = []
+            var two = []
+            leavesOne = selectedOne.leaves
+            leavesTwo = selectedTwo.leaves
 
-        var taxIdCommon = [];
-        for (i = 0; i < taxIdOne.length; i++) {
-            for (j = 0; j < taxIdTwo.length; j++) {
-                if (taxIdOne[i] == taxIdTwo[j]) {
-                    taxIdCommon.push(taxIdOne[i])
-                    var indexOne = taxIdOne.indexOf(i);
-                    taxIdOne.splice(indexOne, 1);
-                    i--;
-                    var indexTwo = taxIdTwo.indexOf(j);
-                    taxIdTwo.splice(indexTwo, 1);
-                    j--;
+            for (i = 0; i < leavesOne.length; i++) {
+                if (leavesOne[i].name.match(regex)) {
+                    if (!one.includes(leavesOne[i].name.match(regex)[0])) {
+                        one.push(leavesOne[i].name.match(regex)[0])
+                    }
                 }
             }
-        }
+            for (i = 0; i < leavesTwo.length; i++) {
+                if (leavesTwo[i].name.match(regex)) {
+                    if (!two.includes(leavesTwo[i].name.match(regex)[0])) {
+                        two.push(leavesTwo[i].name.match(regex)[0])
+                    }
+                }
+            }
 
-        console.log("Number of TaxIds for first selection is: ", (taxIdOne.length + taxIdCommon.length))
-        console.log("taxIdOne: ", taxIdOne.concat(taxIdCommon))
-        console.log("Number of TaxIds for second selection is: ", (taxIdTwo.length + taxIdCommon.length))
-        console.log("taxIdTwo: ", taxIdTwo.concat(taxIdCommon))
-        console.log("Number of TaxIds in common for both selection is: ", taxIdCommon.length)
-        console.log("taxIdCommon: ", taxIdCommon)
-        console.log("Number of TaxIds for only first selection is: ", taxIdOne.length)
-        console.log("Only taxIdOne: ", taxIdOne)
-        console.log("Number of TaxIds for only first selection is: ", taxIdTwo.length)
-        console.log("Only taxIdTwo: ", taxIdTwo)
+            var common = [];
+            for (i = 0; i < one.length; i++) {
+                for (j = 0; j < two.length; j++) {
+                    if (one[i] == two[j]) {
+                        common.push(one[i])
+                        var indexOne = one.indexOf(i);
+                        one.splice(indexOne, 1);
+                        i--;
+                        var indexTwo = two.indexOf(j);
+                        two.splice(indexTwo, 1);
+                        j--;
+                    }
+                }
+            }
+
+            console.log("Number of found for first selection is: ", (one.length + common.length))
+            console.log("one: ", one.concat(common))
+            console.log("Number of found for second selection is: ", (two.length + common.length))
+            console.log("two: ", two.concat(common))
+            console.log("Number of found in common for both selection is: ", common.length)
+            console.log("common: ", common)
+            console.log("Number of found for only first selection is: ", one.length)
+            console.log("Only one: ", one)
+            console.log("Number of found for only first selection is: ", two.length)
+            console.log("Only two: ", two)
+            var regSearch = {
+                searchOne: one.concat(common),
+                searchTwo: two.concat(common),
+                searchCommon: common,
+                searchOnlyOne: one,
+                searchOnlyTwo: two
+            }
+            console.log("leavesOne: ", leavesOne)
+            console.log("leavesTwo: ", leavesTwo)
+            return regSearch
+        
     }
 
     function createTreeDownload(canvasId, downloadClass) {
@@ -6279,7 +6291,6 @@ var TreeCompare = function () {
                             }
                         }
                         getChildren(d)
-                        console.log("multichildren1: ", multiChildren1)
                         str = JSON.stringify(str, undefined, 2)
                         document.getElementById('select1').value = str
 
@@ -6785,7 +6796,7 @@ var TreeCompare = function () {
         changeCanvasSettings: changeCanvasSettings,
         getMaxAutoCollapse: getMaxAutoCollapse,
         changeAutoCollapseDepth: changeAutoCollapseDepth,
-        calcDist: calcDist
-
+        calcDist: calcDist,
+        regexSearch: regexSearch
     }
 };
