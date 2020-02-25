@@ -4419,13 +4419,16 @@ var TreeCompare = function () {
             console.log("Only two: ", two)
             var regSearch = {
                 searchOne: one.concat(common),
+                numSearchOne: one.concat(common).length,
                 searchTwo: two.concat(common),
+                numSearchTwo: two.concat(common).length,
                 searchCommon: common,
+                numSearchCommon: common.length,
                 searchOnlyOne: one,
-                searchOnlyTwo: two
+                numSearchOnlyOne: one.length,
+                searchOnlyTwo: two,
+                numSearchOnlyTwo: two.length
             }
-            console.log("leavesOne: ", leavesOne)
-            console.log("leavesTwo: ", leavesTwo)
             return regSearch
         
     }
