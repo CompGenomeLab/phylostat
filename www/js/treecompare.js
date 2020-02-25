@@ -1580,6 +1580,23 @@ var TreeCompare = function () {
     }
 
 
+    function inChildren1(d) {
+        for (i = 0; i < multiChildren1.length; i++) {
+            if (multiChildren1[i] == d) {
+                return true
+            }
+        }
+        return false
+    }
+    function inChildren2(d) {
+        for (i = 0; i < multiChildren2.length; i++) {
+            if (multiChildren2[i] == d) {
+                return true
+            }
+        }
+        return false
+    }
+
     /*---------------
      /
      /    UPDATE: Main function that is every time called once an action on the visualization is performed
@@ -1908,6 +1925,14 @@ var TreeCompare = function () {
             //.style("fill-opacity", 1e-6)
             .attr("font-size", function (d) {
                 return settings.fontSize + "px"
+            })
+            .style("fill", function (d) {
+                if (inChildren1(d)) {
+                    return "#1f77b4";
+                }
+                else if (inChildren2(d)) {
+                    return "#ff7f0e";
+                }
             });
 
         nodeEnter.append("path")
@@ -1980,6 +2005,7 @@ var TreeCompare = function () {
         nodeUpdate.select("circle")
             .style("fill", function (d) {
                 if (multiSelected[0] == d) {
+                    console.log(d)
                     return "#1f77b4";
                 };
                 if (multiSelected[1] == d) {
@@ -2009,7 +2035,7 @@ var TreeCompare = function () {
                 };
             });
 
-            nodeUpdate.select("text")
+        nodeUpdate.select("text")
             .style("font-weight", function (d) {
                 if (multiSelected[0] == d) {
                     return "bold";
@@ -2024,23 +2050,7 @@ var TreeCompare = function () {
                     return "bold";
                 };
             });
-        
-        function inChildren1(d) {
-            for (i = 0; i < multiChildren1.length; i++) {
-                if (multiChildren1[i] == d) {
-                    return true
-                }
-            }
-            return false
-        }
-        function inChildren2(d) {
-            for (i = 0; i < multiChildren2.length; i++) {
-                if (multiChildren2[i] == d) {
-                    return true
-                }
-            }
-            return false
-        }
+            
         nodeUpdate.select("text")
             .style("fill-opacity", 1)
 
@@ -2169,7 +2179,13 @@ var TreeCompare = function () {
                         }
                     })
                     .style("fill", function (d) {
-                        if (d[currentS]) {
+                        if (inChildren1(d)) {
+                            return "#1f77b4";
+                        }
+                        else if (inChildren2(d)) {
+                            return "#ff7f0e";
+                        }
+                        else if (d[currentS]) {
                             return colorScale(d[currentS]); // changes colour of the collapsed triangle shape
                         }
 
@@ -2198,7 +2214,24 @@ var TreeCompare = function () {
                             }
                             return xpos;
                         }
+                    })
+                    .style("fill", function (d) {
+                        if (inChildren1(d)) {
+                            return "#1f77b4";
+                        }
+                        else if (inChildren2(d)) {
+                            return "#ff7f0e";
+                        }
+                    })
+                    .style("font-weight", function (d) {
+                        if (inChildren1(d)) {
+                            return "bold";
+                        };
+                        if (inChildren2(d)) {
+                            return "bold";
+                        };
                     });
+                    
             }
             if (d.children) {
                 d3.select(this).select("path").transition().duration(duration)
@@ -2245,9 +2278,9 @@ var TreeCompare = function () {
                         return colorScaleRest(parseFloat(e["branchSupport"]) / maxBranchSupport)
                     } else if (e["specifiedBranchColor"] && (settings.internalLabels === "color")) { // color branch according to prespecified rgb values in the nhx file
                         return rgb2hex(e["specifiedBranchColor"])
-                    } else if(inChildren1(e)){
+                    } else if (inChildren1(e)) {
                         return "#1f77b4";
-                    } else if(inChildren2(e)){
+                    } else if (inChildren2(e)) {
                         return "#ff7f0e";
                     } else { // return the standard color
                         return "grey"
@@ -2300,7 +2333,11 @@ var TreeCompare = function () {
                         return colorScaleRest(parseFloat(e["branchSupport"]) / maxBranchSupport)
                     } else if (e["specifiedBranchColor"] && (settings.internalLabels === "color")) { // color branch according to prespecified rgb values in the nhx file
                         return rgb2hex(e["specifiedBranchColor"])
-                    } else {
+                    } else if (inChildren1(e)) {
+                        return "#1f77b4";
+                    } else if (inChildren2(e)) {
+                        return "#ff7f0e";
+                    } else { // return the standard color
                         return "grey"
                     }
                 })
@@ -2418,68 +2455,7 @@ var TreeCompare = function () {
             colorLinkNodeOver(d);
         }
 
-        function nodeSelected(d) {
-            //function to color subtree downstream of a selected node in green
-            function colorSelected(n) {
-                if (n == multiSelected[0]) {
-                    if (n.children) {
-                        for (var i = 0; i < n.children.length; i++) {
-                            d3.select("#" + n.ID + "_" + n.children[i].ID).classed("multiSelect1", true);
-                            colorSelected(n.children[i]);
-                        }
-                    }
-                    if (!settings.enableFisheyeZoom) { //as long as fishEyeZoom is turned off
-                        d3.select("g").select("#" + n.ID).classed("multiSelect1", true);
-                        d3.select("#" + n.ID).select("text").classed("multiSelect1", true);
-                        d3.select("#" + n.ID).select("circle").classed("multiSelect1", true);
-                        d3.select("#" + n.ID).select("path").classed("multiSelect1", true);
-                        d3.select("#" + n.ID).select(".triangleText").classed("multiSelect1", true);
-                        d3.select("#" + n.ID).select(".triangle").classed("multiSelect1", true);
-                    }
-                }
 
-                else if (n == multiSelected[1]) {
-                    if (n.children) {
-                        for (var i = 0; i < n.children.length; i++) {
-                            d3.select("#" + n.ID + "_" + n.children[i].ID).classed("multiSelect2", true);
-                            colorSelected(n.children[i]);
-                        }
-                    }
-                    if (!settings.enableFisheyeZoom) { //as long as fishEyeZoom is turned off
-                        d3.select("g").select("#" + n.ID).classed("multiSelect2", true);
-                        d3.select("#" + n.ID).select("text").classed("multiSelect2", true);
-                        d3.select("#" + n.ID).select("circle").classed("multiSelect2", true);
-                        d3.select("#" + n.ID).select("path").classed("multiSelect2", true);
-                        d3.select("#" + n.ID).select(".triangleText").classed("multiSelect2", true);
-                        d3.select("#" + n.ID).select(".triangle").classed("multiSelect2", true);
-                    }
-                }
-            }
-            colorSelected(d);
-        }
-
-        function nodeunSelected(d) {
-            function colorSelected(n) {
-                if (n != multiSelected[0] && n != multiSelected[1]) {
-
-                    if (n.children) {
-                        for (var i = 0; i < n.children.length; i++) {
-                            d3.select("#" + n.ID + "_" + n.children[i].ID).classed("select", false);
-                            colorSelected(n.children[i]);
-                        }
-                    }
-                    if (!settings.enableFisheyeZoom) {
-                        d3.select("g").select("#" + n.ID).classed("select", false);
-                        d3.select("#" + n.ID).select("text").classed("select", false);
-                        d3.select("#" + n.ID).select("circle").classed("select", false);
-                        d3.select("#" + n.ID).select("path").classed("select", false);
-                        d3.select("#" + n.ID).select(".triangleText").classed("select", false);
-                        d3.select("#" + n.ID).select(".triangle").classed("select", false);
-                    }
-                }
-            }
-            colorSelected(d);
-        }
 
 
         // this part ensures that when clicking on a node or elsewhere in the screen the tooltip disappears
@@ -4149,9 +4125,9 @@ var TreeCompare = function () {
 
     function boxPlotEachOther(one, two) {
         if (one == null || two == null) {
-            Plotly.purge('boxPlotID');            
+            Plotly.purge('boxPlotID');
         }
-        else if(one != null && two != null) {
+        else if (one != null && two != null) {
             df = one.length + two.length - 2
 
             tempOne = []
@@ -4228,7 +4204,7 @@ var TreeCompare = function () {
         if (one == null && two == null) {
             Plotly.purge('boxPlot2ID');
         }
-        else if(one != null && two != null) {
+        else if (one != null && two != null) {
             df = one.length + two.length - 2
 
             tempOne = []
@@ -4386,36 +4362,38 @@ var TreeCompare = function () {
 
         boxPlotLeaves(leavesOneEachother, leavesTwoEachother)
 
-        var regex = /taxid_[0-9]+/i; 
+        var regex = /taxid_[0-9]+/i;
         var taxIdOne = []
         var taxIdTwo = []
-        for(i = 0; i<leavesOne.length; i++){
-            if(leavesOne[i].name.match(regex)){
+        for (i = 0; i < leavesOne.length; i++) {
+            if (leavesOne[i].name.match(regex)) {
                 taxIdOne.push(leavesOne[i].name.match(regex)[0])
             }
         }
-        for(i = 0; i<leavesTwo.length; i++){
-            if(leavesTwo[i].name.match(regex)){
+        for (i = 0; i < leavesTwo.length; i++) {
+            if (leavesTwo[i].name.match(regex)) {
                 taxIdTwo.push(leavesTwo[i].name.match(regex)[0])
             }
         }
 
         var taxIdCommon = [];
-        for(i = 0; i<taxIdOne.length; i++){
-            for(j = 0; j<taxIdTwo.length; j++){
-                if(taxIdOne[i]==taxIdTwo[j]){
+        for (i = 0; i < taxIdOne.length; i++) {
+            for (j = 0; j < taxIdTwo.length; j++) {
+                if (taxIdOne[i] == taxIdTwo[j]) {
                     taxIdCommon.push(taxIdOne[i])
                     var indexOne = taxIdOne.indexOf(i);
                     taxIdOne.splice(indexOne, 1);
+                    i--;
                     var indexTwo = taxIdTwo.indexOf(j);
                     taxIdTwo.splice(indexTwo, 1);
+                    j--;
                 }
             }
         }
 
-        console.log("Number of TaxIds for first selection is: ",(taxIdOne.length + taxIdCommon.length))
+        console.log("Number of TaxIds for first selection is: ", (taxIdOne.length + taxIdCommon.length))
         console.log("taxIdOne: ", taxIdOne)
-        console.log("Number of TaxIds for second selection is: ",(taxIdTwo.length + taxIdCommon.length))
+        console.log("Number of TaxIds for second selection is: ", (taxIdTwo.length + taxIdCommon.length))
         console.log("taxIdTwo: ", taxIdTwo)
         console.log("Number of TaxIds in common for both selection is: ", taxIdCommon.length)
         console.log("taxIdCommon: ", taxIdCommon)
@@ -6281,6 +6259,7 @@ var TreeCompare = function () {
                             }
                         }
                         getChildren(d)
+                        console.log("multichildren1: ", multiChildren1)
                         str = JSON.stringify(str, undefined, 2)
                         document.getElementById('select1').value = str
 
