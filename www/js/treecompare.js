@@ -4470,12 +4470,12 @@ var TreeCompare = function () {
                     name: 'Search Results',
                     // Series data
                     data: [{
-                        name: 'Result of First Selected',
+                        name: 'First Selected',
                         sets: ['A'],
                         value: A,
                         color: "#1f77b4"
                     }, {
-                        name: 'Result of Second Selected',
+                        name: ' Second Selected',
                         sets: ['B'],
                         value: B,
                         color: "#ff7f0e"
@@ -4483,7 +4483,7 @@ var TreeCompare = function () {
                         name: 'Intersection of Both',
                         sets: ['A', 'B'],
                         value: AB,
-                        color: "#8f7b61"
+                        color: "white"
                     }]
                 }],
                 title: {
