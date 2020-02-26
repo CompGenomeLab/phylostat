@@ -1,3 +1,6 @@
+//global variable for multi-selecting
+var multiSelected = [];
+
 var TreeCompare = function () {
 
     var trees = [];
@@ -21,7 +24,6 @@ var TreeCompare = function () {
     var undoFullTreeData = [];
 
     //global variable for multi-selecting
-    var multiSelected = [];
     var multiChildren1 = [];
     var multiChildren2 = [];
 
@@ -4361,19 +4363,19 @@ var TreeCompare = function () {
     }
 
     function regexSearch() {
-        
+        if (multiSelected[0] && multiSelected[1]) {
             if (document.getElementById('regExSearch').value) {
                 var regTemp = document.getElementById('regExSearch').value
                 var regex = new RegExp(regTemp, "i");
             }
             else {
+                var def = true
                 var regex = /taxid_[0-9]+/i;
             }
             var one = []
             var two = []
-            leavesOne = selectedOne.leaves
-            leavesTwo = selectedTwo.leaves
-
+            leavesOne = multiSelected[0].leaves
+            leavesTwo = multiSelected[1].leaves
             for (i = 0; i < leavesOne.length; i++) {
                 if (leavesOne[i].name.match(regex)) {
                     if (!one.includes(leavesOne[i].name.match(regex)[0])) {
@@ -4404,7 +4406,7 @@ var TreeCompare = function () {
                 }
             }
 
-            var regSearch = {
+            var resSearch = {
                 searchOne: one.concat(common),
                 numSearchOne: one.concat(common).length,
                 searchTwo: two.concat(common),
@@ -4416,12 +4418,82 @@ var TreeCompare = function () {
                 searchOnlyTwo: two,
                 numSearchOnlyTwo: two.length
             }
-            return regSearch
-        
+            if (def) {
+                console.log(resSearch)
+
+            }
+            var str = "First Selection: "+ resSearch.numSearchOne.toString() + 
+                        "\nSecond Selection: "+ resSearch.numSearchTwo.toString() + 
+                        "\nCommon: "+ resSearch.numSearchCommon.toString() + 
+                        "\nOnly in First Selection: "+ resSearch.numSearchOnlyOne.toString() + 
+                        "\nOnly in Second Selection: " + resSearch.numSearchOnlyTwo.toString()
+            
+
+            document.getElementById("regRes").value = str
+            plotVenn(resSearch)
+            return resSearch
+        }
+        else {
+            document.getElementById("regRes").value = ""
+            plotVenn(null)
+            return null
+        }
+    }
+
+    function plotVenn(resSearch) {
+        if (resSearch == null) {
+            A = 0
+            B = 0
+            AB = 0
+            Highcharts.chart('regExVenn', {
+                series: [{
+                }],
+                title: {
+                    text: 'Search Results'
+                }
+            });
+        }
+        else {
+
+            A = resSearch.searchOne.length
+            B = resSearch.searchTwo.length
+            AB = resSearch.searchCommon.length
+
+            console.log("A: ", A)
+            console.log("B: ", B)
+            console.log("AB: ", AB)
+
+
+            Highcharts.chart('regExVenn', {
+                series: [{
+                    type: 'venn',
+                    name: 'Search Results',
+                    // Series data
+                    data: [{
+                        name: 'Result of First Selected',
+                        sets: ['A'],
+                        value: A,
+                        color: "#1f77b4"
+                    }, {
+                        name: 'Result of Second Selected',
+                        sets: ['B'],
+                        value: B,
+                        color: "#ff7f0e"
+                    }, {
+                        name: 'Intersection of Both',
+                        sets: ['A', 'B'],
+                        value: AB,
+                        color: "#8f7b61"
+                    }]
+                }],
+                title: {
+                    text: 'Search Results'
+                }
+            });
+        }
     }
 
     function createTreeDownload(canvasId, downloadClass) {
-
 
         function buildDownloadButton(canvasId, downloadClass) {
 
@@ -6355,6 +6427,8 @@ var TreeCompare = function () {
                         document.getElementById('select1').value = document.getElementById('select2').value
                         document.getElementById('select2').value = ""
                         update(tree.root, tree.data);
+                        plotVenn(null)
+                        document.getElementById("regRes").value = ""
                         commonAncestor()
                     }
                 );
@@ -6374,6 +6448,8 @@ var TreeCompare = function () {
                         leavesTwo = []
                         document.getElementById('select2').value = ""
                         update(tree.root, tree.data);
+                        plotVenn(null)
+                        document.getElementById("regRes").value = ""
                         commonAncestor()
                     }
                 );
@@ -6400,6 +6476,8 @@ var TreeCompare = function () {
                         leavesTwo = []
 
                         update(tree.root, tree.data);
+                        document.getElementById("regRes").value = ""
+                        plotVenn(null)
                         commonAncestor()
                     }
                 );

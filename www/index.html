@@ -5,6 +5,9 @@
     <title>phylostat</title>
     <meta charset="UTF-8">
     <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/venn.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script type="text/javascript" src="js/treecompare.js"></script>
     <script type="text/javascript" src="http://underscorejs.org/underscore-min.js"></script>
     <script type="text/javascript" src="js/spin.min.js"></script>
@@ -348,7 +351,11 @@
                                     placeholder="taxid_[0-9]+"
                                     onkeydown="if(event.keyCode == 13 && !event.shiftKey){this.blur(); return false;}"
                                     style="width: 330px; background-color: #e7e7e7"></textarea>
-                                <div id="regExCluster" style="background-color: #e7e7e7; height: 300px;"></div>
+                                    <textarea id="regRes" readonly cols="80" rows="5"
+                                    style="width: 330px; background-color: #e7e7e7">
+
+                                    </textarea>
+                                <div id="regExVenn" style="background-color: #e7e7e7; height: 300px;"></div>
                             </div>
 
                         </div>
@@ -561,7 +568,9 @@
     <script>
         function regSearch() {
             var result = TreeCompare().regexSearch()
-            console.log(result)
+            if(result!=null){
+                console.log(result)
+            }
         }
 
 
