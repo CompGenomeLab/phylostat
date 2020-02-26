@@ -4047,11 +4047,12 @@ var TreeCompare = function () {
                 st = selectedTwo
             }
             else {
-                parentOne = selectedOne.parent
-                parentTwo = selectedTwo.parent
+                parentOne = selectedOne
+                parentTwo = selectedTwo
                 check = true
-                for (i = 0; i < selectedOne.depth; i++) {
-                    for (j = 0; j < selectedTwo.depth; j++) {
+                for (i = 0; i <= selectedOne.depth; i++) {
+                    parentTwo = selectedTwo
+                    for (j = 0; j <= selectedTwo.depth; j++) {
                         if (parentOne.ID == parentTwo.ID) {
                             st = parentOne
                             check = false
@@ -4071,30 +4072,27 @@ var TreeCompare = function () {
                     }
                 }
             }
+
             if (st.depth == 0) {
-                var str = {
-                    ID: st.ID,
-                    name: st.name,
-                    length: st.length,
-                    depth: st.depth,
-                    parent: "This is the root"
-                }
+                var str =
+                    "ID: " + st.ID.toString() +
+                    "\nName: " + st.name.toString() +
+                    "\nLength: " + st.length.toString() +
+                    "\nDepth: " + st.depth.toString() +
+                    "\nParent: This is the root"
             }
             else {
-                var str = {
-                    ID: st.ID,
-                    name: st.name,
-                    length: st.length,
-                    depth: st.depth,
-                    parent: {
-                        ID: st.parent.ID,
-                        name: st.parent.name,
-                        length: st.parent.length,
-                        depth: st.parent.depth,
-                    }
-                }
+                var str =
+                    "ID: " + st.ID.toString() +
+                    "\nName: " + st.name.toString() +
+                    "\nLength: " + st.length.toString() +
+                    "\nDepth: " + st.depth.toString() +
+                    "\nParent: " +
+                    "\n\tID: " + st.parent.ID.toString() +
+                    "\n\tName: " + st.parent.name.toString() +
+                    "\n\tLength: " + st.parent.length.toString() +
+                    "\n\tDepth: " + st.parent.depth.toString()
             }
-            str = JSON.stringify(str, undefined, 2)
             document.getElementById('ancestor12').value = str
             distSelected(st)
             distFromLeaves(st)
@@ -4420,14 +4418,13 @@ var TreeCompare = function () {
             }
             if (def) {
                 console.log(resSearch)
-
             }
-            var str = "First Selection: "+ resSearch.numSearchOne.toString() + 
-                        "\nSecond Selection: "+ resSearch.numSearchTwo.toString() + 
-                        "\nCommon: "+ resSearch.numSearchCommon.toString() + 
-                        "\nOnly in First Selection: "+ resSearch.numSearchOnlyOne.toString() + 
-                        "\nOnly in Second Selection: " + resSearch.numSearchOnlyTwo.toString()
-            
+            var str = "First Selection: " + resSearch.numSearchOne.toString() +
+                "\nSecond Selection: " + resSearch.numSearchTwo.toString() +
+                "\nCommon: " + resSearch.numSearchCommon.toString() +
+                "\nOnly in First Selection: " + resSearch.numSearchOnlyOne.toString() +
+                "\nOnly in Second Selection: " + resSearch.numSearchOnlyTwo.toString()
+
 
             document.getElementById("regRes").value = str
             plotVenn(resSearch)
@@ -4458,11 +4455,6 @@ var TreeCompare = function () {
             A = resSearch.searchOne.length
             B = resSearch.searchTwo.length
             AB = resSearch.searchCommon.length
-
-            console.log("A: ", A)
-            console.log("B: ", B)
-            console.log("AB: ", AB)
-
 
             Highcharts.chart('regExVenn', {
                 series: [{
@@ -6326,18 +6318,7 @@ var TreeCompare = function () {
                     },
                     function () {
                         multiSelected.push(d);
-                        var str = {
-                            ID: d.ID,
-                            name: d.name,
-                            length: d.length,
-                            depth: d.depth,
-                            parent: {
-                                ID: d.parent.ID,
-                                name: d.parent.name,
-                                length: d.parent.length,
-                                depth: d.parent.depth,
-                            }
-                        }
+
 
                         function getChildren(d) {
                             temp = d.leaves
@@ -6353,7 +6334,17 @@ var TreeCompare = function () {
                             }
                         }
                         getChildren(d)
-                        str = JSON.stringify(str, undefined, 2)
+                        var str =
+                            "ID: " + d.ID.toString() +
+                            "\nName: " + d.name.toString() +
+                            "\nLength: " + d.length.toString() +
+                            "\nDepth: " + d.depth.toString() +
+                            "\nParent: " +
+                            "\n\tID: " + d.parent.ID.toString() +
+                            "\n\tName: " + d.parent.name.toString() +
+                            "\n\tLength: " + d.parent.length.toString() +
+                            "\n\tDepth: " + d.parent.depth.toString()
+
                         document.getElementById('select1').value = str
 
                         update(tree.root, tree.data);
@@ -6370,18 +6361,6 @@ var TreeCompare = function () {
                     },
                     function () {
                         multiSelected.push(d);
-                        var str = {
-                            ID: d.ID,
-                            name: d.name,
-                            length: d.length,
-                            depth: d.depth,
-                            parent: {
-                                ID: d.parent.ID,
-                                name: d.parent.name,
-                                length: d.parent.length,
-                                depth: d.parent.depth,
-                            }
-                        }
                         function getChildren(d) {
                             /*if (d.children) {
                                 for (i = 0; i < d.children.length; i++) {
@@ -6403,7 +6382,18 @@ var TreeCompare = function () {
                         }
 
                         getChildren(d)
-                        str = JSON.stringify(str, undefined, 2)
+
+                        var str =
+                            "ID: " + d.ID.toString() +
+                            "\nName: " + d.name.toString() +
+                            "\nLength: " + d.length.toString() +
+                            "\nDepth: " + d.depth.toString() +
+                            "\nParent: " +
+                            "\n\tID: " + d.parent.ID.toString() +
+                            "\n\tName: " + d.parent.name.toString() +
+                            "\n\tLength: " + d.parent.length.toString() +
+                            "\n\tDepth: " + d.parent.depth.toString()
+
                         document.getElementById('select2').value = str
                         update(tree.root, tree.data);
                         commonAncestor()
