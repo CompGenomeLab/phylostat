@@ -562,7 +562,7 @@ text.triangleText {
 }
 
 text.triangleText.select {
-    fill: green;
+    fill: green !important;
     font-weight: bold;
 }
 
