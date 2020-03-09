@@ -171,13 +171,13 @@
                                 data-title="Please confirm" data-target="#confirmModal" data-action="view">View</button>
                         </div>
 
-                        <div class="btn-group" role="group">
+                        <!---<div class="btn-group" role="group">
                             <button type="button" id="compare-btn" class="btn btn-default" data-condition="haveUndo"
                                 data-toggle="modal-confirm"
                                 data-message="Changing to compare will clear your changes to current tree!"
                                 data-title="Please confirm" data-target="#confirmModal"
                                 data-action="compare">Compare</button>
-                        </div>
+                        </div>--->
                     </div>
                     <li>
                         <div id="view-tree-params">
@@ -309,8 +309,8 @@
                                 <label>Common Ancestor: </label>
                             </div>
                             <div>
-                                <textarea id="ancestor12" rows="9" columns="80" readonly
-                                    style="width: 330px;  background-color: #e7e7e7"></textarea>
+                                <textarea id="ancestor12" rows="9" columns="80" readonly style="width: 330px;  background-color: #e7e7e7;
+                                    border: none; outline-width: 0;"></textarea>
                             </div>
                             <div class="boxplot">
                                 <label>Difference of selected: </label>
@@ -320,16 +320,15 @@
                             </div>
                             <div style="display: flex;">
                                 <textarea readonly rows="1" style="width: 100px; border: none; outline-width: 0; 
-                                    background-color: #e7e7e7">T-Test Score:</textarea>
-                                <textarea id="ttest1" rows="1" readonly
-                                    style="width: 230px; border: none; outline-width: 0; 
-                                    background-color: #e7e7e7"></textarea>
+                                    background-color: #e7e7e7; border-top: 1px solid black;">T-Test Score:</textarea>
+                                <textarea id="ttest1" rows="1" readonly style="width: 230px; border: none; outline-width: 0; 
+                                    background-color: #e7e7e7; border-top: 1px solid black;"></textarea>
                             </div>
                             <div style="display: flex;">
                                 <textarea readonly rows="1" style="width: 100px; border: none; outline-width: 0; 
-                                    background-color: #e7e7e7">P-Value:</textarea>
-                                <textarea id="pval1" rows="1" readonly
-                                style="width: 230px; border: none; outline-width: 0; background-color: #e7e7e7"></textarea>
+                                    background-color: #e7e7e7; border-top: 1px solid black;">P-Value:</textarea>
+                                <textarea id="pval1" rows="1" readonly style="width: 230px; border: none; outline-width: 0;
+                                 background-color: #e7e7e7; border-top: 1px solid black;"></textarea>
                             </div>
                             <div class="boxplot2">
                                 <p></p>
@@ -338,29 +337,32 @@
                             <div id="boxPlot2ID" style="background-color: #e7e7e7; height: 300px;"></div>
                             <div style="display: flex;">
                                 <textarea readonly rows="1" style="width: 100px; border: none; outline-width: 0; 
-                                background-color: #e7e7e7">T-Test Score:</textarea>
-                                <textarea id="ttest2" rows="1" readonly
-                                style="width: 230px; border: none; outline-width: 0; 
-                                background-color: #e7e7e7"></textarea>
+                                background-color: #e7e7e7; border-top: 1px solid black;">T-Test Score:</textarea>
+                                <textarea id="ttest2" rows="1" readonly style="width: 230px; border: none; outline-width: 0; 
+                                background-color: #e7e7e7; border-top: 1px solid black;"></textarea>
                             </div>
                             <div style="display: flex;">
                                 <textarea readonly rows="1" style="width: 100px; border: none; outline-width: 0; 
-                                    background-color: #e7e7e7">P-Value:</textarea>
-                                <textarea id="pval2" rows="1" readonly
-                                style="width: 230px; border: none; outline-width: 0; background-color: #e7e7e7"></textarea>
+                                    background-color: #e7e7e7; border-top: 1px solid black;">P-Value:</textarea>
+                                <textarea id="pval2" rows="1" readonly style="width: 230px; border: none; outline-width: 0;
+                                 background-color: #e7e7e7; border-top: 1px solid black;"></textarea>
                             </div>
-                            <div class="RegEx">
-                                <label>RegEx Search:</label>
+                            <p></p>
+                            <div style="display: flex;">
+                                <label style="width: 100%;">RegEx Search:</label>
+                            </div>
+                            <div class="RegEx" style="display: flex;">
                                 <textarea id="regExSearch" onchange="regSearch()" cols="80" rows="1"
-                                    placeholder="taxid_[0-9]+"
+                                    placeholder="Default: taxid_[0-9]+"
                                     onkeydown="if(event.keyCode == 13 && !event.shiftKey){this.blur(); return false;}"
-                                    style="width: 330px; background-color: #e7e7e7"></textarea>
-                                    <textarea id="regRes" readonly cols="80" rows="5"
-                                    style="width: 330px; background-color: #e7e7e7">
-
-                                    </textarea>
-                                <div id="regExVenn" style="background-color: #e7e7e7; height: 300px;"></div>
+                                    style="width: 330px; "></textarea>
                             </div>
+                            <div style="display: flex;">
+                                <textarea id="regRes" readonly cols="80" rows="5" style="width: 330px; background-color: #e7e7e7;
+                                    border: none; outline-width: 0; border-top: 1px solid black;
+                                    border-bottom: 1px solid black;"></textarea>
+                            </div style="display: flex;">
+                            <div id="regExVenn" style="background-color: #e7e7e7; height: 300px;"></div>
 
                         </div>
                     </li>
@@ -560,9 +562,10 @@
     </div>
 
     <style>
-        .textScore{
+        .textScore {
             display: inline-block;
         }
+
         .modebar-group {
             width: 35px !important;
             height: 35px !important;
@@ -575,7 +578,7 @@
     <script>
         function regSearch() {
             var result = TreeCompare().regexSearch()
-            if(result!=null){
+            if (result != null) {
                 console.log(result)
             }
         }
@@ -1047,7 +1050,20 @@
         function render() {
             $("#renderErrorMessage").empty();
             hideOptionalSettings();
-            $("#menu-toggle").click();
+            //$("#menu-toggle").click();
+
+            document.getElementById('ancestor12').value = "";
+            document.getElementById('boxPlotID').value = "";
+            document.getElementById('ttest1').value = "";
+            document.getElementById('pval1').value = "";
+            document.getElementById('boxPlot2ID').value = "";
+            document.getElementById('ttest2').value = "";
+            document.getElementById('pval2').value = "";
+            document.getElementById('regExSearch').value = "";
+            document.getElementById('regRes').value = "";
+            document.getElementById('regExVenn').value = "";
+            TreeCompare().purgePlots();
+
 
             var mode = $("#mode-buttons .active").attr('id');
             if (mode === "compare-btn") {

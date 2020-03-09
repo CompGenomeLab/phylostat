@@ -2,7 +2,6 @@
 var multiSelected = [];
 
 var TreeCompare = function () {
-
     var trees = [];
     var longestNode = {};
 
@@ -28,8 +27,7 @@ var TreeCompare = function () {
     var multiChildren2 = [];
     var leavesOne = [];
     var leavesTwo = [];
-
-
+    var chart;
     /*
      colors for the color scale for comparing nodes to best common node
 
@@ -4127,83 +4125,8 @@ var TreeCompare = function () {
     function boxPlotEachOther(one, two) {
         if (one == null || two == null) {
             Plotly.purge('boxPlotID');
-        }
-        else if (one != null && two != null) {
-            df = one.length + two.length - 2
-
-            tempOne = []
-            for (i = 0; i < one.length; i++) {
-                tempOne.push(one[i].Distance)
-            }
-            tempTwo = []
-            for (i = 0; i < two.length; i++) {
-                tempTwo.push(two[i].Distance)
-            }
-            one = tempOne
-            two = tempTwo
-            var trace1 = {
-                y: one,
-                name: multiSelected[0].ID,
-                type: 'box'
-            };
-
-            var trace2 = {
-                y: two,
-                name: multiSelected[1].ID,
-                type: 'box'
-            };
-
-            var data = [trace1, trace2];
-            mean1 = 0
-            mean2 = 0
-
-            for (i = 0; i < one.length; i++) {
-                mean1 += one[i]
-            }
-            mean1 = mean1 / one.length
-
-            for (i = 0; i < two.length; i++) {
-                mean2 += two[i]
-            }
-            mean2 = mean2 / two.length
-
-            stdev1 = 0
-            for (i = 0; i < one.length; i++) {
-                temp = mean1 - one[i]
-                temp = temp * temp
-                stdev1 += temp
-            }
-            stdev1 = stdev1 / one.length
-            stdev1 = Math.sqrt(stdev1)
-
-            stdev2 = 0
-            for (i = 0; i < two.length; i++) {
-                temp = mean1 - two[i]
-                temp = temp * temp
-                stdev2 += temp
-            }
-            stdev2 = stdev2 / two.length
-            stdev2 = Math.sqrt(stdev2)
-
-            x1 = stdev1 * stdev1 / one.length
-            x2 = stdev2 * stdev2 / two.length
-
-            x = Math.sqrt(x1 + x2)
-
-            tTest = mean1 - mean2
-            tTest = tTest / x
-            document.getElementById('ttest1').value = tTest
-            Plotly.newPlot('boxPlotID', data);
-            if (two) {
-                pval = computePval(tTest, df)
-                document.getElementById("pval1").value = pval
-            }
-        }
-    }
-
-    function boxPlotLeaves(one, two) {
-        if (one == null && two == null) {
-            Plotly.purge('boxPlot2ID');
+            document.getElementById('ttest1').value = "";
+            document.getElementById('pval1').value = "";
         }
         else if (one != null && two != null) {
             df = one.length + two.length - 2
@@ -4229,8 +4152,11 @@ var TreeCompare = function () {
 
             var trace2 = {
                 y: two,
-                name: multiSelected[1].ID,
-                type: 'box'
+                name: "Node 2",
+                type: 'box',
+                boxpoints: 'all',
+                jitter: 0.5,
+                whiskerwidth: 0.2,
             };
 
             var data = [trace1, trace2];
@@ -4271,7 +4197,141 @@ var TreeCompare = function () {
             x = Math.sqrt(x1 + x2)
 
             tTest = mean1 - mean2
-            tTest = tTest / x
+
+            n1 = one.length;
+            n2 = two.length;
+
+            tmp1 = (n1 - 1) * stdev1 * stdev1
+            tmp2 = (n2 - 1) * stdev2 * stdev2
+            tmp = tmp1 + tmp2;
+            tmp = tmp / (n1 + n2 - 2)
+            tmp3 = (1 / n1) + (1 / n2)
+            tmp = tmp * tmp3;
+            tmp = Math.sqrt(tmp);
+
+            //T distribution is symmetric so there is no need for negative values, it makes p value weird 
+            tTest = Math.abs(tTest)
+            //tTest = tTest / x
+            tTest = tTest / tmp;
+            document.getElementById('ttest1').value = tTest
+            Plotly.newPlot('boxPlotID', data);
+            if (two) {
+                pval = computePval(tTest, df)
+                document.getElementById("pval1").value = pval
+            }
+        }
+    }
+
+    function purgePlots() {
+
+        Plotly.purge('boxPlotID');
+        Plotly.purge('boxPlot2ID');
+        A = 0
+        B = 0
+        AB = 0
+        chart = Highcharts.chart('regExVenn', {
+            series: [{
+            }],
+            title: {
+                text: 'Search Results'
+            }
+        });
+        chart
+        chart.destroy();
+    }
+
+    function boxPlotLeaves(one, two) {
+        if (one == null && two == null) {
+            Plotly.purge('boxPlot2ID');
+            document.getElementById('ttest2').value = "";
+            document.getElementById('pval2').value = "";
+        }
+        else if (one != null && two != null) {
+            df = one.length + two.length - 2
+
+            tempOne = []
+            for (i = 0; i < one.length; i++) {
+                tempOne.push(one[i].Distance)
+            }
+            tempTwo = []
+            for (i = 0; i < two.length; i++) {
+                tempTwo.push(two[i].Distance)
+            }
+            one = tempOne
+            two = tempTwo
+            var trace1 = {
+                y: one,
+                name: "Node 1",
+                type: 'box',
+                boxpoints: 'all',
+                jitter: 0.5,
+                whiskerwidth: 0.2,
+            };
+
+            var trace2 = {
+                y: two,
+                name: "Node 2",
+                type: 'box',
+                boxpoints: 'all',
+                jitter: 0.5,
+                whiskerwidth: 0.2,
+            };
+
+            var data = [trace1, trace2];
+            mean1 = 0
+            mean2 = 0
+
+            for (i = 0; i < one.length; i++) {
+                mean1 += one[i]
+            }
+            mean1 = mean1 / one.length
+
+            for (i = 0; i < two.length; i++) {
+                mean2 += two[i]
+            }
+            mean2 = mean2 / two.length
+
+            stdev1 = 0
+            for (i = 0; i < one.length; i++) {
+                temp = mean1 - one[i]
+                temp = temp * temp
+                stdev1 += temp
+            }
+            stdev1 = stdev1 / one.length
+            stdev1 = Math.sqrt(stdev1)
+
+            stdev2 = 0
+            for (i = 0; i < two.length; i++) {
+                temp = mean1 - two[i]
+                temp = temp * temp
+                stdev2 += temp
+            }
+            stdev2 = stdev2 / two.length
+            stdev2 = Math.sqrt(stdev2)
+
+            x1 = stdev1 * stdev1 / one.length
+            x2 = stdev2 * stdev2 / two.length
+
+            x = Math.sqrt(x1 + x2)
+
+            tTest = mean1 - mean2
+            n1 = one.length;
+            n2 = two.length;
+
+            tmp1 = (n1 - 1) * stdev1 * stdev1
+            tmp2 = (n2 - 1) * stdev2 * stdev2
+            tmp = tmp1 + tmp2;
+            tmp = tmp / (n1 + n2 - 2)
+            tmp3 = (1 / n1) + (1 / n2)
+            tmp = tmp * tmp3;
+            tmp = Math.sqrt(tmp);
+
+            //T distribution is symmetric so there is no need for negative values, it makes p value weird 
+            tTest = Math.abs(tTest)
+            //tTest = tTest / x
+            tTest = tTest / tmp;
+            console.log("x: ", tTest / x, "\n")
+            console.log("tmp: ", tTest / tmp)
             document.getElementById('ttest2').value = tTest
             Plotly.newPlot('boxPlot2ID', data);
             if (two) {
@@ -4447,13 +4507,15 @@ var TreeCompare = function () {
             A = 0
             B = 0
             AB = 0
-            Highcharts.chart('regExVenn', {
+            chart = Highcharts.chart('regExVenn', {
                 series: [{
                 }],
                 title: {
                     text: 'Search Results'
                 }
             });
+            chart
+            chart.destroy();
         }
         else {
 
@@ -4461,18 +4523,18 @@ var TreeCompare = function () {
             B = resSearch.searchTwo.length
             AB = resSearch.searchCommon.length
 
-            Highcharts.chart('regExVenn', {
+            chart = Highcharts.chart('regExVenn', {
                 series: [{
                     type: 'venn',
                     name: 'Search Results',
                     // Series data
                     data: [{
-                        name: 'First Selected',
+                        name: 'Node 1',
                         sets: ['A'],
                         value: A,
                         color: "#1f77b4"
                     }, {
-                        name: ' Second Selected',
+                        name: 'Node 2',
                         sets: ['B'],
                         value: B,
                         color: "#ff7f0e"
@@ -4487,6 +4549,7 @@ var TreeCompare = function () {
                     text: 'Search Results'
                 }
             });
+            chart
         }
     }
 
@@ -6319,11 +6382,10 @@ var TreeCompare = function () {
             if (!multiSelected[0]) {
                 add_menu_item(".tooltipElem",
                     function () {
-                        return 'Select as first >'
+                        return 'Select as first node >'
                     },
                     function () {
-                        multiSelected.push(d);
-
+                        multiSelected[0] = d;
 
                         function getChildren(d) {
                             temp = d.leaves
@@ -6362,7 +6424,7 @@ var TreeCompare = function () {
             if (multiSelected[0] && !multiSelected[1] && d != multiSelected[0]) {
                 add_menu_item(".tooltipElem",
                     function () {
-                        return 'Select as second >'
+                        return 'Select as second node >'
                     },
                     function () {
                         multiSelected.push(d);
@@ -6414,18 +6476,21 @@ var TreeCompare = function () {
                         return 'Remove selection >'
                     },
                     function () {
-                        multiSelected.shift()
+                        /*multiSelected.shift()
                         multiChildren1 = multiChildren2
-                        multiChildren2 = []
-                        if(leavesTwo){
+                        multiChildren2 = []*/
+                        /*if(leavesTwo){
                             leavesOne = leavesTwo;
                             leavesTwo = [];
                         }
                         else{
                             leavesOne = [];
-                        }
+                        }*/
                         //document.getElementById('select1').value = document.getElementById('select2').value
                         //document.getElementById('select2').value = ""
+                        multiSelected[0] = null;
+                        multiChildren1 = [];
+                        leavesOne = [];
                         update(tree.root, tree.data);
                         plotVenn(null)
                         document.getElementById("regRes").value = ""
@@ -6866,6 +6931,7 @@ var TreeCompare = function () {
         changeAutoCollapseDepth: changeAutoCollapseDepth,
         calcDist: calcDist,
         regexSearch: regexSearch,
-        multiSelected: multiSelected
+        multiSelected: multiSelected,
+        purgePlots: purgePlots
     }
 };
