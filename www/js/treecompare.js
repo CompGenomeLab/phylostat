@@ -26,6 +26,8 @@ var TreeCompare = function () {
     //global variable for multi-selecting
     var multiChildren1 = [];
     var multiChildren2 = [];
+    var leavesOne = [];
+    var leavesTwo = [];
 
 
     /*
@@ -4099,7 +4101,7 @@ var TreeCompare = function () {
         }
         else {
             document.getElementById('ancestor12').value = ""
-            document.getElementById('dist12').value = ""
+            //document.getElementById('dist12').value = ""
             boxPlotEachOther(null, null)
             boxPlotLeaves(null, null)
         }
@@ -4119,7 +4121,7 @@ var TreeCompare = function () {
             dist = dist + selectedTwo.length
             selectedTwo = selectedTwo.parent
         }
-        document.getElementById('dist12').value = dist
+        //document.getElementById('dist12').value = dist
     }
 
     function boxPlotEachOther(one, two) {
@@ -4218,8 +4220,11 @@ var TreeCompare = function () {
             two = tempTwo
             var trace1 = {
                 y: one,
-                name: multiSelected[0].ID,
-                type: 'box'
+                name: "Node 1",
+                type: 'box',
+                boxpoints: 'all',
+                jitter: 0.5,
+                whiskerwidth: 0.2,
             };
 
             var trace2 = {
@@ -6345,7 +6350,7 @@ var TreeCompare = function () {
                             "\n\tLength: " + d.parent.length.toString() +
                             "\n\tDepth: " + d.parent.depth.toString()
 
-                        document.getElementById('select1').value = str
+                        //document.getElementById('select1').value = str
 
                         update(tree.root, tree.data);
                         commonAncestor()
@@ -6394,7 +6399,7 @@ var TreeCompare = function () {
                             "\n\tLength: " + d.parent.length.toString() +
                             "\n\tDepth: " + d.parent.depth.toString()
 
-                        document.getElementById('select2').value = str
+                        //document.getElementById('select2').value = str
                         update(tree.root, tree.data);
                         commonAncestor()
                     }
@@ -6412,10 +6417,15 @@ var TreeCompare = function () {
                         multiSelected.shift()
                         multiChildren1 = multiChildren2
                         multiChildren2 = []
-                        leavesOne = leavesTwo;
-                        leavesTwo = [];
-                        document.getElementById('select1').value = document.getElementById('select2').value
-                        document.getElementById('select2').value = ""
+                        if(leavesTwo){
+                            leavesOne = leavesTwo;
+                            leavesTwo = [];
+                        }
+                        else{
+                            leavesOne = [];
+                        }
+                        //document.getElementById('select1').value = document.getElementById('select2').value
+                        //document.getElementById('select2').value = ""
                         update(tree.root, tree.data);
                         plotVenn(null)
                         document.getElementById("regRes").value = ""
@@ -6436,7 +6446,7 @@ var TreeCompare = function () {
                         multiSelected.pop();
                         multiChildren2 = []
                         leavesTwo = []
-                        document.getElementById('select2').value = ""
+                        //document.getElementById('select2').value = ""
                         update(tree.root, tree.data);
                         plotVenn(null)
                         document.getElementById("regRes").value = ""
@@ -6457,9 +6467,9 @@ var TreeCompare = function () {
                         toColor2 = document.getElementById(multiSelected[1].ID)
                         toColor2.classList.toggle("multiSelect2")*/
                         multiSelected.pop();
-                        document.getElementById('select1').value = ""
+                        //document.getElementById('select1').value = ""
                         multiSelected.pop();
-                        document.getElementById('select2').value = ""
+                        //document.getElementById('select2').value = ""
                         multiChildren1 = []
                         multiChildren2 = []
                         leavesOne = []
@@ -6855,6 +6865,7 @@ var TreeCompare = function () {
         getMaxAutoCollapse: getMaxAutoCollapse,
         changeAutoCollapseDepth: changeAutoCollapseDepth,
         calcDist: calcDist,
-        regexSearch: regexSearch
+        regexSearch: regexSearch,
+        multiSelected: multiSelected
     }
 };

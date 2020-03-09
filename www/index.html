@@ -276,7 +276,7 @@
 
                     <li>
                         <div class="multiSelection" id="mSelected" style="display: none;">
-                            <div>
+                            <!--<div>
                                 <div class="firstOne" >
                                     <div class="firstSelection">
                                         <label>First Selection: </label>
@@ -303,7 +303,7 @@
                             <div>
                                 <textarea id="dist12" rows="1" columns="80" readonly
                                     style="width: 330px; background-color: #e7e7e7"></textarea>
-                            </div>
+                            </div>-->
 
                             <div class="commonAncestor">
                                 <label>Common Ancestor: </label>
@@ -318,32 +318,36 @@
                             <div id="boxPlotID" style="background-color: #e7e7e7; height: 300px;">
 
                             </div>
-                            <div>
-                                <label>T-Test Score:</label>
-                                <textarea id="ttest1" cols="80" rows="1" readonly
-                                    style="width: 330px; background-color: #e7e7e7"></textarea>
+                            <div style="display: flex;">
+                                <textarea readonly rows="1" style="width: 100px; border: none; outline-width: 0; 
+                                    background-color: #e7e7e7">T-Test Score:</textarea>
+                                <textarea id="ttest1" rows="1" readonly
+                                    style="width: 230px; border: none; outline-width: 0; 
+                                    background-color: #e7e7e7"></textarea>
                             </div>
-                            <div>
-                                <label>P-Value:</label>
-                                <textarea id="pval1" cols="80" rows="1" readonly
-                                    style="width: 330px; background-color: #e7e7e7"></textarea>
-                            </div>
-                            <div>
-                                <p></p>
+                            <div style="display: flex;">
+                                <textarea readonly rows="1" style="width: 100px; border: none; outline-width: 0; 
+                                    background-color: #e7e7e7">P-Value:</textarea>
+                                <textarea id="pval1" rows="1" readonly
+                                style="width: 230px; border: none; outline-width: 0; background-color: #e7e7e7"></textarea>
                             </div>
                             <div class="boxplot2">
+                                <p></p>
                                 <label>Difference of leaves: </label>
                             </div>
                             <div id="boxPlot2ID" style="background-color: #e7e7e7; height: 300px;"></div>
-                            <div>
-                                <label>T-Test Score:</label>
-                                <textarea id="ttest2" cols="80" rows="1" readonly
-                                    style="width: 330px; background-color: #e7e7e7"></textarea>
+                            <div style="display: flex;">
+                                <textarea readonly rows="1" style="width: 100px; border: none; outline-width: 0; 
+                                background-color: #e7e7e7">T-Test Score:</textarea>
+                                <textarea id="ttest2" rows="1" readonly
+                                style="width: 230px; border: none; outline-width: 0; 
+                                background-color: #e7e7e7"></textarea>
                             </div>
-                            <div>
-                                <label>P-Value:</label>
-                                <textarea id="pval2" cols="80" rows="1" readonly
-                                    style="width: 330px; background-color: #e7e7e7"></textarea>
+                            <div style="display: flex;">
+                                <textarea readonly rows="1" style="width: 100px; border: none; outline-width: 0; 
+                                    background-color: #e7e7e7">P-Value:</textarea>
+                                <textarea id="pval2" rows="1" readonly
+                                style="width: 230px; border: none; outline-width: 0; background-color: #e7e7e7"></textarea>
                             </div>
                             <div class="RegEx">
                                 <label>RegEx Search:</label>
@@ -556,6 +560,9 @@
     </div>
 
     <style>
+        .textScore{
+            display: inline-block;
+        }
         .modebar-group {
             width: 35px !important;
             height: 35px !important;
