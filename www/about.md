@@ -31,10 +31,12 @@ Please create your issues at https://github.com/compGenomeLab/phylostat/issues
 
 ## Credits
 
-[phylo.io](phylo.io) by Dessimoz lab.
+[phylo.io](https://phylo.io) ([article](https://doi.org/10.1093/molbev/msw080)) by [Dessimoz lab](https://lab.dessimoz.org/).
 
 
-## Acknowledgement
+## Acknowledgements
 
-Omer Karamanli implemented the algorithm developed by Ogun Adebali in the scope of his graduation project.
+The algorithm was developed by Ogun Adebali. Omer Karamanli implemented the algorithm in the scope of his graduation project.
+
+The initial algorithm was first proposed by [Adebali et el. 2016](http://dx.doi.org/10.1038/gim.2015.208)
 
