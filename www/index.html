@@ -269,7 +269,7 @@
                                     <i class="icon-phyloio-01" aria-hidden="true"></i>
                                     Render
                                 </button>
-                                <a id="clearButton">Clear</a>
+                                <a id="clearButton" onclick="clearFunc()">Clear</a>
                             </div>
                         </div>
                     </li>
@@ -583,6 +583,20 @@
             }
         }
 
+        function clearFunc(){
+            document.getElementById('ancestor12').value = "";
+            document.getElementById('boxPlotID').value = "";
+            document.getElementById('ttest1').value = "";
+            document.getElementById('pval1').value = "";
+            document.getElementById('boxPlot2ID').value = "";
+            document.getElementById('ttest2').value = "";
+            document.getElementById('pval2').value = "";
+            document.getElementById('regExSearch').value = "";
+            document.getElementById('regRes').value = "";
+            document.getElementById('regExVenn').value = "";
+            TreeCompare().purgePlots();
+            document.getElementById("mSelected").style.display = "none";
+        }
 
     </script>
 

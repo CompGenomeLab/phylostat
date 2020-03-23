@@ -495,7 +495,7 @@ path.link:hover{
 }
 
 path.link.search{
-    stroke: orange !important;
+    stroke: rebeccapurple !important;
 }
 
 path.link.search:hover{
@@ -528,7 +528,7 @@ circle.node.multiSelect2{
 }
 
 circle.node.search {
-    fill: orange !important;
+    fill: rebeccapurple !important;
 }
 
 circle.node.search:hover {
@@ -546,7 +546,7 @@ text.node.select{
 }
 
 text.node.search{
-    fill: orange !important;
+    fill: rebeccapurple !important;
     font-weight: bold;
 }
 
@@ -821,7 +821,7 @@ treeToolsMenuContent {
 }
 
 .searchResultsList a:hover {
-    background-color: orange;
+    background-color: yellow;
 }
 
 /*--end search-------------------------*/
