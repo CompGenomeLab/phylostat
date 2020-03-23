@@ -4005,7 +4005,7 @@ var TreeCompare = function () {
         return A1 / A
     }
 
-    function computePval(X, df) {
+    /*function computePval(X, df) {
         with (Math) {
             if (df <= 0) {
                 alert("Degrees of freedom must be positive")
@@ -4028,7 +4028,7 @@ var TreeCompare = function () {
             tcdf = round(tcdf * 100000) / 100000;
         }
         return tcdf
-    }
+    }*/
 
 
 
@@ -4216,7 +4216,7 @@ var TreeCompare = function () {
             document.getElementById('ttest1').value = tTest
             Plotly.newPlot('boxPlotID', data);
             if (two) {
-                pval = computePval(tTest, df)
+                pval = jStat.ttest(tTest,df)
                 document.getElementById("pval1").value = pval
             }
         }
@@ -4329,13 +4329,13 @@ var TreeCompare = function () {
             //T distribution is symmetric so there is no need for negative values, it makes p value weird 
             tTest = Math.abs(tTest)
             //tTest = tTest / x
-            tTest = tTest / tmp;
             console.log("x: ", tTest / x, "\n")
             console.log("tmp: ", tTest / tmp)
+            tTest = tTest / tmp;
             document.getElementById('ttest2').value = tTest
             Plotly.newPlot('boxPlot2ID', data);
             if (two) {
-                pval = computePval(tTest, df)
+                pval = jStat.ttest(tTest,df)
                 document.getElementById("pval2").value = pval
             }
         }
