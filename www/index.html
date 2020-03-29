@@ -19,7 +19,11 @@
     <script type="text/javascript" src="js/FileSaver.min.js"></script>
     <script type="text/javascript" src="js/BigInteger.min.js"></script>
     <script type="text/javascript" src="js/jstat.min.js"></script>
-
+    <script type="text/javascript" src="js/jspdf.min.js"></script>
+    <script type="text/javascript" src="js/html2canvas.js"></script>
+    <script type="text/javascript" src="js/canvg.min.js"></script>
+    
+    
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css"
         integrity="sha384-v2Tw72dyUXeU3y4aM2Y0tBJQkGfplr39mxZqlTBDUZAb9BGoC40+rdFCG0m10lXk" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/fontawesome.css"
@@ -363,7 +367,14 @@
                                     border-bottom: 1px solid black;"></textarea>
                             </div style="display: flex;">
                             <div id="regExVenn" style="background-color: #e7e7e7; height: 300px;"></div>
-
+                            <div id="reportButton">
+                                <p></p>
+                                <button type="button" id="reportButton" class="btn btn-info" style="width: 200px; 
+                                display: block; left: 0; right: 0; margin: auto;" onclick="report()">
+                                    <i class="fas fa-file-alt" aria-hidden="true"></i>
+                                    Get a Report
+                                </button>
+                            </div>
                         </div>
                     </li>
 
@@ -598,6 +609,9 @@
             document.getElementById("mSelected").style.display = "none";
         }
 
+        function report(){
+            TreeCompare().getReport();
+        }
     </script>
 
     <script type="text/javascript">

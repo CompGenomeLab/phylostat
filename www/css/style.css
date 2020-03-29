@@ -1,7 +1,6 @@
-body,
-html {
+body, html {
     height: 100%;
-    overflow:hidden;
+    overflow: hidden;
 }
 
 body#manual {
@@ -9,10 +8,11 @@ body#manual {
 }
 
 #colorScale {
-position: absolute;
+    position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
-    margin-left: 10px; /*magic number */
+    margin-left: 10px;
+    /*magic number */
     bottom: 0;
     z-index: 99;
 }
@@ -85,12 +85,14 @@ position: absolute;
     padding: 0 0 60px;
     overflow: hidden;
     margin-bottom: 30px;
-
 }
 
 /*.sidebar-nav li {*/
-    /*text-indent: 20px;*/
-    /*line-height: 40px;*/
+
+/*text-indent: 20px;*/
+
+/*line-height: 40px;*/
+
 /*}*/
 
 #wrapper {
@@ -100,6 +102,7 @@ position: absolute;
 svg {
     width: 100%;
 }
+
 .vis-container {
     /*height: calc(100% - 60px);*/
     height: 100%;
@@ -111,25 +114,38 @@ svg {
 }
 
 /*.vis-scale {*/
-    /*!*height: 60px;*!*/
-    /*width: 100%;*/
-    /*background-color: gray;*/
-    /*position: absolute;*/
-    /*bottom: 0px;*/
+
+/*!*height: 60px;*!*/
+
+/*width: 100%;*/
+
+/*background-color: gray;*/
+
+/*position: absolute;*/
+
+/*bottom: 0px;*/
+
 /*}*/
 
 /*.vis-scale-2 {*/
-    /*!*height: 60px;*!*/
-    /*width: 50%;*/
-    /*background-color: gray;*/
-    /*float: left;*/
-    /*position: absolute;*/
-    /*bottom: 0px;*/
+
+/*!*height: 60px;*!*/
+
+/*width: 50%;*/
+
+/*background-color: gray;*/
+
+/*float: left;*/
+
+/*position: absolute;*/
+
+/*bottom: 0px;*/
+
 /*}*/
+
 .dist li {
     font-size: x-small;
     list-style-type: none;
-
 }
 
 #vis-scale2 {
@@ -170,15 +186,14 @@ svg {
     color: #999;
 }
 
-
 #mode-buttons {
     width: 200px;
     margin-left: 20px;
     /*display: hidden;*/
 }
 
-input[type=file]{
-    color:transparent;
+input[type=file] {
+    color: transparent;
 }
 
 label {
@@ -198,11 +213,11 @@ label {
     -ms-transform: scaleX(-1);
 }
 
-input[type=file]{
-    color:transparent;
+input[type=file] {
+    color: transparent;
 }
 
-.dropdown-menu li a{
+.dropdown-menu li a {
     /*padding: 1px 0px 1px 0px;*/
 }
 
@@ -217,9 +232,8 @@ input[type=file]{
 }
 
 .btn.sharp {
-    border-radius:0;
+    border-radius: 0;
 }
-
 
 .btn:focus, .btn:active:focus, .btn.active:focus {
     outline: 0 none;
@@ -238,7 +252,7 @@ input[type=file]{
     border-radius: 0px;
 }
 
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
     background: #33a6cc;
 }
 
@@ -247,29 +261,27 @@ input[type=file]{
     box-shadow: none;
 }
 
-.dropbtn{
-   background-color: #2b542c;
-   border: none;
-   cursor: pointer;
+.dropbtn {
+    background-color: #2b542c;
+    border: none;
+    cursor: pointer;
 }
+
 .dropbtn:hover, .dropbtn:focus {
-     background-color: #999;
- }
+    background-color: #999;
+}
 
 #settingsPanel {
     display: none;
-
-    background: rgb(79,79,79);
-    background: -moz-linear-gradient(-45deg,  rgba(79,79,79,1) 0%, rgba(68,68,68,1) 20%, rgba(14,14,14,1) 100%);
-    background: -webkit-linear-gradient(-45deg,  rgba(79,79,79,1) 0%,rgba(68,68,68,1) 20%,rgba(14,14,14,1) 100%);
-    background: linear-gradient(135deg,  rgba(79,79,79,1) 0%,rgba(68,68,68,1) 20%,rgba(14,14,14,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f4f4f', endColorstr='#0e0e0e',GradientType=1 );
-
+    background: rgb(79, 79, 79);
+    background: -moz-linear-gradient(-45deg, rgba(79, 79, 79, 1) 0%, rgba(68, 68, 68, 1) 20%, rgba(14, 14, 14, 1) 100%);
+    background: -webkit-linear-gradient(-45deg, rgba(79, 79, 79, 1) 0%, rgba(68, 68, 68, 1) 20%, rgba(14, 14, 14, 1) 100%);
+    background: linear-gradient(135deg, rgba(79, 79, 79, 1) 0%, rgba(68, 68, 68, 1) 20%, rgba(14, 14, 14, 1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f4f4f', endColorstr='#0e0e0e', GradientType=1);
     padding: 15px;
     border-radius: 3px;
     margin-top: 5px;
     margin-bottom: 50px;
-
 }
 
 .sizeAdjust {
@@ -277,7 +289,9 @@ input[type=file]{
 }
 
 /*#settingsPanel [type=checkbox], b {*/
-    /*margin-left: 20px;*/
+
+/*margin-left: 20px;*/
+
 /*}*/
 
 input[type=radio] {
@@ -309,8 +323,6 @@ input[type=checkbox] {
     text-align: center;
     width: 40px;
     display: inline-block;
-
-
 }
 
 .singleIn {
@@ -324,7 +336,6 @@ input[type=checkbox] {
     line-height: 20px;
     padding: 4px;
     border-radius: 4px;
-
 }
 
 #newickInputs p {
@@ -372,65 +383,87 @@ input[type=checkbox] {
     bottom: 0;
 }
 
-::-webkit-input-placeholder { /* WebKit; Blink; Edge */
-    color:    rgba(37, 36, 45, 0.57);
+::-webkit-input-placeholder {
+    /* WebKit; Blink; Edge */
+    color: rgba(37, 36, 45, 0.57);
     font-style: italic;
 }
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    color:    rgba(37, 36, 45, 0.57);
-    opacity:  0.6;
+
+:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: rgba(37, 36, 45, 0.57);
+    opacity: 0.6;
     font-style: italic;
 }
-::-moz-placeholder { /* Mozilla Firefox 19 */
-    color:    rgba(37, 36, 45, 0.57);
-    opacity:  0.6;
+
+::-moz-placeholder {
+    /* Mozilla Firefox 19 */
+    color: rgba(37, 36, 45, 0.57);
+    opacity: 0.6;
     font-style: italic;
 }
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color:    rgba(37, 36, 45, 0.57);
+
+:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: rgba(37, 36, 45, 0.57);
     font-style: italic;
 }
-:placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
+
+:placeholder-shown {
+    /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
     color: rgba(37, 36, 45, 0.57);
     font-style: italic;
 }
 
 /*--end sidebar and general styles----------------------------------------------*/
 
-
 /*Styles for middle table compare mode for reorder and reroot*/
 
 table.fixed {
     width: 200px;
     text-indent: 0px;
-    word-break:break-all;
+    word-break: break-all;
     margin-left: 20px;
     margin-right: 30px;
 }
+
 /*Setting the table width is important!*/
-table.fixed tr.row1 td  {
+
+table.fixed tr.row1 td {
     padding-top: 10px;
     padding-bottom: 0px;
-    vertical-align: top;}
+    vertical-align: top;
+}
 
 table.fixed td {
-    overflow:hidden;
-}/*Hide text outside the cell.*/
+    overflow: hidden;
+}
+
+/*Hide text outside the cell.*/
+
 table.fixed td:nth-of-type(1) {
-    width:45px;
-}/*Setting the width of column 1.*/
+    width: 45px;
+}
+
+/*Setting the width of column 1.*/
+
 table.fixed td:nth-of-type(2) {
-    width:125px;
-}/*Setting the width of column 2.*/
+    width: 125px;
+}
+
+/*Setting the width of column 2.*/
+
 table.fixed td:nth-of-type(3) {
-    width:30px;
-}/*Setting the width of column 3.*/
+    width: 30px;
+}
+
+/*Setting the width of column 3.*/
 
 /*--end middle table for reroot and reorder----------------------------------------------*/
 
 /*Styles for treename input*/
 
-textarea{
+textarea {
     resize: none;
 }
 
@@ -444,37 +477,35 @@ input.treename {
     border: none;
 }
 
-input.treename::-webkit-input-placeholder{
+input.treename::-webkit-input-placeholder {
     color: #999;
     font-style: italic
 }
 
 /*--end treename input----------------------------------------------*/
 
-
 /*Styles for menu of node or link click*/
 
-.tooltipElem{
+.tooltipElem {
     position: relative;
     display: inline-block;
     /* border-bottom: 1px dotted black;*/
     opacity: 0.9;
 }
 
-.tooltipElemText{
+.tooltipElemText {
     fill: white;
     font-size: 1em;
     /*font-weight: bold;*/
     opacity: 1;
 }
 
-.tooltipElemInfoText{
+.tooltipElemInfoText {
     fill: white;
     font-size: 1.1em;
     /*font-weight: bold;*/
     opacity: 1;
 }
-
 
 /*--end tooltipElem----------------------------------------------*/
 
@@ -486,28 +517,49 @@ path.link {
     cursor: pointer;
 }
 
-path.link.select{
+path.link.select {
     stroke: green !important;
 }
 
-path.link:hover{
+path.link:hover {
     stroke: green !important;
 }
 
-path.link.search{
+path.link.search {
     stroke: rebeccapurple !important;
 }
 
-path.link.search:hover{
+path.link.search:hover {
     stroke: green !important;
 }
 
-g.node{
+g.node {
     fill: black;
     cursor: pointer;
 }
 
-g.node.select{
+.popuptooltip {
+    position: absolute;
+    text-align: center;
+    color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    font: 15px sans-serif;
+    background: black;
+    pointer-events: none;
+}
+
+.popuptooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0%;
+    border-width: 7px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+  }
+
+g.node.select {
     fill: green !important;
 }
 
@@ -515,15 +567,15 @@ circle.node {
     fill: black;
 }
 
-circle.node.select{
+circle.node.select {
     fill: green !important;
 }
 
-circle.node.multiSelect1{
+circle.node.multiSelect1 {
     fill: #1f77b4 !important
 }
 
-circle.node.multiSelect2{
+circle.node.multiSelect2 {
     fill: #ff7f0e !important
 }
 
@@ -535,22 +587,22 @@ circle.node.search:hover {
     fill: green !important;
 }
 
-text.node{
+text.node {
     fill: black;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-text.node.select{
+text.node.select {
     fill: green !important;
     font-weight: bold;
 }
 
-text.node.search{
+text.node.search {
     fill: rebeccapurple !important;
     font-weight: bold;
 }
 
-text.node.search:hover{
+text.node.search:hover {
     fill: green !important;
     font-weight: bold;
 }
@@ -566,7 +618,7 @@ text.triangleText.select {
     font-weight: bold;
 }
 
-path.triangle.select{
+path.triangle.select {
     fill: green !important;
 }
 
@@ -607,7 +659,7 @@ rect.node {
     opacity: 0.3;
 }
 
-#shareButton:hover{
+#shareButton:hover {
     opacity: 1.0;
 }
 
@@ -649,7 +701,7 @@ rect.node {
 }
 
 .exportMenu li {
-    list-style:none;
+    list-style: none;
     /*border-bottom: 1px;*/
     font-size: 8pt;
     text-align: left;
@@ -675,8 +727,7 @@ rect.node {
     opacity: 0.3;
 }
 
-
-#exportButton:hover{
+#exportButton:hover {
     opacity: 1.0;
 }
 
@@ -689,16 +740,25 @@ rect.node {
 }
 
 /*.dropdown-menu {*/
+
 /*min-width: 60px;*/
+
 /*font-size: 11px;*/
+
 /*margin: 1px 0px 1px 0px;*/
+
 /*text-align: center;*/
+
 /*box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);*/
+
 /*background-color: white;*/
+
 /*}*/
 
 /*.dropdown-menu li a{*/
+
 /*padding: 1px 0px 1px 0px;*/
+
 /*}*/
 
 /*--end export----------------------------------------------*/
@@ -711,7 +771,6 @@ rect.node {
     right: 57px;
     top: 0;
 }
-
 
 .treeToolsButton {
     width: 26px;
@@ -748,7 +807,7 @@ treeToolsMenuContent {
 }
 
 .treeToolsMenu li {
-    list-style:none;
+    list-style: none;
     /*border-bottom: 1px;*/
     font-size: 8pt;
     text-align: left;
@@ -812,7 +871,7 @@ treeToolsMenuContent {
     cursor: pointer;
 }
 
-.searchResultsList a{
+.searchResultsList a {
     color: black;
     text-decoration: none;
     display: block;
@@ -825,7 +884,6 @@ treeToolsMenuContent {
 }
 
 /*--end search-------------------------*/
-
 
 /*Styles for tree toggling*/
 
@@ -844,14 +902,14 @@ button.treeToggleButton {
     width: 26px;
     height: 26px;
     vertical-align: top;
-    opacity:0.3;
+    opacity: 0.3;
 }
 
 button.treeToggleButton:hover {
-    opacity:1.0;
+    opacity: 1.0;
 }
 
-button.treeToggleButton span{
+button.treeToggleButton span {
     vertical-align: center;
 }
 
@@ -898,7 +956,7 @@ button.treeToggleButton span{
     /*z-index: -1;*/
 }
 
-.treeToggleDropdown-content a{
+.treeToggleDropdown-content a {
     color: black;
     padding: 3px;
     text-decoration: none;
@@ -907,7 +965,7 @@ button.treeToggleButton span{
     cursor: pointer;
 }
 
-.treeToggleDropdown-content li{
+.treeToggleDropdown-content li {
     color: black;
     /*padding: 6px 16px;*/
     text-decoration: none;
@@ -916,12 +974,11 @@ button.treeToggleButton span{
     cursor: pointer;
 }
 
-.treeToggleDropdown-content a:hover{
+.treeToggleDropdown-content a:hover {
     background-color: orange;
 }
 
 /*--end toggle----------------------------------------------*/
-
 
 #ladderizeDescButton {
     width: 48.75px;
@@ -929,12 +986,11 @@ button.treeToggleButton span{
     opacity: 0.3;
 }
 
-
-#ladderizeDescButton:hover{
+#ladderizeDescButton:hover {
     opacity: 1.0;
 }
 
-#ladderizeDescButton:active{
+#ladderizeDescButton:active {
     color: #ffffff;
 }
 
@@ -944,8 +1000,7 @@ button.treeToggleButton span{
     opacity: 0.3;
 }
 
-
-#ladderizeAscButton:hover{
+#ladderizeAscButton:hover {
     opacity: 1.0;
 }
 
@@ -962,8 +1017,7 @@ button.treeToggleButton span{
     opacity: 0.3;
 }
 
-
-#opTreeAcButton:hover{
+#opTreeAcButton:hover {
     opacity: 1.0;
 }
 
@@ -976,20 +1030,28 @@ button.treeToggleButton span{
 }
 
 /*.dropdown-menu {*/
+
 /*min-width: 60px;*/
+
 /*font-size: 11px;*/
+
 /*margin: 1px 0px 1px 0px;*/
+
 /*text-align: center;*/
+
 /*box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);*/
+
 /*background-color: white;*/
+
 /*}*/
 
 /*.dropdown-menu li a{*/
+
 /*padding: 1px 0px 1px 0px;*/
+
 /*}*/
 
 /*--end export----------------------------------------------*/
-
 
 /*Styles for rescaling buttons*/
 
@@ -1009,29 +1071,29 @@ button.rescaleButton {
     opacity: 0.3;
 }
 
-button.rescaleButton.span{
+button.rescaleButton.span {
     vertical-align: middle;
 }
 
-button.rescaleButton:hover{
+button.rescaleButton:hover {
     opacity: 1.0;
 }
 
-#upButton{
+#upButton {
     display: block;
     margin-left: 22px;
 }
 
-#leftButton{
+#leftButton {
     float: left;
 }
 
-#rightButton{
+#rightButton {
     margin-left: 22px;
     float: right;
 }
 
-#downButton{
+#downButton {
     display: block;
     margin-left: 22px;
 }
@@ -1053,34 +1115,56 @@ button.rescaleButton:hover{
     /*right: 0;*/
     /*margin: auto;*/
     /*vertical-align: middle;*/
-
 }
+
 /*.zoomSlider {*/
-    /*-webkit-transform: rotate(90deg);*/
-    /*-ms-transform: rotate(90deg);*/
-    /*-moz-transform: rotate(90deg);*/
-    /*-o-transform: rotate(90deg);*/
-    /*transform: rotate(90deg);*/
+
+/*-webkit-transform: rotate(90deg);*/
+
+/*-ms-transform: rotate(90deg);*/
+
+/*-moz-transform: rotate(90deg);*/
+
+/*-o-transform: rotate(90deg);*/
+
+/*transform: rotate(90deg);*/
+
 /*}*/
 
 /*--end zoom----------------------------------------------*/
 
 /*this following code makes the treename hide on focus*/
-.treename:focus::-webkit-input-placeholder  {color:transparent;} /* Chrome; Opera; Safari */
-.treename:focus::-moz-placeholder   {color:transparent;} /*Firefox 19    */
-.treename:-moz-placeholder   {color:transparent;} /* Firefox 18- */
-.treename:-ms-input-placeholder    {color:transparent;} /* IE 10*/
 
+.treename:focus::-webkit-input-placeholder {
+    color: transparent;
+}
+
+/* Chrome; Opera; Safari */
+
+.treename:focus::-moz-placeholder {
+    color: transparent;
+}
+
+/*Firefox 19    */
+
+.treename:-moz-placeholder {
+    color: transparent;
+}
+
+/* Firefox 18- */
+
+.treename:-ms-input-placeholder {
+    color: transparent;
+}
+
+/* IE 10*/
 
 /*personalized render icon*/
 
 @font-face {
     font-family: 'icomoon';
-    src:  url('../fonts/icomoon.eot?v8nxfa');
-    src:  url('../fonts/icomoon.eot?v8nxfa#iefix') format('embedded-opentype'),
-    url('../fonts/icomoon.ttf?v8nxfa') format('truetype'),
-    url('../fonts/icomoon.woff?v8nxfa') format('woff'),
-    url('../fonts/icomoon.svg?v8nxfa#icomoon') format('svg');
+    src: url('../fonts/icomoon.eot?v8nxfa');
+    src: url('../fonts/icomoon.eot?v8nxfa#iefix') format('embedded-opentype'), url('../fonts/icomoon.ttf?v8nxfa') format('truetype'), url('../fonts/icomoon.woff?v8nxfa') format('woff'), url('../fonts/icomoon.svg?v8nxfa#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -1094,7 +1178,6 @@ button.rescaleButton:hover{
     font-variant: normal;
     text-transform: none;
     line-height: 1;
-
     /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
