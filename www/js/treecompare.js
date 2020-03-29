@@ -28,6 +28,7 @@ var TreeCompare = function () {
     var leavesOne = [];
     var leavesTwo = [];
     var chart;
+    var canvasIDforPDF;
     /*
      colors for the color scale for comparing nodes to best common node
 
@@ -1309,7 +1310,7 @@ var TreeCompare = function () {
             } else { /* remove one child in p */
                 for (j = k = 0; j < p.children.length; ++j) {
                     p.children[k] = p.children[j];
-                    if (j != i)++k;
+                    if (j != i) ++k;
 
                 }
                 --p.children.length;
@@ -1847,6 +1848,13 @@ var TreeCompare = function () {
             });
         // Enter any new nodes at the parent's previous position.
         // Perform the actual drawing
+
+        //Function for mouse over popup
+        var popdiv = d3.select("body").append("div")
+            .attr("class", "popuptooltip")
+            .style("height", "20px")
+            .style("opacity", 0);
+
         var nodeEnter = node.enter().append("g")
             .filter(function (d) { return d.keep })
             .attr("class", "node")
@@ -1864,8 +1872,26 @@ var TreeCompare = function () {
             .attr("id", function (d) {
                 return d.ID;
             })
-            .on("mouseover", nodeMouseover)
-            .on("mouseout", nodeMouseout)
+            .on("mouseover", function (d) {
+                nodeMouseover(d);
+                //console.log(d)
+                if (d.name) {
+                    popdiv.transition()
+                        .duration(200)
+                        .style("opacity", .8);
+                    popdiv.html("<p> " + d.name + "</p>")
+                        .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                }
+
+            })
+            .on("mouseout", function (d) {
+                nodeMouseout(d)
+
+                popdiv.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            })
             .on("click", treeData.clickEvent); //comes from getClickEvent
 
         //perform the actual drawing
@@ -4148,6 +4174,15 @@ var TreeCompare = function () {
                 boxpoints: 'all',
                 jitter: 0.5,
                 whiskerwidth: 0.2,
+                marker: {
+                    size: 2,
+                    opacity: 0.2,
+                    line: {
+                        color: '#1f77b4',
+                        width: 1
+                    }
+                }
+
             };
 
             var trace2 = {
@@ -4157,6 +4192,14 @@ var TreeCompare = function () {
                 boxpoints: 'all',
                 jitter: 0.5,
                 whiskerwidth: 0.2,
+                marker: {
+                    size: 2,
+                    opacity: 0.2,
+                    line: {
+                        color: '#ff7f0e',
+                        width: 1
+                    }
+                }
             };
 
             var data = [trace1, trace2];
@@ -4216,7 +4259,7 @@ var TreeCompare = function () {
             document.getElementById('ttest1').value = tTest
             Plotly.newPlot('boxPlotID', data);
             if (two) {
-                pval = jStat.ttest(tTest,df)
+                pval = jStat.ttest(tTest, df, 1)
                 document.getElementById("pval1").value = pval
             }
         }
@@ -4266,6 +4309,14 @@ var TreeCompare = function () {
                 boxpoints: 'all',
                 jitter: 0.5,
                 whiskerwidth: 0.2,
+                marker: {
+                    size: 2,
+                    opacity: 0.2,
+                    line: {
+                        color: '#1f77b4',
+                        width: 1
+                    }
+                },
             };
 
             var trace2 = {
@@ -4275,6 +4326,14 @@ var TreeCompare = function () {
                 boxpoints: 'all',
                 jitter: 0.5,
                 whiskerwidth: 0.2,
+                marker: {
+                    size: 2,
+                    opacity: 0.2,
+                    line: {
+                        color: '#ff7f0e',
+                        width: 1
+                    }
+                },
             };
 
             var data = [trace1, trace2];
@@ -4335,7 +4394,7 @@ var TreeCompare = function () {
             document.getElementById('ttest2').value = tTest
             Plotly.newPlot('boxPlot2ID', data);
             if (two) {
-                pval = jStat.ttest(tTest,df)
+                pval = jStat.ttest(tTest, df, 1)
                 document.getElementById("pval2").value = pval
             }
         }
@@ -6140,7 +6199,7 @@ var TreeCompare = function () {
             var rectWidth = 170;
             var rectHeight = 120;
             if (multiSelected[0] && multiSelected[1]) {
-                rectHeight = 120 + 18
+                rectHeight += 18
             }
 
             var rpad = 10;
@@ -6910,6 +6969,39 @@ var TreeCompare = function () {
         svg.select("#exportLogo").remove();
     }
 
+    function getReport() {
+        var doc = new jsPDF('p', 'pt', 'a4');
+        var elementHandler = {
+            '#ignorePDF': function (element, renderer) {
+                return true;
+            }
+        };
+
+        var svg = document.getElementById('Tree_0').innerHTML;
+        console.log(svg)
+        var canvas = document.createElement('canvas');
+        console.log(canvas)
+        
+        canvg(canvas, svg);
+        var imgData = canvas.toDataURL('image/png');
+        console.log(imgData)
+
+        doc.setProperties({title: 'Report'});
+        doc.setFontSize(20);
+        doc.text("Report", 270, 40)
+        doc.addImage(imgData, 40, 60, 500, 500 )
+        doc.setFontSize(16);
+        doc.setFontType("bold");
+        doc.text("Common Ancestor: ", 40, 520)
+        doc.setFontSize(12);
+        doc.setFontType('normal');
+        var commonAncestor = document.getElementById("ancestor12").value
+        console.log(commonAncestor)
+        doc.text(commonAncestor, 60, 540)
+
+
+        doc.save("report.pdf");
+    }
 
     //return all the externalised functions
     return {
@@ -6932,6 +7024,7 @@ var TreeCompare = function () {
         calcDist: calcDist,
         regexSearch: regexSearch,
         multiSelected: multiSelected,
-        purgePlots: purgePlots
+        purgePlots: purgePlots,
+        getReport: getReport
     }
 };
