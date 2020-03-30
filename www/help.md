@@ -5,39 +5,33 @@
 [< Back to phylostat]( "./index.html")
 
 ## Introduction
-Phylostat is a tool for visualising phylogenetic trees on the web. It can be used to view a tree and analyzing the clade divergence patterns. Phylostat includes useful features to make the viewing and analyzing of even very large trees extremely easy.
+Phylostat is a web-based tool for visualising and analyzing phylogenetic trees. It can be used to view a tree and analyzing the clade divergence patterns. Phylostat includes compares two paralogous clades, the genetic entities sharing homology due to a gene duplication evet, and suggests whether they are differentially diverged or not. If they are differentially diverged, it proposes one of the clades to have conserved the ancestral function.
 
 ## Phylogenetic Tree Generation
-To generate and view a tree, simply put your Newick code for the tree in designated area as shown in figures. 
+To generate and view a tree, simply put (copy & paste or upload) your tree in Newick format for the tree in designated area as shown in figures. 
 
-![fig1](figures/fig1.png  "Figure 1") ![fig2](figures/fig2.png  "Figure 2")
 
-You can also use upload .nwk files for your tree as shown.
+<img src="figures/fig1.png" width="30%"></img>
 
-![fig3](figures/fig3.png  "Figure 3") ![fig4](figures/fig4.png  "Figure 4")
+*Designated tree text are that users can copy and paste or upload their phylogenetic tree to be analyzed*
 
-Then simply press render button to render yor tree.
+<img src="figures/fig2.png" width="50%"></img>
 
-![fig5](figures/fig5.png "Figure 5")
+*Select the upload option for large trees in `.nwk` format*
 
-To clear everything, click on clear.
+<img src="figures/fig3.png" width="30%"></img>
 
-![fig6](figures/fig6.png "Figure 6")
+*Click on `Render` to visualize the tree*
 
-After clicking render button, you will be able to see your tree as shown in figure 7.
 
-![fig7](figures/fig7.png "Figure 7")
+<img src="figures/fig4.png" width="70%"></img>
 
-You can have sidebar menu hidden by clicking the arrow on its right upper corner.
+*Example tree - as visualized. The large trees can be zoomed in in order to reveal the details*
 
-![fig8](figures/fig8.png "Figure 8")
 
-To make it visible, simply click on the arrow again.
 ## Node Interaction
 After rendering a tree, you can interact with nodes/clades.
 When you hover your mouse over a node, it will highlight all the nodes from hovered over node to leaves as shown in the next figure.
-
-![fig9](figures/fig9.png "Figure 9")
 
 After clicking on a node, there will be some options available. 
 * You can collapse the branches of selected node into the selected node. 
@@ -47,43 +41,66 @@ After clicking on a node, there will be some options available.
 * You can swap subtrees which switches positions of subtrees of the selected node. 
 * And, you can select the node to do further analyzing.
 
-![fig10](figures/fig10.png "Figure 10") 
+<img src="figures/fig5.png" width="70%"></img>
+
+
+*Selection of the first clade to be compared. The node selected as the "first node" will be compared to the second node/clade to be selected. The first clade will be reffered as `Node 1`*
 
 After selected a node as first selection, the node and its all branches will be recolored into blue.
 
-![fig11](figures/fig11.png "Figure 11")
+<img src="figures/fig6.png" width="70%"></img>
 
-A node and its all branches will be recolored into orange if it was selected as second node to do analyzing.
+*Selected first node. The first clade will be represented in blue. It is always possible to clear selection if you want to change the clade that you may want to select.*
 
-![fig12](figures/fig12.png "Figure 12")
+<img src="figures/fig7.png" width="70%"></img>
+
+*Selection of the second node/clade*
+The selected node, its all branches as well as leaves will be recolored into orange if it was selected as second node to do analyzing.
+
+<img src="figures/fig8.png" width="70%"></img>
+
+*Both nodes are selected. First and second nodes are colored in blue and orange, respectively*
+
+
 
 You can remove a selection or all the selections. If you click on previously selected node, there is an option to remove that selection. If you click on any node, there is an option to remove all selections once you select two nodes.
 
-![fig13](figures/fig13.png "Figure 13")
 
 ## Interpretation
-After selecting the nodes that you want to do analysis on, you can see that there are some information on the sidebar menu. 
+After selecting the nodes that you want to do analysis on, you can see additional rendered sections on the sidebar menu. 
+
 First, you can see their common ancestor node and information on that node. Its ID, name, length, depth and same information of its parent. 
 
-![fig14](figures/fig14.png "Figure 14")
+<img src="figures/fig9.png" width="30%"></img>
 
-After that, there are 2 set of box plots. 
-* First one shows distance difference of selected nodes' leaves with their common ancestor node. Right below that, you can see t-test score of those differences and p-value.
+*Information regarding the common ancestral node of the selected nodes.*
 
-![fig15](figures/fig15.png "Figure 15")
+
+
+After that, 2 box plots are generated.
+
+<img src="figures/fig10.png" width="30%"></img>
+
+*The distance of each leaf-root from each clade (node 1 and node 2). Root is termed as the most recent common ancestral node of the two clades. Right below that, t-test score of those differences and p-value are given. If p-value is accepted as significant (e.g. <0.05) the clades are considered as differentially diverged from the most recent common ancestor*
+
+<img src="figures/fig11.png" width="30%"></img>
+
+*Internal branch length calculations.*
+
 
 * Second one shows distance of each nodes' leaves with eachother. As in blue plot shows differences of the first selected node's leaves' distance difference with eachother and orange plot shows differences of the second selected node's leaves' distance difference with eachother. Right below those plots, you can see t-test score of those differences with eachother and p-value.
 
-![fig16](figures/fig16.png "Figure 16")
 
 Then there is a search option. It searches with Regular Expression in nodes. When it is left blank, it will search for same taxIds as default and will show search results with a venn diagram. You can enter custom RegEx to do a search. Examples of when it is left blank and when entered a custom RegEx is shown below.
 
-![fig17](figures/fig17.png "Figure 17") ![fig18](figures/fig18.png "Figure 18") 
+<img src="figures/fig12.png" width="30%"></img>
+
 
 ## Visualization Features
 There are settings that changes the visualization of the tree.
 
-![fig19](figures/fig19.png "Figure 19")
+<img src="figures/fig13.png" width="30%"></img>
+
 
 * You can change the minimum depth of nodes that auto-collapse.
 * You can put internal labels to paths. 
@@ -97,10 +114,10 @@ There are settings that changes the visualization of the tree.
 * When "Select multiple search results" is clicked you can select more than one search result in the search results dropdown menu. Otherwise, you will be able to select only one.
 
 There are more options on the right upper corner of the screen.
+<img src="figures/fig14.png" width="70%"></img>
 
-![fig20](figures/fig20.png "Figure 20")
 
 * With clicking search button you can search for specific leaf nodes. This will search for node names and will highlight matching nodes in purple. Also, it will drop down a menu of matching node names as search results/auto complete.
 * You can resize your tree with settings button. There is option to rescale the tree. You can select the level of zoom and you can ladderize your tree in ascending("asc") or descending("desc") order.
-* You can export your tree  with download button as .nwk .svg or .png file. Online sharing feature is currently not working.
+* You can export your tree  with download button as `.nwk` `.svg` or `.png` file. Online sharing feature is currently not working.
 * Or you can undo your last change on the tree with undo button. 
