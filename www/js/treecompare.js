@@ -1,5 +1,6 @@
 //global variable for multi-selecting
 var multiSelected = [];
+var chartSVG;
 
 var TreeCompare = function () {
     var trees = [];
@@ -28,9 +29,10 @@ var TreeCompare = function () {
     var leavesOne = [];
     var leavesTwo = [];
     var chart;
-    var canvasIDforPDF;
+    
     var img_jpg_plot1 = d3.select('#jpg_plot1');
     var img_jpg_plot2 = d3.select('#jpg_plot2');
+
     /*
      colors for the color scale for comparing nodes to best common node
 
@@ -4630,6 +4632,7 @@ var TreeCompare = function () {
                 }
             });
             chart
+            chartSVG = chart.getSVG()
         }
     }
 
@@ -7031,7 +7034,6 @@ var TreeCompare = function () {
 
         doc.setProperties({ title: 'Report' });
         doc.setFontSize(16);
-        doc.text("Report", 9.5, 1.54)
         doc.addImage(imgData, 'PNG', -0.5, -19.5, null, null, null, 'NONE', 270)
 
         doc.addPage('a4', 'p')
@@ -7044,6 +7046,12 @@ var TreeCompare = function () {
         doc.addImage(img_plot_1, 'PNG', 1, 5)
         var img_plot_2 = document.getElementById('jpg_plot2')
         doc.addImage(img_plot_2, 'PNG', 10, 5)
+
+        var vennSvg = chartSVG
+        var venn_canvas = document.createElement('canvas');
+        canvg(venn_canvas, vennSvg)
+        var venn_img = venn_canvas.toDataURL('image/png');
+        doc.addImage(venn_img, 'PNG', 10, 13, 8, 4)
 
         doc.setFontSize(12);
         doc.setFontType('normal');
@@ -7078,6 +7086,12 @@ var TreeCompare = function () {
         var regRes = document.getElementById('regRes').value
         doc.text(regRes, 1.5, 14.25)
 
+        doc.setFontType("bold");
+        doc.text("Conclusion:", 1.5, 18)
+        doc.setFontType("normal");
+
+        //Add if/else statements to actually give a conclusion.
+        
         doc.save("report.pdf");
     }
 
