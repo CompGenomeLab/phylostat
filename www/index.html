@@ -22,6 +22,7 @@
     <script type="text/javascript" src="js/jspdf.min.js"></script>
     <script type="text/javascript" src="js/html2canvas.js"></script>
     <script type="text/javascript" src="js/canvg.min.js"></script>
+    <script type="text/javascript" src="js/canvas2image.js"></script>
     
     
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css"
@@ -320,7 +321,8 @@
                                 <label>Difference of selected: </label>
                             </div>
                             <div id="boxPlotID" style="background-color: #e7e7e7; height: 300px;">
-
+                            <img hidden id="jpg_plot1"> </img>
+                            <img hidden id="jpg_plot2"> </img>
                             </div>
                             <div style="display: flex;">
                                 <textarea readonly rows="1" style="width: 100px; border: none; outline-width: 0; 

@@ -29,6 +29,8 @@ var TreeCompare = function () {
     var leavesTwo = [];
     var chart;
     var canvasIDforPDF;
+    var img_jpg_plot1 = d3.select('#jpg_plot1');
+    var img_jpg_plot2 = d3.select('#jpg_plot2');
     /*
      colors for the color scale for comparing nodes to best common node
 
@@ -4257,7 +4259,17 @@ var TreeCompare = function () {
             //tTest = tTest / x
             tTest = tTest / tmp;
             document.getElementById('ttest1').value = tTest
-            Plotly.newPlot('boxPlotID', data);
+
+            Plotly.newPlot('boxPlotID', data)
+                .then(
+                    function (gd) {
+                        Plotly.toImage(gd, { height: 300, width: 330 })
+                            .then(
+                                function (url) {
+                                    img_jpg_plot1.attr("src", url);
+                                }
+                            )
+                    });
             if (two) {
                 pval = jStat.ttest(tTest, df, 1)
                 document.getElementById("pval1").value = pval
@@ -4388,11 +4400,20 @@ var TreeCompare = function () {
             //T distribution is symmetric so there is no need for negative values, it makes p value weird 
             tTest = Math.abs(tTest)
             //tTest = tTest / x
-            console.log("x: ", tTest / x, "\n")
-            console.log("tmp: ", tTest / tmp)
+            //console.log("x: ", tTest / x, "\n")
+            //console.log("tmp: ", tTest / tmp)
             tTest = tTest / tmp;
             document.getElementById('ttest2').value = tTest
-            Plotly.newPlot('boxPlot2ID', data);
+            Plotly.newPlot('boxPlot2ID', data)
+                .then(
+                    function (gd) {
+                        Plotly.toImage(gd, { height: 300, width: 330 })
+                            .then(
+                                function (url) {
+                                    img_jpg_plot2.attr("src", url);
+                                }
+                            )
+                    });
             if (two) {
                 pval = jStat.ttest(tTest, df, 1)
                 document.getElementById("pval2").value = pval
@@ -4540,9 +4561,9 @@ var TreeCompare = function () {
                 searchOnlyTwo: two,
                 numSearchOnlyTwo: two.length
             }
-            if (def) {
+            /*if (def) {
                 console.log(resSearch)
-            }
+            }*/
             var str = "First Selection: " + resSearch.numSearchOne.toString() +
                 "\nSecond Selection: " + resSearch.numSearchTwo.toString() +
                 "\nCommon: " + resSearch.numSearchCommon.toString() +
@@ -4671,6 +4692,7 @@ var TreeCompare = function () {
                 .on("click", function () {
                     var svg = d3.select("#" + canvasId + " svg");
                     addLogo(svg);
+                    console.log(svg)
                     var name = svg.attr("id");
                     var svgString = getSVGString(svg.node());
                     var blob = new Blob([svgString], { "type": "image/svg+xml;base64," + btoa(svgString) });
@@ -6970,35 +6992,91 @@ var TreeCompare = function () {
     }
 
     function getReport() {
-        var doc = new jsPDF('p', 'pt', 'a4');
+        var doc = new jsPDF('p', 'cm', 'a4');
         var elementHandler = {
             '#ignorePDF': function (element, renderer) {
                 return true;
             }
         };
+        canvasId = "vis-container1"
 
-        var svg = document.getElementById('Tree_0').innerHTML;
-        console.log(svg)
+        function getSVGString(svgNode) {
+            svgNode.setAttribute('xlink', 'http://www.w3.org/1999/xlink');
+            var serializer = new XMLSerializer();
+            var svgString = serializer.serializeToString(svgNode);
+            svgString = svgString.replace(/(\w+)?:?xlink=/g, 'xmlns:xlink='); // Fix root xlink without namespace
+            svgString = svgString.replace(/NS\d+:href/g, 'xlink:href'); // Safari NS namespace fix
+            return svgString;
+        }
+
+        function getSvg(canvasId) {
+            var svg = d3.select("#" + canvasId + " svg");
+            addLogo(svg);
+            //console.log("Svg: ", svg);
+            //var name = svg.attr("id");
+            var svgString = getSVGString(svg.node());
+            //var blob = new Blob([svgString], { "type": "image/svg+xml;base64," + btoa(svgString) });
+            //saveAs(blob, name + ".svg");
+            svg.select("#exportLogo").remove();
+            return svgString;
+        }
+
+        var svg = getSvg(canvasId)
+        //var svg = XMLSerializer.serializeToString(document.getElementById('Tree_0').innerHTML);
+        //var svg = document.getElementById('Tree_0').innerHTML
         var canvas = document.createElement('canvas');
-        console.log(canvas)
-        
+        //  svg = d3.select("#" + canvasId + " svg")
         canvg(canvas, svg);
         var imgData = canvas.toDataURL('image/png');
-        console.log(imgData)
 
-        doc.setProperties({title: 'Report'});
-        doc.setFontSize(20);
-        doc.text("Report", 270, 40)
-        doc.addImage(imgData, 40, 60, 500, 500 )
+        doc.setProperties({ title: 'Report' });
         doc.setFontSize(16);
+        doc.text("Report", 9.5, 1.54)
+        doc.addImage(imgData, 'PNG', -0.5, -19.5, null, null, null, 'NONE', 270)
+
+        doc.addPage('a4', 'p')
+
+        doc.setFontSize(12);
         doc.setFontType("bold");
-        doc.text("Common Ancestor: ", 40, 520)
+        doc.text("Common Ancestor: ", 1.5, 2)
+
+        var img_plot_1 = document.getElementById('jpg_plot1')
+        doc.addImage(img_plot_1, 'PNG', 1, 5)
+        var img_plot_2 = document.getElementById('jpg_plot2')
+        doc.addImage(img_plot_2, 'PNG', 10, 5)
+
         doc.setFontSize(12);
         doc.setFontType('normal');
         var commonAncestor = document.getElementById("ancestor12").value
-        console.log(commonAncestor)
-        doc.text(commonAncestor, 60, 540)
+        doc.text(commonAncestor, 7, 2)
 
+        doc.setFontType("bold");
+        doc.text("Difference of selected: ", 1.5, 7)
+        doc.text("Difference of leaves: ", 11.5, 7)
+        doc.setFontType('normal');
+
+        doc.text("T-Test Score: ", 1.5, 12)
+        doc.text("P-Value\t: ", 1.5, 12.5)
+        doc.text("T-Test Score: ", 11.5, 12)
+        doc.text("P-Value\t: ", 11.5, 12.5)
+
+        var ttest1 = document.getElementById('ttest1').value
+        doc.text(ttest1, 4.5, 12)
+        var pval1 = document.getElementById('pval1').value
+        doc.text(pval1, 4.5, 12.5)
+        var ttest2 = document.getElementById('ttest2').value
+        doc.text(ttest2, 14.5, 12)
+        var pval2 = document.getElementById('pval2').value
+        doc.text(pval2, 14.5, 12.5)
+
+        doc.setFontType("bold");
+        doc.text("RegEX Search:", 1.5, 13.75)
+        doc.setFontType('normal');
+        var RegEX = document.getElementById('regExSearch').value
+        if (!RegEX) RegEX = "taxid_[0-9]+"
+        doc.text(RegEX, 4.75, 13.75)
+        var regRes = document.getElementById('regRes').value
+        doc.text(regRes, 1.5, 14.25)
 
         doc.save("report.pdf");
     }
