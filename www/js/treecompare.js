@@ -29,10 +29,10 @@ var TreeCompare = function () {
     var multiChildren2 = [];
     var leavesOne = [];
     var leavesTwo = [];
-    console.log("main: " ,plotDrawn);
+    //console.log("main: ", plotDrawn);
     var chart;
-    var nameObj = {node1: "Node 1", node2: "Node 2"}
-    
+    var nameObj = { node1: "Node 1", node2: "Node 2" }
+
     var img_jpg_plot1 = d3.select('#jpg_plot1');
     var img_jpg_plot2 = d3.select('#jpg_plot2');
 
@@ -62,6 +62,7 @@ var TreeCompare = function () {
     var settings = {
         gistSaveServerURL: "http://phylo.io/server/gist.php",
         useLengths: true,
+        hideLabels: false,
         alignTipLables: false,
         selectMultipleSearch: false,
         fontSize: 14,
@@ -180,6 +181,7 @@ var TreeCompare = function () {
      */
     function changeTreeSettings(settingsIn) {
         settings.useLengths = getSetting(settingsIn.useLengths, settings.useLengths);
+        settings.hideLabels = getSetting(settingsIn.hideLabels, settings.hideLabels);
         settings.alignTipLabels = getSetting(settingsIn.alignTipLabels, settings.alignTipLabels);
         settings.mirrorRightTree = getSetting(settingsIn.mirrorRightTree, settings.mirrorRightTree);
         settings.selectMultipleSearch = getSetting(settingsIn.selectMultipleSearch, settings.selectMultipleSearch);
@@ -1805,6 +1807,12 @@ var TreeCompare = function () {
             d.y = d.y - 90;
         });
 
+
+
+
+
+
+
         // this ensures that when lengths are not used when rerooting the plot is still drawn similar
         if (newLenghtMult > lengthMult) {
             lengthMult = newLenghtMult
@@ -2085,6 +2093,20 @@ var TreeCompare = function () {
                 };
             });
 
+
+        //Hide node labels
+        nodeUpdate.select("text")
+            .style("visibility", function () {
+                if (settings.hideLabels) {
+                    return "hidden"
+                }
+                else {
+                    return "visible"
+                }
+            })
+
+       
+
         nodeUpdate.select("text")
             .style("fill-opacity", 1)
 
@@ -2264,6 +2286,14 @@ var TreeCompare = function () {
                         if (inChildren2(d)) {
                             return "bold";
                         };
+                    })
+                    .style("visibility", function(){
+                        if(settings.hideLabels){
+                            return "hidden";
+                        }
+                        else{
+                            return "visible";
+                        }
                     });
 
             }
@@ -4141,7 +4171,7 @@ var TreeCompare = function () {
 
     //Finding distance of the multiselected
     function distSelected(ancs) {
-        
+
         selectedOne = multiSelected[0]
         selectedTwo = multiSelected[1]
         dist = 0
@@ -4157,14 +4187,14 @@ var TreeCompare = function () {
     }
 
     function boxPlotEachOther(one, two) {
-        
+
         if (one == null || two == null) {
             Plotly.purge('boxPlotID');
             document.getElementById('ttest1').value = "";
             document.getElementById('pval1').value = "";
             plotDrawn = false;
-            console.log("empty one two:" ,plotDrawn)
-            
+            //console.log("empty one two:", plotDrawn)
+
         }
         else if (one != null && two != null) {
             df = one.length + two.length - 2
@@ -4182,8 +4212,11 @@ var TreeCompare = function () {
             var trace1 = {
                 y: one,
                 name: nameObj.node1,
-                type: 'box',
-                boxpoints: 'all',
+                type: 'violin',
+                box: {
+                    visible: true
+                },
+                boxpoints: false,
                 jitter: 0.5,
                 whiskerwidth: 0.2,
                 marker: {
@@ -4200,8 +4233,11 @@ var TreeCompare = function () {
             var trace2 = {
                 y: two,
                 name: nameObj.node2,
-                type: 'box',
-                boxpoints: 'all',
+                type: 'violin',
+                box: {
+                    visible: true
+                },
+                boxpoints: false,
                 jitter: 0.5,
                 whiskerwidth: 0.2,
                 marker: {
@@ -4285,7 +4321,7 @@ var TreeCompare = function () {
                 document.getElementById("pval1").value = pval
             }
             plotDrawn = true;
-            console.log("draw plot" ,plotDrawn)
+            //console.log("draw plot", plotDrawn)
         }
     }
 
@@ -4306,12 +4342,12 @@ var TreeCompare = function () {
         chart
         chart.destroy();
         plotDrawn = false;
-        console.log("purge plots: ", plotDrawn)
+        //console.log("purge plots: ", plotDrawn)
 
     }
 
     function boxPlotLeaves(one, two) {
-        
+
         if (one == null && two == null) {
             Plotly.purge('boxPlot2ID');
             document.getElementById('ttest2').value = "";
@@ -4333,8 +4369,11 @@ var TreeCompare = function () {
             var trace1 = {
                 y: one,
                 name: nameObj.node1,
-                type: 'box',
-                boxpoints: 'all',
+                type: 'violin',
+                box: {
+                    visible: true
+                },
+                boxpoints: false,
                 jitter: 0.5,
                 whiskerwidth: 0.2,
                 marker: {
@@ -4350,7 +4389,10 @@ var TreeCompare = function () {
             var trace2 = {
                 y: two,
                 name: nameObj.node2,
-                type: 'box',
+                type: 'violin',
+                box: {
+                    visible: true
+                },
                 boxpoints: 'all',
                 jitter: 0.5,
                 whiskerwidth: 0.2,
@@ -4709,7 +4751,7 @@ var TreeCompare = function () {
                 .on("click", function () {
                     var svg = d3.select("#" + canvasId + " svg");
                     addLogo(svg);
-                    console.log(svg)
+                    //console.log(svg)
                     var name = svg.attr("id");
                     var svgString = getSVGString(svg.node());
                     var blob = new Blob([svgString], { "type": "image/svg+xml;base64," + btoa(svgString) });
@@ -7105,15 +7147,15 @@ var TreeCompare = function () {
         doc.setFontType("normal");
 
         //Add if/else statements to actually give a conclusion.
-        
+
         doc.save("report.pdf");
     }
 
-    function nodeName(){
-        if(document.getElementById("node1Name").value){node1Name = document.getElementById("node1Name").value;}
-        else {node1Name = "Node 1"}
-        if(document.getElementById("node2Name").value){node2Name = document.getElementById("node2Name").value;}
-        else {node2Name = "Node 2"}
+    function nodeName() {
+        if (document.getElementById("node1Name").value) { node1Name = document.getElementById("node1Name").value; }
+        else { node1Name = "Node 1" }
+        if (document.getElementById("node2Name").value) { node2Name = document.getElementById("node2Name").value; }
+        else { node2Name = "Node 2" }
         nameObj.node1 = node1Name;
         nameObj.node2 = node2Name;
         commonAncestor();

@@ -519,6 +519,9 @@
                                     Lengths</label>
                             </div>
                             <div class="checkbox">
+                                <label class="settingsCheckboxLabel"><input type="checkbox" id="hideLabels">Hide tip labels</label>
+                            </div>
+                            <div class="checkbox">
                                 <label class="settingsCheckboxLabel"><input type="checkbox" id="alignTipLabels">Align
                                     tip labels </label>
                             </div>
@@ -761,6 +764,7 @@
             nodeSize: $("#nodeSize").val(),
             fontSize: $("#fontSize").val(),
             useLengths: $("#useLengths").is(":checked"),
+            hideLabels: $('#hideLabels').is(":checked"),
             alignTipLabels: $("#alignTipLabels").is(":checked"),
             ladderizeTree: $("#ladderizeTree").is(":checked"),
             mirrorRightTree: $("#mirrorRightTree").is(":checked"),
@@ -1301,6 +1305,12 @@
         $("#useLengths").on("click", function () {
             treecomp.changeTreeSettings({
                 useLengths: $("#useLengths").is(":checked")
+            });
+        });
+
+        $("#hideLabels").on("click", function () {
+            treecomp.changeTreeSettings({
+                hideLabels: $("#hideLabels").is(":checked")
             });
         });
 
