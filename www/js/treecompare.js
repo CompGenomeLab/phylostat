@@ -7082,7 +7082,6 @@ var TreeCompare = function () {
         }
 
         var svg = getSvg(canvasId)
-        console.log(svg)
         //var svg = XMLSerializer.serializeToString(document.getElementById('Tree_0').innerHTML);
         //var svg = document.getElementById('Tree_0').innerHTML
         var canvas = document.createElement('canvas');
