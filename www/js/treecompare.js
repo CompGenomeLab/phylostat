@@ -1,6 +1,6 @@
 //global variable for multi-selecting
 var multiSelected = [];
-var chartSVG;
+var plot1SVG, plot2SVG, chartSVG;
 var plotDrawn = false;
 
 var TreeCompare = function () {
@@ -1989,7 +1989,8 @@ var TreeCompare = function () {
             .attr("font-size", function (d) {
                 return settings.fontSize + "px"
             });
-
+        
+        //Do editing to swtich node colors here
         node.select("circle")
             .attr("r", function (d) {
                 if (d.bcnhighlight) {
@@ -4309,7 +4310,7 @@ var TreeCompare = function () {
             Plotly.newPlot('boxPlotID', data)
                 .then(
                     function (gd) {
-                        Plotly.toImage(gd, { height: 300, width: 330 })
+                        Plotly.toImage(gd, { height: 600, width: 660 })
                             .then(
                                 function (url) {
                                     img_jpg_plot1.attr("src", url);
@@ -4465,7 +4466,7 @@ var TreeCompare = function () {
             Plotly.newPlot('boxPlot2ID', data)
                 .then(
                     function (gd) {
-                        Plotly.toImage(gd, { height: 300, width: 330 })
+                        Plotly.toImage(gd, { height: 600, width: 660 })
                             .then(
                                 function (url) {
                                     img_jpg_plot2.attr("src", url);
@@ -7069,7 +7070,7 @@ var TreeCompare = function () {
         }
 
         function getSvg(canvasId) {
-            var svg = d3.select("#" + canvasId + " svg");
+            var svg = d3.select("#" + canvasId + " > svg");
             addLogo(svg);
             //console.log("Svg: ", svg);
             //var name = svg.attr("id");
@@ -7081,16 +7082,18 @@ var TreeCompare = function () {
         }
 
         var svg = getSvg(canvasId)
+        console.log(svg)
         //var svg = XMLSerializer.serializeToString(document.getElementById('Tree_0').innerHTML);
         //var svg = document.getElementById('Tree_0').innerHTML
         var canvas = document.createElement('canvas');
-        //  svg = d3.select("#" + canvasId + " svg")
+        var context = canvas.getContext("2d");
+        
         canvg(canvas, svg);
         var imgData = canvas.toDataURL('image/png');
 
         doc.setProperties({ title: 'Report' });
         doc.setFontSize(16);
-        doc.addImage(imgData, 'PNG', 1, 1)
+        doc.addImage(imgData, 'PNG', 1, 1, 28, 21)
 
         doc.addPage('a4', 'p')
 
@@ -7099,15 +7102,15 @@ var TreeCompare = function () {
         doc.text("Common Ancestor: ", 1.5, 2)
 
         var img_plot_1 = document.getElementById('jpg_plot1')
-        doc.addImage(img_plot_1, 'PNG', 1, 5)
+        doc.addImage(img_plot_1, 'PNG', 1, 6, 7.9375, 8.73125)
         var img_plot_2 = document.getElementById('jpg_plot2')
-        doc.addImage(img_plot_2, 'PNG', 10, 5)
+        doc.addImage(img_plot_2, 'PNG', 11, 6, 7.9375, 8.73125)
 
         var vennSvg = chartSVG
         var venn_canvas = document.createElement('canvas');
         canvg(venn_canvas, vennSvg)
         var venn_img = venn_canvas.toDataURL('image/png');
-        doc.addImage(venn_img, 'PNG', 10, 13, 8, 4)
+        doc.addImage(venn_img, 'PNG', 10, 16, 8, 4)
 
         doc.setFontSize(12);
         doc.setFontType('normal');
@@ -7119,31 +7122,31 @@ var TreeCompare = function () {
         doc.text("Difference of leaves: ", 11.5, 7)
         doc.setFontType('normal');
 
-        doc.text("T-Test Score: ", 1.5, 12)
-        doc.text("P-Value\t: ", 1.5, 12.5)
-        doc.text("T-Test Score: ", 11.5, 12)
-        doc.text("P-Value\t: ", 11.5, 12.5)
+        doc.text("T-Test Score: ", 1.5, 15)
+        doc.text("P-Value\t: ", 1.5, 15.5)
+        doc.text("T-Test Score: ", 11.5, 15)
+        doc.text("P-Value\t: ", 11.5, 15.5)
 
         var ttest1 = document.getElementById('ttest1').value
-        doc.text(ttest1, 4.5, 12)
+        doc.text(ttest1, 4.5, 15)
         var pval1 = document.getElementById('pval1').value
-        doc.text(pval1, 4.5, 12.5)
+        doc.text(pval1, 4.5, 15.5)
         var ttest2 = document.getElementById('ttest2').value
-        doc.text(ttest2, 14.5, 12)
+        doc.text(ttest2, 14.5, 15)
         var pval2 = document.getElementById('pval2').value
-        doc.text(pval2, 14.5, 12.5)
+        doc.text(pval2, 14.5, 15.5)
 
         doc.setFontType("bold");
-        doc.text("RegEX Search:", 1.5, 13.75)
+        doc.text("RegEX Search:", 1.5, 16.75)
         doc.setFontType('normal');
         var RegEX = document.getElementById('regExSearch').value
         if (!RegEX) RegEX = "taxid_[0-9]+"
-        doc.text(RegEX, 4.75, 13.75)
+        doc.text(RegEX, 4.75, 16.75)
         var regRes = document.getElementById('regRes').value
-        doc.text(regRes, 1.5, 14.25)
+        doc.text(regRes, 1.5, 17.25)
 
         doc.setFontType("bold");
-        doc.text("Conclusion:", 1.5, 18)
+        doc.text("Conclusion:", 1.5, 21)
         doc.setFontType("normal");
 
         //Add if/else statements to actually give a conclusion.
