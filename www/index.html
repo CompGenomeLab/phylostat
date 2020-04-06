@@ -309,7 +309,17 @@
                                 <textarea id="dist12" rows="1" columns="80" readonly
                                     style="width: 330px; background-color: #e7e7e7"></textarea>
                             </div>-->
-
+                            <div>
+                                <label>Set Node Names:</label>
+                            </div>
+                            <div class="nodeNames" style="display: flex;">
+                                <textarea name="node1Name" id="node1Name"  rows="1" 
+                                placeholder="Default: Node 1" style="width: 150px;"
+                                onkeydown="if(event.keyCode == 13 && !event.shiftKey){this.blur(); return false;}" onchange="nodeNameHTML()"></textarea>    
+                                <textarea name="node2Name" id="node2Name"  rows="1"
+                                placeholder="Default: Node 2" style="width: 150px; margin-left: 30px;"
+                                onkeydown="if(event.keyCode == 13 && !event.shiftKey){this.blur(); return false;}" onchange="nodeNameHTML()"></textarea>    
+                            </div>
                             <div class="commonAncestor">
                                 <label>Common Ancestor: </label>
                             </div>
@@ -594,6 +604,10 @@
             if (result != null) {
                 console.log(result)
             }
+        }
+
+        function nodeNameHTML(){
+            TreeCompare().nodeName();
         }
 
         function clearFunc(){

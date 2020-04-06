@@ -1,6 +1,7 @@
 //global variable for multi-selecting
 var multiSelected = [];
 var chartSVG;
+var plotDrawn = false;
 
 var TreeCompare = function () {
     var trees = [];
@@ -28,7 +29,9 @@ var TreeCompare = function () {
     var multiChildren2 = [];
     var leavesOne = [];
     var leavesTwo = [];
+    console.log("main: " ,plotDrawn);
     var chart;
+    var nameObj = {node1: "Node 1", node2: "Node 2"}
     
     var img_jpg_plot1 = d3.select('#jpg_plot1');
     var img_jpg_plot2 = d3.select('#jpg_plot2');
@@ -4138,6 +4141,7 @@ var TreeCompare = function () {
 
     //Finding distance of the multiselected
     function distSelected(ancs) {
+        
         selectedOne = multiSelected[0]
         selectedTwo = multiSelected[1]
         dist = 0
@@ -4153,10 +4157,14 @@ var TreeCompare = function () {
     }
 
     function boxPlotEachOther(one, two) {
+        
         if (one == null || two == null) {
             Plotly.purge('boxPlotID');
             document.getElementById('ttest1').value = "";
             document.getElementById('pval1').value = "";
+            plotDrawn = false;
+            console.log("empty one two:" ,plotDrawn)
+            
         }
         else if (one != null && two != null) {
             df = one.length + two.length - 2
@@ -4173,7 +4181,7 @@ var TreeCompare = function () {
             two = tempTwo
             var trace1 = {
                 y: one,
-                name: "Node 1",
+                name: nameObj.node1,
                 type: 'box',
                 boxpoints: 'all',
                 jitter: 0.5,
@@ -4191,7 +4199,7 @@ var TreeCompare = function () {
 
             var trace2 = {
                 y: two,
-                name: "Node 2",
+                name: nameObj.node2,
                 type: 'box',
                 boxpoints: 'all',
                 jitter: 0.5,
@@ -4276,6 +4284,8 @@ var TreeCompare = function () {
                 pval = jStat.ttest(tTest, df, 1)
                 document.getElementById("pval1").value = pval
             }
+            plotDrawn = true;
+            console.log("draw plot" ,plotDrawn)
         }
     }
 
@@ -4295,9 +4305,13 @@ var TreeCompare = function () {
         });
         chart
         chart.destroy();
+        plotDrawn = false;
+        console.log("purge plots: ", plotDrawn)
+
     }
 
     function boxPlotLeaves(one, two) {
+        
         if (one == null && two == null) {
             Plotly.purge('boxPlot2ID');
             document.getElementById('ttest2').value = "";
@@ -4318,7 +4332,7 @@ var TreeCompare = function () {
             two = tempTwo
             var trace1 = {
                 y: one,
-                name: "Node 1",
+                name: nameObj.node1,
                 type: 'box',
                 boxpoints: 'all',
                 jitter: 0.5,
@@ -4335,7 +4349,7 @@ var TreeCompare = function () {
 
             var trace2 = {
                 y: two,
-                name: "Node 2",
+                name: nameObj.node2,
                 type: 'box',
                 boxpoints: 'all',
                 jitter: 0.5,
@@ -4611,12 +4625,12 @@ var TreeCompare = function () {
                     name: 'Search Results',
                     // Series data
                     data: [{
-                        name: 'Node 1',
+                        name: nameObj.node1,
                         sets: ['A'],
                         value: A,
                         color: "#1f77b4"
                     }, {
-                        name: 'Node 2',
+                        name: nameObj.node2,
                         sets: ['B'],
                         value: B,
                         color: "#ff7f0e"
@@ -6499,7 +6513,7 @@ var TreeCompare = function () {
                         //document.getElementById('select1').value = str
 
                         update(tree.root, tree.data);
-                        commonAncestor()
+                        nodeName()
                     }
                 );
             };
@@ -6547,7 +6561,7 @@ var TreeCompare = function () {
 
                         //document.getElementById('select2').value = str
                         update(tree.root, tree.data);
-                        commonAncestor()
+                        nodeName()
                     }
                 );
             };
@@ -6578,7 +6592,7 @@ var TreeCompare = function () {
                         update(tree.root, tree.data);
                         plotVenn(null)
                         document.getElementById("regRes").value = ""
-                        commonAncestor()
+                        nodeName()
                     }
                 );
             };
@@ -6599,7 +6613,7 @@ var TreeCompare = function () {
                         update(tree.root, tree.data);
                         plotVenn(null)
                         document.getElementById("regRes").value = ""
-                        commonAncestor()
+                        nodeName()
                     }
                 );
             };
@@ -6627,7 +6641,7 @@ var TreeCompare = function () {
                         update(tree.root, tree.data);
                         document.getElementById("regRes").value = ""
                         plotVenn(null)
-                        commonAncestor()
+                        nodeName()
                     }
                 );
             };
@@ -6995,7 +7009,7 @@ var TreeCompare = function () {
     }
 
     function getReport() {
-        var doc = new jsPDF('p', 'cm', 'a4');
+        var doc = new jsPDF('l', 'cm', 'a4');
         var elementHandler = {
             '#ignorePDF': function (element, renderer) {
                 return true;
@@ -7034,7 +7048,7 @@ var TreeCompare = function () {
 
         doc.setProperties({ title: 'Report' });
         doc.setFontSize(16);
-        doc.addImage(imgData, 'PNG', -0.5, -19.5, null, null, null, 'NONE', 270)
+        doc.addImage(imgData, 'PNG', 1, 1)
 
         doc.addPage('a4', 'p')
 
@@ -7095,6 +7109,16 @@ var TreeCompare = function () {
         doc.save("report.pdf");
     }
 
+    function nodeName(){
+        if(document.getElementById("node1Name").value){node1Name = document.getElementById("node1Name").value;}
+        else {node1Name = "Node 1"}
+        if(document.getElementById("node2Name").value){node2Name = document.getElementById("node2Name").value;}
+        else {node2Name = "Node 2"}
+        nameObj.node1 = node1Name;
+        nameObj.node2 = node2Name;
+        commonAncestor();
+    }
+
     //return all the externalised functions
     return {
         init: init,
@@ -7117,6 +7141,7 @@ var TreeCompare = function () {
         regexSearch: regexSearch,
         multiSelected: multiSelected,
         purgePlots: purgePlots,
-        getReport: getReport
+        getReport: getReport,
+        nodeName: nodeName
     }
 };
