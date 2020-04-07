@@ -7109,7 +7109,7 @@ var TreeCompare = function () {
         var venn_canvas = document.createElement('canvas');
         canvg(venn_canvas, vennSvg)
         var venn_img = venn_canvas.toDataURL('image/png');
-        doc.addImage(venn_img, 'PNG', 10, 16, 8, 4)
+        doc.addImage(venn_img, 'PNG', 10, 16.5, 8, 4)
 
         doc.setFontSize(12);
         doc.setFontType('normal');
@@ -7125,6 +7125,7 @@ var TreeCompare = function () {
         doc.text("P-Value\t: ", 1.5, 15.5)
         doc.text("T-Test Score: ", 11.5, 15)
         doc.text("P-Value\t: ", 11.5, 15.5)
+        
 
         var ttest1 = document.getElementById('ttest1').value
         doc.text(ttest1, 4.5, 15)
@@ -7134,18 +7135,24 @@ var TreeCompare = function () {
         doc.text(ttest2, 14.5, 15)
         var pval2 = document.getElementById('pval2').value
         doc.text(pval2, 14.5, 15.5)
+        if (parseInt(pval2)<=0.05){
+            doc.text("P-value is smaller than 0.05.", 11.5, 16)
+        }
+        else{
+            doc.text("P-value is larger than 0.05.", 11.5, 16)
+        }
 
         doc.setFontType("bold");
-        doc.text("RegEX Search:", 1.5, 16.75)
+        doc.text("RegEX Search:", 1.5, 17.25)
         doc.setFontType('normal');
         var RegEX = document.getElementById('regExSearch').value
         if (!RegEX) RegEX = "taxid_[0-9]+"
-        doc.text(RegEX, 4.75, 16.75)
+        doc.text(RegEX, 4.75, 17.25)
         var regRes = document.getElementById('regRes').value
-        doc.text(regRes, 1.5, 17.25)
+        doc.text(regRes, 1.5, 17.75)
 
         doc.setFontType("bold");
-        doc.text("Conclusion:", 1.5, 21)
+        doc.text("Conclusion:", 1.5, 21.5)
         doc.setFontType("normal");
 
         //Add if/else statements to actually give a conclusion.
