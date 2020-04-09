@@ -22,6 +22,7 @@
     <script type="text/javascript" src="js/jspdf.min.js"></script>
     <script type="text/javascript" src="js/html2canvas.js"></script>
     <script type="text/javascript" src="js/canvg.min.js"></script>
+    <script type="text/javascript" src="js/canvas2image.js"></script>
     
     
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css"
@@ -309,7 +310,17 @@
                                 <textarea id="dist12" rows="1" columns="80" readonly
                                     style="width: 330px; background-color: #e7e7e7"></textarea>
                             </div>-->
-
+                            <div>
+                                <label>Set Node Names:</label>
+                            </div>
+                            <div class="nodeNames" style="display: flex;">
+                                <textarea name="node1Name" id="node1Name"  rows="1" 
+                                placeholder="Default: Node 1" style="width: 150px;"
+                                onkeydown="if(event.keyCode == 13 && !event.shiftKey){this.blur(); return false;}" onchange="nodeNameHTML()"></textarea>    
+                                <textarea name="node2Name" id="node2Name"  rows="1"
+                                placeholder="Default: Node 2" style="width: 150px; margin-left: 30px;"
+                                onkeydown="if(event.keyCode == 13 && !event.shiftKey){this.blur(); return false;}" onchange="nodeNameHTML()"></textarea>    
+                            </div>
                             <div class="commonAncestor">
                                 <label>Common Ancestor: </label>
                             </div>
@@ -321,7 +332,8 @@
                                 <label>Difference of selected: </label>
                             </div>
                             <div id="boxPlotID" style="background-color: #e7e7e7; height: 300px;">
-
+                            <img hidden id="jpg_plot1"> </img>
+                            <img hidden id="jpg_plot2"> </img>
                             </div>
                             <div style="display: flex;">
                                 <textarea readonly rows="1" style="width: 100px; border: none; outline-width: 0; 
@@ -508,6 +520,9 @@
                                     Lengths</label>
                             </div>
                             <div class="checkbox">
+                                <label class="settingsCheckboxLabel"><input type="checkbox" id="hideLabels">Hide tip labels</label>
+                            </div>
+                            <div class="checkbox">
                                 <label class="settingsCheckboxLabel"><input type="checkbox" id="alignTipLabels">Align
                                     tip labels </label>
                             </div>
@@ -593,6 +608,10 @@
             if (result != null) {
                 console.log(result)
             }
+        }
+
+        function nodeNameHTML(){
+            TreeCompare().nodeName();
         }
 
         function clearFunc(){
@@ -746,6 +765,7 @@
             nodeSize: $("#nodeSize").val(),
             fontSize: $("#fontSize").val(),
             useLengths: $("#useLengths").is(":checked"),
+            hideLabels: $('#hideLabels').is(":checked"),
             alignTipLabels: $("#alignTipLabels").is(":checked"),
             ladderizeTree: $("#ladderizeTree").is(":checked"),
             mirrorRightTree: $("#mirrorRightTree").is(":checked"),
@@ -1286,6 +1306,12 @@
         $("#useLengths").on("click", function () {
             treecomp.changeTreeSettings({
                 useLengths: $("#useLengths").is(":checked")
+            });
+        });
+
+        $("#hideLabels").on("click", function () {
+            treecomp.changeTreeSettings({
+                hideLabels: $("#hideLabels").is(":checked")
             });
         });
 

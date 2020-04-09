@@ -1,5 +1,7 @@
 //global variable for multi-selecting
 var multiSelected = [];
+var plot1SVG, plot2SVG, chartSVG;
+var plotDrawn = false;
 
 var TreeCompare = function () {
     var trees = [];
@@ -27,8 +29,13 @@ var TreeCompare = function () {
     var multiChildren2 = [];
     var leavesOne = [];
     var leavesTwo = [];
+    //console.log("main: ", plotDrawn);
     var chart;
-    var canvasIDforPDF;
+    var nameObj = { node1: "Node 1", node2: "Node 2" }
+
+    var img_jpg_plot1 = d3.select('#jpg_plot1');
+    var img_jpg_plot2 = d3.select('#jpg_plot2');
+
     /*
      colors for the color scale for comparing nodes to best common node
 
@@ -55,6 +62,7 @@ var TreeCompare = function () {
     var settings = {
         gistSaveServerURL: "http://phylo.io/server/gist.php",
         useLengths: true,
+        hideLabels: false,
         alignTipLables: false,
         selectMultipleSearch: false,
         fontSize: 14,
@@ -173,6 +181,7 @@ var TreeCompare = function () {
      */
     function changeTreeSettings(settingsIn) {
         settings.useLengths = getSetting(settingsIn.useLengths, settings.useLengths);
+        settings.hideLabels = getSetting(settingsIn.hideLabels, settings.hideLabels);
         settings.alignTipLabels = getSetting(settingsIn.alignTipLabels, settings.alignTipLabels);
         settings.mirrorRightTree = getSetting(settingsIn.mirrorRightTree, settings.mirrorRightTree);
         settings.selectMultipleSearch = getSetting(settingsIn.selectMultipleSearch, settings.selectMultipleSearch);
@@ -1798,6 +1807,12 @@ var TreeCompare = function () {
             d.y = d.y - 90;
         });
 
+
+
+
+
+
+
         // this ensures that when lengths are not used when rerooting the plot is still drawn similar
         if (newLenghtMult > lengthMult) {
             lengthMult = newLenghtMult
@@ -1974,7 +1989,8 @@ var TreeCompare = function () {
             .attr("font-size", function (d) {
                 return settings.fontSize + "px"
             });
-
+        
+        //Do editing to swtich node colors here
         node.select("circle")
             .attr("r", function (d) {
                 if (d.bcnhighlight) {
@@ -2077,6 +2093,20 @@ var TreeCompare = function () {
                     return "bold";
                 };
             });
+
+
+        //Hide node labels
+        nodeUpdate.select("text")
+            .style("visibility", function () {
+                if (settings.hideLabels) {
+                    return "hidden"
+                }
+                else {
+                    return "visible"
+                }
+            })
+
+       
 
         nodeUpdate.select("text")
             .style("fill-opacity", 1)
@@ -2257,6 +2287,14 @@ var TreeCompare = function () {
                         if (inChildren2(d)) {
                             return "bold";
                         };
+                    })
+                    .style("visibility", function(){
+                        if(settings.hideLabels){
+                            return "hidden";
+                        }
+                        else{
+                            return "visible";
+                        }
                     });
 
             }
@@ -3561,7 +3599,7 @@ var TreeCompare = function () {
 
     function addLogo(svg) {
         // TODO load with ajax
-        var logo_xml = '<svg id="exportLogo" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 107.35 22.23"><defs><style>.cls-1{fill:#808285;}.cls-2{fill:#939598;}.cls-3{fill:#bcbec0;}</style></defs><path class="cls-1" d="M17.17,22.23V5.72H21a6.55,6.55,0,0,1,4.53,1.45,5.16,5.16,0,0,1,1.62,4.05,5.58,5.58,0,0,1-1.52,4,5.16,5.16,0,0,1-3.88,1.58,6.81,6.81,0,0,1-2.31-.46v5.84H17.17ZM20.91,7.74H19.38v6.72a4.51,4.51,0,0,0,2.09.51A3.21,3.21,0,0,0,24,13.92a3.88,3.88,0,0,0,1-2.72,3.82,3.82,0,0,0-.46-1.89,2.76,2.76,0,0,0-1.24-1.19A5.54,5.54,0,0,0,20.91,7.74Z"/><path class="cls-1" d="M29.43,0.06H31.6v7.1A4.18,4.18,0,0,1,35,5.51a3.6,3.6,0,0,1,2,.55,3.31,3.31,0,0,1,1.29,1.51,7.46,7.46,0,0,1,.42,2.86v6.22H36.47V9.89A3,3,0,0,0,35.88,8a1.9,1.9,0,0,0-1.55-.73A2.62,2.62,0,0,0,33,7.6,6.1,6.1,0,0,0,31.6,8.83v7.83H29.43V0.06Z"/><path class="cls-1" d="M47.5,5.72h2.43l-7.74,16.5H39.77l3.71-7.92L39.26,5.72h2.46l3,6.17Z"/><path class="cls-1" d="M51.49,0.06h2.16v16.6H51.49V0.06Z"/><path class="cls-1" d="M62,5.7a5.7,5.7,0,0,1,4.15,1.61,5.41,5.41,0,0,1,1.65,4,5.14,5.14,0,0,1-1.68,3.93,5.94,5.94,0,0,1-4.22,1.56,5.7,5.7,0,0,1-4.11-1.59,5.26,5.26,0,0,1-1.65-4,5.31,5.31,0,0,1,1.67-4A5.82,5.82,0,0,1,62,5.7ZM61.89,7.65a3.42,3.42,0,0,0-2.55,1,3.57,3.57,0,0,0-1,2.6,3.41,3.41,0,0,0,1,2.56,3.61,3.61,0,0,0,2.63,1,3.55,3.55,0,0,0,2.61-1,3.46,3.46,0,0,0,1-2.57,3.43,3.43,0,0,0-1.06-2.58A3.68,3.68,0,0,0,61.89,7.65Z"/><path class="cls-1" d="M71.62,14.29v2.36H70V14.29h1.58Z"/><path class="cls-1" d="M75.85,0.06v2H74.67v-2h1.18Zm0,5.67V16.65H74.67V5.72h1.18Z"/><path class="cls-1" d="M84.14,5.51a5.3,5.3,0,0,1,4,1.63,5.59,5.59,0,0,1,1.59,4.06,5.56,5.56,0,0,1-1.59,4,5.67,5.67,0,0,1-7.94,0,5.54,5.54,0,0,1-1.6-4,5.57,5.57,0,0,1,1.6-4.06A5.34,5.34,0,0,1,84.14,5.51Zm0,10.22a4.09,4.09,0,0,0,3.08-1.29,4.49,4.49,0,0,0,1.24-3.24A4.53,4.53,0,0,0,87.21,8a4.07,4.07,0,0,0-3.07-1.31A4.11,4.11,0,0,0,81,7.95,4.52,4.52,0,0,0,79.8,11.2,4.48,4.48,0,0,0,81,14.44,4.12,4.12,0,0,0,84.14,15.73Z"/><polygon class="cls-2" points="101.29 12.33 94.93 12.33 94.93 10.91 99.87 10.91 99.87 6.46 94.93 6.46 94.93 5.04 101.29 5.04 101.29 12.33"/><polygon class="cls-2" points="106.29 17.36 94.72 17.36 94.72 15.94 104.87 15.94 104.9 5.41 102.74 5.41 102.74 3.99 106.32 3.99 106.29 17.36"/><polygon class="cls-2" points="103.45 4.7 102.03 4.7 102.03 1.42 95.51 1.42 95.51 0 103.45 0 103.45 4.7"/><polygon class="cls-3" points="103.45 9.39 100.65 9.39 100.65 7.97 102.03 7.97 102.03 4.7 103.45 4.7 103.45 9.39"/><polygon class="cls-2" points="11.86 7.46 5.7 7.46 5.7 0.23 11.86 0.23 11.86 1.65 7.12 1.65 7.12 6.04 11.86 6.04 11.86 7.46"/><polygon class="cls-2" points="12.68 17.26 0.04 17.26 0 7.08 3.51 7.08 3.51 8.49 1.43 8.49 1.45 15.84 12.68 15.84 12.68 17.26"/><polygon class="cls-2" points="10.49 12.44 2.84 12.44 2.84 7.79 4.26 7.79 4.26 11.02 10.49 11.02 10.49 12.44"/><polygon class="cls-3" points="4.26 7.79 2.84 7.79 2.84 3.13 6.41 3.13 6.41 4.55 4.26 4.55 4.26 7.79"/></svg>';
+        var logo_xml = '<svg id="exportLogo" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 107.35 22.23"><defs><style type="text/css">.st0{fill:#808285;}.st1{font-family:"MyriadPro-Regular";}.st2{font-size:21.1195px;}.st3{fill:none;stroke:#214554;stroke-width:1.2872;stroke-linecap:round;stroke-miterlimit:10;}.st4{fill:none;stroke:#602519;stroke-width:1.2872;stroke-linecap:round;stroke-miterlimit:10;}.st5{fill:none;stroke:#808285;stroke-width:1.2872;stroke-linecap:round;stroke-miterlimit:10;}.st6{fill:#602519;}.st7{font-size:6.9668px;}</style></defs><title>logo_export</title><text transform="matrix(1 0 0 1 25.1351 17.0859)" class="st0 st1 st2">phylostat</text><line class="st3" x1="1.9" y1="6.4" x2="1.8" y2="16.3"/><line class="st4" x1="2" y1="6.3" x2="9.2" y2="6.4"/><line class="st4" x1="9.3" y1="3.8" x2="9.3" y2="8.8"/><line class="st4" x1="12.5" y1="3.9" x2="9.7" y2="3.8"/><line class="st4" x1="14.3" y1="8.8" x2="9.6" y2="8.8"/><line class="st4" x1="2" y1="6.3" x2="9.2" y2="6.4"/><line class="st4" x1="9.3" y1="3.8" x2="9.3" y2="8.8"/><line class="st4" x1="15.8" y1="3.9" x2="9.7" y2="3.8"/><line class="st3" x1="1.9" y1="16.6" x2="5.4" y2="16.6"/><line class="st3" x1="5.7" y1="14.1" x2="5.7" y2="19.1"/><line class="st3" x1="8.8" y1="14.1" x2="6" y2="14.1"/><line class="st3" x1="8.8" y1="19" x2="6" y2="19"/><line class="st3" x1="1.9" y1="16.6" x2="5.3" y2="16.6"/><line class="st3" x1="5.7" y1="14.1" x2="5.7" y2="19.1"/><line class="st3" x1="8.8" y1="14.1" x2="6" y2="14.1"/><line class="st5" x1="19" y1="6.9" x2="19" y2="17.4"/><line class="st5" x1="18.9" y1="17.5" x2="17.3" y2="17.5"/><line class="st5" x1="19" y1="6.8" x2="17.4" y2="6.8"/><text transform="matrix(1 7.071076e-03 -7.071076e-03 1 20.3871 15.9375)" class="st6 st1 st7">*</text></svg>'
 
         svg.append("g").html(logo_xml);
 
@@ -4134,6 +4172,7 @@ var TreeCompare = function () {
 
     //Finding distance of the multiselected
     function distSelected(ancs) {
+
         selectedOne = multiSelected[0]
         selectedTwo = multiSelected[1]
         dist = 0
@@ -4149,10 +4188,14 @@ var TreeCompare = function () {
     }
 
     function boxPlotEachOther(one, two) {
+
         if (one == null || two == null) {
             Plotly.purge('boxPlotID');
             document.getElementById('ttest1').value = "";
             document.getElementById('pval1').value = "";
+            plotDrawn = false;
+            //console.log("empty one two:", plotDrawn)
+
         }
         else if (one != null && two != null) {
             df = one.length + two.length - 2
@@ -4169,9 +4212,12 @@ var TreeCompare = function () {
             two = tempTwo
             var trace1 = {
                 y: one,
-                name: "Node 1",
-                type: 'box',
-                boxpoints: 'all',
+                name: nameObj.node1,
+                type: 'violin',
+                box: {
+                    visible: true
+                },
+                boxpoints: false,
                 jitter: 0.5,
                 whiskerwidth: 0.2,
                 marker: {
@@ -4187,9 +4233,12 @@ var TreeCompare = function () {
 
             var trace2 = {
                 y: two,
-                name: "Node 2",
-                type: 'box',
-                boxpoints: 'all',
+                name: nameObj.node2,
+                type: 'violin',
+                box: {
+                    visible: true
+                },
+                boxpoints: false,
                 jitter: 0.5,
                 whiskerwidth: 0.2,
                 marker: {
@@ -4257,11 +4306,23 @@ var TreeCompare = function () {
             //tTest = tTest / x
             tTest = tTest / tmp;
             document.getElementById('ttest1').value = tTest
-            Plotly.newPlot('boxPlotID', data);
+
+            Plotly.newPlot('boxPlotID', data)
+                .then(
+                    function (gd) {
+                        Plotly.toImage(gd, { height: 600, width: 660 })
+                            .then(
+                                function (url) {
+                                    img_jpg_plot1.attr("src", url);
+                                }
+                            )
+                    });
             if (two) {
                 pval = jStat.ttest(tTest, df, 1)
                 document.getElementById("pval1").value = pval
             }
+            plotDrawn = true;
+            //console.log("draw plot", plotDrawn)
         }
     }
 
@@ -4281,9 +4342,13 @@ var TreeCompare = function () {
         });
         chart
         chart.destroy();
+        plotDrawn = false;
+        //console.log("purge plots: ", plotDrawn)
+
     }
 
     function boxPlotLeaves(one, two) {
+
         if (one == null && two == null) {
             Plotly.purge('boxPlot2ID');
             document.getElementById('ttest2').value = "";
@@ -4304,9 +4369,12 @@ var TreeCompare = function () {
             two = tempTwo
             var trace1 = {
                 y: one,
-                name: "Node 1",
-                type: 'box',
-                boxpoints: 'all',
+                name: nameObj.node1,
+                type: 'violin',
+                box: {
+                    visible: true
+                },
+                boxpoints: false,
                 jitter: 0.5,
                 whiskerwidth: 0.2,
                 marker: {
@@ -4321,8 +4389,11 @@ var TreeCompare = function () {
 
             var trace2 = {
                 y: two,
-                name: "Node 2",
-                type: 'box',
+                name: nameObj.node2,
+                type: 'violin',
+                box: {
+                    visible: true
+                },
                 boxpoints: 'all',
                 jitter: 0.5,
                 whiskerwidth: 0.2,
@@ -4388,11 +4459,20 @@ var TreeCompare = function () {
             //T distribution is symmetric so there is no need for negative values, it makes p value weird 
             tTest = Math.abs(tTest)
             //tTest = tTest / x
-            console.log("x: ", tTest / x, "\n")
-            console.log("tmp: ", tTest / tmp)
+            //console.log("x: ", tTest / x, "\n")
+            //console.log("tmp: ", tTest / tmp)
             tTest = tTest / tmp;
             document.getElementById('ttest2').value = tTest
-            Plotly.newPlot('boxPlot2ID', data);
+            Plotly.newPlot('boxPlot2ID', data)
+                .then(
+                    function (gd) {
+                        Plotly.toImage(gd, { height: 600, width: 660 })
+                            .then(
+                                function (url) {
+                                    img_jpg_plot2.attr("src", url);
+                                }
+                            )
+                    });
             if (two) {
                 pval = jStat.ttest(tTest, df, 1)
                 document.getElementById("pval2").value = pval
@@ -4540,9 +4620,9 @@ var TreeCompare = function () {
                 searchOnlyTwo: two,
                 numSearchOnlyTwo: two.length
             }
-            if (def) {
+            /*if (def) {
                 console.log(resSearch)
-            }
+            }*/
             var str = "First Selection: " + resSearch.numSearchOne.toString() +
                 "\nSecond Selection: " + resSearch.numSearchTwo.toString() +
                 "\nCommon: " + resSearch.numSearchCommon.toString() +
@@ -4588,12 +4668,12 @@ var TreeCompare = function () {
                     name: 'Search Results',
                     // Series data
                     data: [{
-                        name: 'Node 1',
+                        name: nameObj.node1,
                         sets: ['A'],
                         value: A,
                         color: "#1f77b4"
                     }, {
-                        name: 'Node 2',
+                        name: nameObj.node2,
                         sets: ['B'],
                         value: B,
                         color: "#ff7f0e"
@@ -4609,6 +4689,7 @@ var TreeCompare = function () {
                 }
             });
             chart
+            chartSVG = chart.getSVG()
         }
     }
 
@@ -4671,6 +4752,7 @@ var TreeCompare = function () {
                 .on("click", function () {
                     var svg = d3.select("#" + canvasId + " svg");
                     addLogo(svg);
+                    //console.log(svg)
                     var name = svg.attr("id");
                     var svgString = getSVGString(svg.node());
                     var blob = new Blob([svgString], { "type": "image/svg+xml;base64," + btoa(svgString) });
@@ -6474,7 +6556,7 @@ var TreeCompare = function () {
                         //document.getElementById('select1').value = str
 
                         update(tree.root, tree.data);
-                        commonAncestor()
+                        nodeName()
                     }
                 );
             };
@@ -6522,7 +6604,7 @@ var TreeCompare = function () {
 
                         //document.getElementById('select2').value = str
                         update(tree.root, tree.data);
-                        commonAncestor()
+                        nodeName()
                     }
                 );
             };
@@ -6553,7 +6635,7 @@ var TreeCompare = function () {
                         update(tree.root, tree.data);
                         plotVenn(null)
                         document.getElementById("regRes").value = ""
-                        commonAncestor()
+                        nodeName()
                     }
                 );
             };
@@ -6574,7 +6656,7 @@ var TreeCompare = function () {
                         update(tree.root, tree.data);
                         plotVenn(null)
                         document.getElementById("regRes").value = ""
-                        commonAncestor()
+                        nodeName()
                     }
                 );
             };
@@ -6602,7 +6684,7 @@ var TreeCompare = function () {
                         update(tree.root, tree.data);
                         document.getElementById("regRes").value = ""
                         plotVenn(null)
-                        commonAncestor()
+                        nodeName()
                     }
                 );
             };
@@ -6970,37 +7052,122 @@ var TreeCompare = function () {
     }
 
     function getReport() {
-        var doc = new jsPDF('p', 'pt', 'a4');
+        var doc = new jsPDF('l', 'cm', 'a4');
         var elementHandler = {
             '#ignorePDF': function (element, renderer) {
                 return true;
             }
         };
+        canvasId = "vis-container1"
 
-        var svg = document.getElementById('Tree_0').innerHTML;
-        console.log(svg)
+        function getSVGString(svgNode) {
+            svgNode.setAttribute('xlink', 'http://www.w3.org/1999/xlink');
+            var serializer = new XMLSerializer();
+            var svgString = serializer.serializeToString(svgNode);
+            svgString = svgString.replace(/(\w+)?:?xlink=/g, 'xmlns:xlink='); // Fix root xlink without namespace
+            svgString = svgString.replace(/NS\d+:href/g, 'xlink:href'); // Safari NS namespace fix
+            return svgString;
+        }
+
+        function getSvg(canvasId) {
+            var svg = d3.select("#" + canvasId + " > svg");
+            addLogo(svg);
+            //console.log("Svg: ", svg);
+            //var name = svg.attr("id");
+            var svgString = getSVGString(svg.node());
+            //var blob = new Blob([svgString], { "type": "image/svg+xml;base64," + btoa(svgString) });
+            //saveAs(blob, name + ".svg");
+            svg.select("#exportLogo").remove();
+            return svgString;
+        }
+
+        var svg = getSvg(canvasId)
+        //var svg = XMLSerializer.serializeToString(document.getElementById('Tree_0').innerHTML);
+        //var svg = document.getElementById('Tree_0').innerHTML
         var canvas = document.createElement('canvas');
-        console.log(canvas)
+        var context = canvas.getContext("2d");
         
         canvg(canvas, svg);
         var imgData = canvas.toDataURL('image/png');
-        console.log(imgData)
 
-        doc.setProperties({title: 'Report'});
-        doc.setFontSize(20);
-        doc.text("Report", 270, 40)
-        doc.addImage(imgData, 40, 60, 500, 500 )
+        doc.setProperties({ title: 'Report' });
         doc.setFontSize(16);
+        doc.addImage(imgData, 'PNG', 1, 1, 28, 21)
+
+        doc.addPage('a4', 'p')
+
+        doc.setFontSize(12);
         doc.setFontType("bold");
-        doc.text("Common Ancestor: ", 40, 520)
+        doc.text("Common Ancestor: ", 1.5, 2)
+
+        var img_plot_1 = document.getElementById('jpg_plot1')
+        doc.addImage(img_plot_1, 'PNG', 1, 6, 7.9375, 8.73125)
+        var img_plot_2 = document.getElementById('jpg_plot2')
+        doc.addImage(img_plot_2, 'PNG', 11, 6, 7.9375, 8.73125)
+
+        var vennSvg = chartSVG
+        var venn_canvas = document.createElement('canvas');
+        canvg(venn_canvas, vennSvg)
+        var venn_img = venn_canvas.toDataURL('image/png');
+        doc.addImage(venn_img, 'PNG', 10, 16.5, 8, 4)
+
         doc.setFontSize(12);
         doc.setFontType('normal');
         var commonAncestor = document.getElementById("ancestor12").value
-        console.log(commonAncestor)
-        doc.text(commonAncestor, 60, 540)
+        doc.text(commonAncestor, 7, 2)
 
+        doc.setFontType("bold");
+        doc.text("Difference of selected: ", 1.5, 7)
+        doc.text("Difference of leaves: ", 11.5, 7)
+        doc.setFontType('normal');
+
+        doc.text("T-Test Score: ", 1.5, 15)
+        doc.text("P-Value\t: ", 1.5, 15.5)
+        doc.text("T-Test Score: ", 11.5, 15)
+        doc.text("P-Value\t: ", 11.5, 15.5)
+        
+
+        var ttest1 = document.getElementById('ttest1').value
+        doc.text(ttest1, 4.5, 15)
+        var pval1 = document.getElementById('pval1').value
+        doc.text(pval1, 4.5, 15.5)
+        var ttest2 = document.getElementById('ttest2').value
+        doc.text(ttest2, 14.5, 15)
+        var pval2 = document.getElementById('pval2').value
+        doc.text(pval2, 14.5, 15.5)
+        if (parseInt(pval2)<=0.05){
+            doc.text("P-value is smaller than 0.05.", 11.5, 16)
+        }
+        else{
+            doc.text("P-value is larger than 0.05.", 11.5, 16)
+        }
+
+        doc.setFontType("bold");
+        doc.text("RegEX Search:", 1.5, 17.25)
+        doc.setFontType('normal');
+        var RegEX = document.getElementById('regExSearch').value
+        if (!RegEX) RegEX = "taxid_[0-9]+"
+        doc.text(RegEX, 4.75, 17.25)
+        var regRes = document.getElementById('regRes').value
+        doc.text(regRes, 1.5, 17.75)
+
+        doc.setFontType("bold");
+        doc.text("Conclusion:", 1.5, 21.5)
+        doc.setFontType("normal");
+
+        //Add if/else statements to actually give a conclusion.
 
         doc.save("report.pdf");
+    }
+
+    function nodeName() {
+        if (document.getElementById("node1Name").value) { node1Name = document.getElementById("node1Name").value; }
+        else { node1Name = "Node 1" }
+        if (document.getElementById("node2Name").value) { node2Name = document.getElementById("node2Name").value; }
+        else { node2Name = "Node 2" }
+        nameObj.node1 = node1Name;
+        nameObj.node2 = node2Name;
+        commonAncestor();
     }
 
     //return all the externalised functions
@@ -7025,6 +7192,7 @@ var TreeCompare = function () {
         regexSearch: regexSearch,
         multiSelected: multiSelected,
         purgePlots: purgePlots,
-        getReport: getReport
+        getReport: getReport,
+        nodeName: nodeName
     }
 };
