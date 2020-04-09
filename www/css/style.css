@@ -69,13 +69,13 @@ body#manual {
 }
 
 #sidebar-wrapper {
-    background: -webkit-linear-gradient(black, #555);
+    background: -webkit-linear-gradient(#1b2c46, #555);
     /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(black, #555);
+    background: -o-linear-gradient(#1b2c46, #555);
     /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(black, #555);
+    background: -moz-linear-gradient(#1b2c46, #555);
     /* For Firefox 3.6 to 15 */
-    background: linear-gradient(black, #555);
+    background: linear-gradient(#1b2c46, #555);
     /* Standard syntax */
     position: absolute;
 }
@@ -224,11 +224,12 @@ input[type=file] {
 .alert {
     width: 200px;
     margin-left: 20px;
-    line-height: 1.2;
+    line-height: 1.2;s
 }
 
 .btn {
     border: 0 none;
+    /* background-image: linear-gradient(to bottom,#102c2b ,#3a4e3c 100%); */
 }
 
 .btn.sharp {
@@ -273,10 +274,10 @@ input[type=file] {
 
 #settingsPanel {
     display: none;
-    background: rgb(79, 79, 79);
-    background: -moz-linear-gradient(-45deg, rgba(79, 79, 79, 1) 0%, rgba(68, 68, 68, 1) 20%, rgba(14, 14, 14, 1) 100%);
-    background: -webkit-linear-gradient(-45deg, rgba(79, 79, 79, 1) 0%, rgba(68, 68, 68, 1) 20%, rgba(14, 14, 14, 1) 100%);
-    background: linear-gradient(135deg, rgba(79, 79, 79, 1) 0%, rgba(68, 68, 68, 1) 20%, rgba(14, 14, 14, 1) 100%);
+    background: rgb(36, 36, 36);
+    /* background: -moz-linear-gradient(-45deg, rgb(36, 36, 36) 0%, rgb(17, 17, 17) 20%, rgba(14, 14, 14, 1) 100%);
+    background: -webkit-linear-gradient(-45deg, rgba(36, 36, 36, 1) 0%, rgba(17, 17, 17, 1) 20%, rgba(14, 14, 14, 1) 100%);
+    background: linear-gradient(135deg, rgba(36, 36, 36, 1) 0%, rgba(17, 17, 17, 1) 20%, rgba(14, 14, 14, 1) 100%); */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f4f4f', endColorstr='#0e0e0e', GradientType=1);
     padding: 15px;
     border-radius: 3px;
