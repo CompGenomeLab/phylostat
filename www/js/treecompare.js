@@ -1,7 +1,7 @@
 //global variable for multi-selecting
 var multiSelected = [];
 var plot1SVG, plot2SVG, chartSVG;
-var plotDrawn = false;
+var meanObj = { leftMean1: 0, leftMean2: 0, rightMean1: 0, rightMean2: 0 }
 
 var TreeCompare = function () {
     var trees = [];
@@ -29,10 +29,8 @@ var TreeCompare = function () {
     var multiChildren2 = [];
     var leavesOne = [];
     var leavesTwo = [];
-    //console.log("main: ", plotDrawn);
     var chart;
     var nameObj = { node1: "Node 1", node2: "Node 2" }
-
     var img_jpg_plot1 = d3.select('#jpg_plot1');
     var img_jpg_plot2 = d3.select('#jpg_plot2');
 
@@ -1989,7 +1987,7 @@ var TreeCompare = function () {
             .attr("font-size", function (d) {
                 return settings.fontSize + "px"
             });
-        
+
         //Do editing to swtich node colors here
         node.select("circle")
             .attr("r", function (d) {
@@ -2106,7 +2104,7 @@ var TreeCompare = function () {
                 }
             })
 
-       
+
 
         nodeUpdate.select("text")
             .style("fill-opacity", 1)
@@ -2288,11 +2286,11 @@ var TreeCompare = function () {
                             return "bold";
                         };
                     })
-                    .style("visibility", function(){
-                        if(settings.hideLabels){
+                    .style("visibility", function () {
+                        if (settings.hideLabels) {
                             return "hidden";
                         }
-                        else{
+                        else {
                             return "visible";
                         }
                     });
@@ -4193,9 +4191,10 @@ var TreeCompare = function () {
             Plotly.purge('boxPlotID');
             document.getElementById('ttest1').value = "";
             document.getElementById('pval1').value = "";
-            plotDrawn = false;
-            //console.log("empty one two:", plotDrawn)
-
+            meanObj.leftMean1 = 0;
+            meanObj.leftMean2 = 0;
+            meanObj.rightMean1 = 0;
+            meanObj.rightMean2 = 0;
         }
         else if (one != null && two != null) {
             df = one.length + two.length - 2
@@ -4227,7 +4226,8 @@ var TreeCompare = function () {
                         color: '#1f77b4',
                         width: 1
                     }
-                }
+                },
+                boxmean: true
 
             };
 
@@ -4236,7 +4236,7 @@ var TreeCompare = function () {
                 name: nameObj.node2,
                 type: 'violin',
                 box: {
-                    visible: true
+                    visible: true,
                 },
                 boxpoints: false,
                 jitter: 0.5,
@@ -4248,7 +4248,8 @@ var TreeCompare = function () {
                         color: '#ff7f0e',
                         width: 1
                     }
-                }
+                },
+                boxmean: true
             };
 
             var data = [trace1, trace2];
@@ -4264,6 +4265,9 @@ var TreeCompare = function () {
                 mean2 += two[i]
             }
             mean2 = mean2 / two.length
+
+            meanObj.leftMean1 = mean1;
+            meanObj.leftMean2 = mean2;
 
             stdev1 = 0
             for (i = 0; i < one.length; i++) {
@@ -4321,8 +4325,6 @@ var TreeCompare = function () {
                 pval = jStat.ttest(tTest, df, 1)
                 document.getElementById("pval1").value = pval
             }
-            plotDrawn = true;
-            //console.log("draw plot", plotDrawn)
         }
     }
 
@@ -4342,9 +4344,10 @@ var TreeCompare = function () {
         });
         chart
         chart.destroy();
-        plotDrawn = false;
-        //console.log("purge plots: ", plotDrawn)
-
+        meanObj.leftMean1 = 0;
+        meanObj.leftMean2 = 0;
+        meanObj.rightMean1 = 0;
+        meanObj.rightMean2 = 0;
     }
 
     function boxPlotLeaves(one, two) {
@@ -4385,6 +4388,7 @@ var TreeCompare = function () {
                         width: 1
                     }
                 },
+                boxmean: true
             };
 
             var trace2 = {
@@ -4405,6 +4409,7 @@ var TreeCompare = function () {
                         width: 1
                     }
                 },
+                boxmean: true
             };
 
             var data = [trace1, trace2];
@@ -4420,6 +4425,9 @@ var TreeCompare = function () {
                 mean2 += two[i]
             }
             mean2 = mean2 / two.length
+
+            meanObj.rightMean1 = mean1;
+            meanObj.rightMean2 = mean2;
 
             stdev1 = 0
             for (i = 0; i < one.length; i++) {
@@ -7052,6 +7060,12 @@ var TreeCompare = function () {
     }
 
     function getReport() {
+        var concObj = {
+            leftPlot: 0,
+            rightPlot: 0,
+            pVal: 0,
+            venn: 0
+        }
         var doc = new jsPDF('l', 'cm', 'a4');
         var elementHandler = {
             '#ignorePDF': function (element, renderer) {
@@ -7086,7 +7100,7 @@ var TreeCompare = function () {
         //var svg = document.getElementById('Tree_0').innerHTML
         var canvas = document.createElement('canvas');
         var context = canvas.getContext("2d");
-        
+
         canvg(canvas, svg);
         var imgData = canvas.toDataURL('image/png');
 
@@ -7109,7 +7123,7 @@ var TreeCompare = function () {
         var venn_canvas = document.createElement('canvas');
         canvg(venn_canvas, vennSvg)
         var venn_img = venn_canvas.toDataURL('image/png');
-        doc.addImage(venn_img, 'PNG', 10, 16.5, 8, 4)
+        doc.addImage(venn_img, 'PNG', 10, 17, 8, 4)
 
         doc.setFontSize(12);
         doc.setFontType('normal');
@@ -7125,7 +7139,7 @@ var TreeCompare = function () {
         doc.text("P-Value\t: ", 1.5, 15.5)
         doc.text("T-Test Score: ", 11.5, 15)
         doc.text("P-Value\t: ", 11.5, 15.5)
-        
+
 
         var ttest1 = document.getElementById('ttest1').value
         doc.text(ttest1, 4.5, 15)
@@ -7135,28 +7149,85 @@ var TreeCompare = function () {
         doc.text(ttest2, 14.5, 15)
         var pval2 = document.getElementById('pval2').value
         doc.text(pval2, 14.5, 15.5)
-        if (parseInt(pval2)<=0.05){
-            doc.text("P-value is smaller than 0.05.", 11.5, 16)
+
+        console.log(meanObj)
+        if (meanObj.leftMean1 > meanObj.leftMean2) {
+            var text = nameObj.node1 + " is more significant than " + nameObj.node2
+            doc.text(text, 1.5, 16)
+            concObj.leftPlot = 1
         }
-        else{
-            doc.text("P-value is larger than 0.05.", 11.5, 16)
+        else if (meanObj.leftMean2 > meanObj.leftMean1) {
+            var text = nameObj.node2 + " is more significant than " + nameObj.node1
+            doc.text(text, 1.5, 16)
+            concObj.leftPlot = 2
+        }
+        else {
+            doc.text("There is no significant difference between nodes.", 1.5, 16)
+            concObj.leftPlot = 3
+        }
+        if (meanObj.rightMean1 > meanObj.rightMean2) {
+            var text = nameObj.node1 + " is more significant than " + nameObj.node2
+            doc.text(text, 11.5, 16)
+            concObj.rightPlot = 1
+        }
+        else if (meanObj.rightMean2 > meanObj.rightMean1) {
+            var text = nameObj.node2 + " is more significant than " + nameObj.node1
+            doc.text(text, 11.5, 16)
+            concObj.rightPlot = 2
+        }
+        else {
+            doc.text("There is no significant difference between nodes.", 11.5, 16)
+            concObj.rightPlot = 3
+        }
+        if (parseInt(pval2) < 0.05) {
+            doc.text("P-value is smaller than 0.05.", 11.5, 16.5)
+            concObj.pVal = 1
+        }
+        else {
+            doc.text("P-value is larger than 0.05.", 11.5, 16.5)
+            concObj.pVal = 2
         }
 
         doc.setFontType("bold");
-        doc.text("RegEX Search:", 1.5, 17.25)
+        doc.text("RegEX Search:", 1.5, 17.75)
         doc.setFontType('normal');
         var RegEX = document.getElementById('regExSearch').value
         if (!RegEX) RegEX = "taxid_[0-9]+"
-        doc.text(RegEX, 4.75, 17.25)
+        doc.text(RegEX, 4.75, 17.75)
         var regRes = document.getElementById('regRes').value
-        doc.text(regRes, 1.5, 17.75)
+        doc.text(regRes, 1.5, 18.25)
+
+        regRes = regRes.split("\n")
+        var firstRes = regRes[0]
+        firstRes = firstRes.split(" ")[1]
+        firstRes = parseInt(firstRes)
+        var secondRes = regRes[1]
+        secondRes = secondRes.split(" ")[1]
+        secondRes = parseInt(secondRes)
+        var commonRes = regRes[2]
+        commonRes = commonRes.split(" ")[1]
+        commonRes = parseInt(commonRes)
+
+        if (commonRes == firstRes) {
+            concObj.venn = 1
+        }
+        if (commonRes == secondRes) {
+            concObj.venn = 2
+        }
+        if (commonRes == 0) {
+            concObj.venn = 3
+        }
+        else {
+            concObj.venn = 4
+        }
 
         doc.setFontType("bold");
-        doc.text("Conclusion:", 1.5, 21.5)
+        doc.text("Conclusion:", 1.5, 22)
         doc.setFontType("normal");
-
+        var conclusion = conclusionFunc(concObj)
+        conclusion = doc.splitTextToSize(conclusion, 18)
         //Add if/else statements to actually give a conclusion.
-
+        doc.text(conclusion, 1.5, 22.5)
         doc.save("report.pdf");
     }
 
@@ -7168,6 +7239,323 @@ var TreeCompare = function () {
         nameObj.node1 = node1Name;
         nameObj.node2 = node2Name;
         commonAncestor();
+    }
+
+    function conclusionFunc(obj) {
+        console.log("obj: ", obj)
+        var text = ""
+        left = obj.leftPlot //1-> 1>2, 2-> 2>1, 3->no diff
+        right = obj.rightPlot //1-> 1>2, 2-> 2>1, 3->no diff
+        pVal = obj.pVal //1-> <.05, 2-> else
+        venn = obj.venn //1->second is superset, 2->first is superset, 3->no common, 4->else
+        if (left == 1) {
+            text += "Visualization shows that " + nameObj.node1 + " is larger than of " + nameObj.node2 + ". "
+            if (right == 1) {
+                text += "Furthermore, internal branch length of " + nameObj.node1 + " is larger than of " + nameObj.node2 + ". "
+                if (pVal == 1) {
+                    text += "Moreover, p-value of internal branch lengths is significant. "
+                    if (venn == 1) {
+                        text += "However, " + nameObj.node2 + " is superset. " + nameObj.node1 + " has lost some attributes. "
+                    }
+                    else if (venn == 2) {
+                        text += "Also, " + nameObj.node1 + " is superset. " + nameObj.node2 + " has lost some attributes. "
+                    }
+                    else if (venn == 3) {
+                        text += "However, none of the clades are superset. "
+                    }
+                    else if (venn == 4) {
+                        text += "However, none of the clades are superset. "
+                    }
+                }
+                else if (pVal == 2) {
+                    text += "However, p-value of internal branch lengths is not significant. "
+                    if (venn == 1) {
+                        text += nameObj.node2 + " is superset. " + nameObj.node1 + " has lost some attributes. "
+                    }
+                    else if (venn == 2) {
+                        text += nameObj.node1 + " is superset. " + nameObj.node2 + " has lost some attributes. "
+                    }
+                    else if (venn == 3) {
+                        text += "None of the clades are superset. "
+                    }
+                    else if (venn == 4) {
+                        text += "None of the clades are superset. "
+                    }
+                }
+            }
+            else if (right == 2) {
+                text += "However, internal branch length of " + nameObj.node2 + " is larger than of " + nameObj.node1 + ". "
+                if (pVal == 1) {
+                    text += "P-value of internal branch lengths is significant. "
+                    if (venn == 1) {
+                        text += nameObj.node2 + " is superset. " + nameObj.node1 + " has lost some attributes. "
+                    }
+                    else if (venn == 2) {
+                        text += nameObj.node1 + " is superset. " + nameObj.node2 + " has lost some attributes. "
+                    }
+                    else if (venn == 3) {
+                        text += "None of the clades are superset. "
+                    }
+                    else if (venn == 4) {
+                        text += "None of the clades are superset. "
+                    }
+                }
+                if (pVal == 2) {
+                    text += "P-value of internal branch lengths is not significant. "
+                    if (venn == 1) {
+                        text += nameObj.node2 + " is superset. " + nameObj.node1 + " has lost some attributes. "
+                    }
+                    else if (venn == 2) {
+                        text += nameObj.node1 + " is superset. " + nameObj.node2 + " has lost some attributes. "
+                    }
+                    else if (venn == 3) {
+                        text += "None of the clades are superset. "
+                    }
+                    else if (venn == 4) {
+                        text += "None of the clades are superset. "
+                    }
+                }
+            }
+            else if (right == 3) {
+                text += "However, visualization shows that are are no significant difference of internal branch length between " + nameObj.node1 + " and " + nameObj.node1 + ". "
+                if (pVal == 1) {
+                    text += "P-value of internal branch lengths is significant. "
+                    if (venn == 1) {
+                        text += nameObj.node2 + " is superset. " + nameObj.node1 + " has lost some attributes. "
+                    }
+                    else if (venn == 2) {
+                        text += nameObj.node1 + " is superset. " + nameObj.node2 + " has lost some attributes. "
+                    }
+                    else if (venn == 3) {
+                        text += "None of the clades are superset. "
+                    }
+                    else if (venn == 4) {
+                        text += "None of the clades are superset. "
+                    }
+                }
+                if (pVal == 2) {
+                    text += "P-value of internal branch lengths is not significant. "
+                    if (venn == 1) {
+                        text += nameObj.node2 + " is superset. " + nameObj.node1 + " has lost some attributes. "
+                    }
+                    else if (venn == 2) {
+                        text += nameObj.node1 + " is superset. " + nameObj.node2 + " has lost some attributes. "
+                    }
+                    else if (venn == 3) {
+                        text += "None of the clades are superset. "
+                    }
+                    else if (venn == 4) {
+                        text += "None of the clades are superset. "
+                    }
+                }
+            }
+        }
+        else if (left == 2) {
+            text += "Visualization shows that " + nameObj.node2 + " is larger than of " + nameObj.node1 + ". "
+            if (right == 1) {
+                text += "However, internal branch length of " + nameObj.node1 + " is larger than of " + nameObj.node2 + ". "
+                if (pVal == 1) {
+                    text += "P-value of internal branch lengths is significant. "
+                    if (venn == 1) {
+                        text += nameObj.node2 + " is superset. " + nameObj.node1 + " has lost some attributes. "
+                    }
+                    else if (venn == 2) {
+                        text += nameObj.node1 + " is superset. " + nameObj.node2 + " has lost some attributes. "
+                    }
+                    else if (venn == 3) {
+                        text += "None of the clades are superset. "
+                    }
+                    else if (venn == 4) {
+                        text += "None of the clades are superset. "
+                    }
+                }
+                if (pVal == 2) {
+                    text += "P-value of internal branch lengths is not significant. "
+                    if (venn == 1) {
+                        text += nameObj.node2 + " is superset. " + nameObj.node1 + " has lost some attributes. "
+                    }
+                    else if (venn == 2) {
+                        text += nameObj.node1 + " is superset. " + nameObj.node2 + " has lost some attributes. "
+                    }
+                    else if (venn == 3) {
+                        text += "None of the clades are superset. "
+                    }
+                    else if (venn == 4) {
+                        text += "None of the clades are superset. "
+                    }
+                }
+            }
+            else if (right == 2) {
+                text += "Furthermore, internal branch length of " + nameObj.node2 + " is larger than of " + nameObj.node1 + ". "
+                if (pVal == 1) {
+                    text += "Moreover, p-value of internal branch lengths is significant. "
+                    if (venn == 1) {
+                        text += "Also, " + nameObj.node2 + " is superset. " + nameObj.node1 + " has lost some attributes. "
+                    }
+                    else if (venn == 2) {
+                        text += "However, " + nameObj.node1 + " is superset. " + nameObj.node2 + " has lost some attributes. "
+                    }
+                    else if (venn == 3) {
+                        text += "However, none of the clades are superset. "
+                    }
+                    else if (venn == 4) {
+                        text += "However, none of the clades are superset. "
+                    }
+                }
+                if (pVal == 2) {
+                    text += "However, p-value of internal branch lengths is not significant. "
+                    if (venn == 1) {
+                        text += nameObj.node2 + " is superset. " + nameObj.node1 + " has lost some attributes. "
+                    }
+                    else if (venn == 2) {
+                        text += nameObj.node1 + " is superset. " + nameObj.node2 + " has lost some attributes. "
+                    }
+                    else if (venn == 3) {
+                        text += "None of the clades are superset. "
+                    }
+                    else if (venn == 4) {
+                        text += "None of the clades are superset. "
+                    }
+                }
+            }
+            else if (right == 3) {
+                text += "However, visualization shows that are are no significant difference of internal branch length between " + nameObj.node1 + " and " + nameObj.node1 + ". "
+                if (pVal == 1) {
+                    text += "P-value of internal branch lengths is significant. "
+                    if (venn == 1) {
+                        text += nameObj.node2 + " is superset. " + nameObj.node1 + " has lost some attributes. "
+                    }
+                    else if (venn == 2) {
+                        text += nameObj.node1 + " is superset. " + nameObj.node2 + " has lost some attributes. "
+                    }
+                    else if (venn == 3) {
+                        text += "None of the clades are superset. "
+                    }
+                    else if (venn == 4) {
+                        text += "None of the clades are superset. "
+                    }
+                }
+                if (pVal == 2) {
+                    text += "P-value of internal branch lengths is not significant. "
+                    if (venn == 1) {
+                        text += nameObj.node2 + " is superset. " + nameObj.node1 + " has lost some attributes. "
+                    }
+                    else if (venn == 2) {
+                        text += nameObj.node1 + " is superset. " + nameObj.node2 + " has lost some attributes. "
+                    }
+                    else if (venn == 3) {
+                        text += "None of the clades are superset. "
+                    }
+                    else if (venn == 4) {
+                        text += "None of the clades are superset. "
+                    }
+                }
+            }
+        }
+        else if (left == 3) {
+            text += "Visualization shows that there is no difference between " + nameObj.node1 + " and " + nameObj.node2 + ". "
+            if (right == 1) {
+                text += "Internal branch length of " + nameObj.node1 + " is larger than of " + nameObj.node2 + ". "
+                if (pVal == 1) {
+                    text += "P-value of internal branch lengths is significant. "
+                    if (venn == 1) {
+                        text += nameObj.node2 + " is superset. " + nameObj.node1 + " has lost some attributes. "
+                    }
+                    else if (venn == 2) {
+                        text += nameObj.node1 + " is superset. " + nameObj.node2 + " has lost some attributes. "
+                    }
+                    else if (venn == 3) {
+                        text += "None of the clades are superset. "
+                    }
+                    else if (venn == 4) {
+                        text += "None of the clades are superset. "
+                    }
+                }
+                if (pVal == 2) {
+                    text += "P-value of internal branch lengths is not significant. "
+                    if (venn == 1) {
+                        text += nameObj.node2 + " is superset. " + nameObj.node1 + " has lost some attributes. "
+                    }
+                    else if (venn == 2) {
+                        text += nameObj.node1 + " is superset. " + nameObj.node2 + " has lost some attributes. "
+                    }
+                    else if (venn == 3) {
+                        text += "None of the clades are superset. "
+                    }
+                    else if (venn == 4) {
+                        text += "None of the clades are superset. "
+                    }
+                }
+            }
+            else if (right == 2) {
+                text += "Internal branch length of " + nameObj.node2 + " is larger than of " + nameObj.node1 + ". "
+                if (pVal == 1) {
+                    text += "P-value of internal branch lengths is significant. "
+                    if (venn == 1) {
+                        text += nameObj.node2 + " is superset. " + nameObj.node1 + " has lost some attributes. "
+                    }
+                    else if (venn == 2) {
+                        text += nameObj.node1 + " is superset. " + nameObj.node2 + " has lost some attributes. "
+                    }
+                    else if (venn == 3) {
+                        text += "None of the clades are superset. "
+                    }
+                    else if (venn == 4) {
+                        text += "None of the clades are superset. "
+                    }
+                }
+                if (pVal == 2) {
+                    text += "P-value of internal branch lengths is not significant. "
+                    if (venn == 1) {
+                        text += nameObj.node2 + " is superset. " + nameObj.node1 + " has lost some attributes. "
+                    }
+                    else if (venn == 2) {
+                        text += nameObj.node1 + " is superset. " + nameObj.node2 + " has lost some attributes. "
+                    }
+                    else if (venn == 3) {
+                        text += "None of the clades are superset. "
+                    }
+                    else if (venn == 4) {
+                        text += "None of the clades are superset. "
+                    }
+                }
+            }
+            else if (right == 3) {
+                text += "Visualization shows that are are no significant difference of internal branch length between " + nameObj.node1 + " and " + nameObj.node1 + ". "
+                if (pVal == 1) {
+                    text += "P-value of internal branch lengths is significant. "
+                    if (venn == 1) {
+                        text += nameObj.node2 + " is superset. " + nameObj.node1 + " has lost some attributes. "
+                    }
+                    else if (venn == 2) {
+                        text += nameObj.node1 + " is superset. " + nameObj.node2 + " has lost some attributes. "
+                    }
+                    else if (venn == 3) {
+                        text += "None of the clades are superset. "
+                    }
+                    else if (venn == 4) {
+                        text += "None of the clades are superset. "
+                    }
+                }
+                if (pVal == 2) {
+                    text += "P-value of internal branch lengths is not significant. "
+                    if (venn == 1) {
+                        text += nameObj.node2 + " is superset. " + nameObj.node1 + " has lost some attributes. "
+                    }
+                    else if (venn == 2) {
+                        text += nameObj.node1 + " is superset. " + nameObj.node2 + " has lost some attributes. "
+                    }
+                    else if (venn == 3) {
+                        text += "None of the clades are superset. "
+                    }
+                    else if (venn == 4) {
+                        text += "None of the clades are superset. "
+                    }
+                }
+            }
+        }
+        console.log("text:", text)
+        return text
     }
 
     //return all the externalised functions
