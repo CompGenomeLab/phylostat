@@ -1,14 +1,21 @@
-//global variable for multi-selecting
+//global variables needed to function
 var multiSelected = [];
 var plot1SVG, plot2SVG, chartSVG;
 var meanObj = { leftMean1: 0, leftMean2: 0, rightMean1: 0, rightMean2: 0 }
+var colorObj = { color1: '#1f77b4', color2: '#ff7f0e' }
+var trees = [];
+var renderedTrees = [];
+var multiChildren1 = [];
+var multiChildren2 = [];
+var leavesOne = [];
+var leavesTwo = [];
 
 var TreeCompare = function () {
-    var trees = [];
+    console.log("multiChildren1: ", multiChildren1)
+    console.log("leavesOne: ", leavesOne)
     var longestNode = {};
 
     var backupRoot = [];
-    var renderedTrees = [];
     var gistID = "";
 
     //global variable set if manual reroot used!!!
@@ -25,10 +32,7 @@ var TreeCompare = function () {
     var undoFullTreeData = [];
 
     //global variable for multi-selecting
-    var multiChildren1 = [];
-    var multiChildren2 = [];
-    var leavesOne = [];
-    var leavesTwo = [];
+
     var chart;
     var nameObj = { node1: "Node 1", node2: "Node 2" }
     var img_jpg_plot1 = d3.select('#jpg_plot1');
@@ -1912,8 +1916,8 @@ var TreeCompare = function () {
             .attr("class", "node")
             .attr("r", settings.nodeSize * 2)
             .style("fill", function (d) {
-                if (multiSelected[0] == d) return "blue";
-                if (multiSelected[1] == d) return "orange";
+                if (multiSelected[0] == d) return colorObj.color1;
+                if (multiSelected[1] == d) return colorObj.color2;
             });
 
         nodeEnter.append("rect")
@@ -1969,10 +1973,10 @@ var TreeCompare = function () {
             })
             .style("fill", function (d) {
                 if (inChildren1(d)) {
-                    return "#1f77b4";
+                    return colorObj.color1;
                 }
                 else if (inChildren2(d)) {
-                    return "#ff7f0e";
+                    return colorObj.color2;
                 }
             });
 
@@ -2047,32 +2051,32 @@ var TreeCompare = function () {
         nodeUpdate.select("circle")
             .style("fill", function (d) {
                 if (multiSelected[0] == d) {
-                    return "#1f77b4";
+                    return colorObj.color1;
                 };
                 if (multiSelected[1] == d) {
-                    return "#ff7f0e";
+                    return colorObj.color2;
                 };
                 if (inChildren1(d)) {
-                    return "#1f77b4";
+                    return colorObj.color1;
                 };
                 if (inChildren2(d)) {
-                    return "#ff7f0e";
+                    return colorObj.color2;
                 };
             });
 
         nodeUpdate.select("text")
             .style("fill", function (d) {
                 if (multiSelected[0] == d) {
-                    return "#1f77b4";
+                    return colorObj.color1;
                 };
                 if (multiSelected[1] == d) {
-                    return "#ff7f0e";
+                    return colorObj.color2;
                 };
                 if (inChildren1(d)) {
-                    return "#1f77b4";
+                    return colorObj.color1;
                 };
                 if (inChildren2(d)) {
-                    return "#ff7f0e";
+                    return colorObj.color2;
                 };
             });
 
@@ -2235,10 +2239,10 @@ var TreeCompare = function () {
                     })
                     .style("fill", function (d) {
                         if (inChildren1(d)) {
-                            return "#1f77b4";
+                            return colorObj.color1;
                         }
                         else if (inChildren2(d)) {
-                            return "#ff7f0e";
+                            return colorObj.color2;
                         }
                         else if (d[currentS]) {
                             return colorScale(d[currentS]); // changes colour of the collapsed triangle shape
@@ -2272,10 +2276,10 @@ var TreeCompare = function () {
                     })
                     .style("fill", function (d) {
                         if (inChildren1(d)) {
-                            return "#1f77b4";
+                            return colorObj.color1;
                         }
                         else if (inChildren2(d)) {
-                            return "#ff7f0e";
+                            return colorObj.color2;
                         }
                     })
                     .style("font-weight", function (d) {
@@ -2342,9 +2346,9 @@ var TreeCompare = function () {
                     } else if (e["specifiedBranchColor"] && (settings.internalLabels === "color")) { // color branch according to prespecified rgb values in the nhx file
                         return rgb2hex(e["specifiedBranchColor"])
                     } else if (inChildren1(e)) {
-                        return "#1f77b4";
+                        return colorObj.color1;
                     } else if (inChildren2(e)) {
-                        return "#ff7f0e";
+                        return colorObj.color2;
                     } else { // return the standard color
                         return "grey"
                     }
@@ -2397,9 +2401,9 @@ var TreeCompare = function () {
                     } else if (e["specifiedBranchColor"] && (settings.internalLabels === "color")) { // color branch according to prespecified rgb values in the nhx file
                         return rgb2hex(e["specifiedBranchColor"])
                     } else if (inChildren1(e)) {
-                        return "#1f77b4";
+                        return colorObj.color1;
                     } else if (inChildren2(e)) {
-                        return "#ff7f0e";
+                        return colorObj.color2;
                     } else { // return the standard color
                         return "grey"
                     }
@@ -3269,7 +3273,7 @@ var TreeCompare = function () {
                 d3.select("#" + canvas + " svg").remove();
                 var toggledTree = trees[ind];
                 var newName = toggledTree.name;
-                renderedTrees = [];
+                //renderedTrees= [];
                 if (oppositeCanvas !== undefined) { // compare mode
                     var oppositeName = d3.select("#" + oppositeCanvas + " svg").attr("id");
                     d3.select("#" + oppositeCanvas + " svg").remove();
@@ -3358,7 +3362,7 @@ var TreeCompare = function () {
                 }
                 toggledTree.display = true;
                 var new_name = toggledTree.name;
-                renderedTrees = [];
+                //renderedTrees= [];
 
                 if (oppositeTreeName !== undefined) { // compare mode
                     var index2 = findTreeIndex(oppositeTreeName);
@@ -3414,7 +3418,7 @@ var TreeCompare = function () {
 
                 toggledTree.display = true;
                 var new_name = toggledTree.name;
-                renderedTrees = [];
+                //renderedTrees= [];
                 if (oppositeTreeName !== undefined) {
                     var index2 = findTreeIndex(oppositeTreeName);
                     var oppositeTree = trees[index2];
@@ -4219,11 +4223,13 @@ var TreeCompare = function () {
                 boxpoints: false,
                 jitter: 0.5,
                 whiskerwidth: 0.2,
+                color: colorObj.color1,
                 marker: {
+                    color: colorObj.color1,
                     size: 2,
                     opacity: 0.2,
                     line: {
-                        color: '#1f77b4',
+                        color: colorObj.color1,
                         width: 1
                     }
                 },
@@ -4242,10 +4248,11 @@ var TreeCompare = function () {
                 jitter: 0.5,
                 whiskerwidth: 0.2,
                 marker: {
+                    color: colorObj.color2,
                     size: 2,
                     opacity: 0.2,
                     line: {
-                        color: '#ff7f0e',
+                        color: colorObj.color2,
                         width: 1
                     }
                 },
@@ -4380,11 +4387,13 @@ var TreeCompare = function () {
                 boxpoints: false,
                 jitter: 0.5,
                 whiskerwidth: 0.2,
+                color: colorObj.color1,
                 marker: {
+                    color: colorObj.color1,
                     size: 2,
                     opacity: 0.2,
                     line: {
-                        color: '#1f77b4',
+                        color: colorObj.color1,
                         width: 1
                     }
                 },
@@ -4402,10 +4411,11 @@ var TreeCompare = function () {
                 jitter: 0.5,
                 whiskerwidth: 0.2,
                 marker: {
+                    color: colorObj.color2,
                     size: 2,
                     opacity: 0.2,
                     line: {
-                        color: '#ff7f0e',
+                        color: colorObj.color2,
                         width: 1
                     }
                 },
@@ -4679,12 +4689,12 @@ var TreeCompare = function () {
                         name: nameObj.node1,
                         sets: ['A'],
                         value: A,
-                        color: "#1f77b4"
+                        color: colorObj.color1
                     }, {
                         name: nameObj.node2,
                         sets: ['B'],
                         value: B,
-                        color: "#ff7f0e"
+                        color: colorObj.color2
                     }, {
                         name: 'Intersection of Both',
                         sets: ['A', 'B'],
@@ -5230,7 +5240,7 @@ var TreeCompare = function () {
         if (renderedTrees.length === 2) {
             settings.loadingCallback();
             setTimeout(function () {
-                // renderedTrees and trees index do not
+                // renderedTreesand trees index do not
                 // necessarily correspond
                 getVisibleBCNsUsingWorkers(findTreeIndex(renderedTrees[0].name), findTreeIndex(renderedTrees[1].name));
                 update(renderedTrees[0].root, renderedTrees[0].data);
@@ -5618,7 +5628,7 @@ var TreeCompare = function () {
      /
      ---------------*/
     function compareTrees(name1, canvas1, name2, canvas2, scale1, scale2) {
-        renderedTrees = [];
+        //renderedTrees= [];
 
         var index1 = findTreeIndex(name1);
         var index2 = findTreeIndex(name2);
@@ -5672,9 +5682,10 @@ var TreeCompare = function () {
      /    EXTERNAL: external function for initialising a single tree visualisation
      /
      ---------------*/
+
     function viewTree(name, canvasId, scaleId) {
 
-        renderedTrees = [];
+        //renderedTrees= [];
         var index = findTreeIndex(name);
         initializeRenderTreeCanvas(name, canvasId, scaleId);
         if (trees[index].hasOwnProperty("multiple")) {
@@ -6280,6 +6291,7 @@ var TreeCompare = function () {
      get relevant event listener for clicking on a node depending on what mode is selected
      */
     function getClickEventListenerNode(tree, isCompared, comparedTree) {
+
         var treeIndex = findTreeIndex(tree.name);
         function nodeClick(d) {
             var svg = tree.data.svg;
@@ -6529,6 +6541,12 @@ var TreeCompare = function () {
 
             //Multi selecting, select as first option
             if (!multiSelected[0]) {
+
+                multiChildren1 = [];
+                multiChildren2 = [];
+                leavesTwo = [];
+                leavesOne = [];
+
                 add_menu_item(".tooltipElem",
                     function () {
                         return 'Select as first node >'
@@ -6539,7 +6557,9 @@ var TreeCompare = function () {
                         function getChildren(d) {
                             temp = d.leaves
                             for (i = 0; i < temp.length; i++) {
-                                multiChildren1.push(temp[i])
+                                if (d != temp[i]) {
+                                    multiChildren1.push(temp[i])
+                                }
                                 tmp = temp[i]
                                 while (tmp != d) {
                                     if (!multiChildren1.includes(tmp)) {
@@ -6586,7 +6606,9 @@ var TreeCompare = function () {
                             }*/
                             temp = d.leaves
                             for (i = 0; i < temp.length; i++) {
-                                multiChildren2.push(temp[i])
+                                if (d != temp[i]) {
+                                    multiChildren2.push(temp[i])
+                                }
                                 tmp = temp[i]
                                 while (tmp != d) {
                                     if (!multiChildren2.includes(tmp)) {
@@ -7241,6 +7263,15 @@ var TreeCompare = function () {
         commonAncestor();
     }
 
+    function colorChange() {
+        if (document.getElementById('color1').value) { colorObj.color1 = document.getElementById('color1').value }
+        else { colorObj.color1 = "#1f77b4" }
+        if (document.getElementById('color2').value) { colorObj.color2 = document.getElementById('color2').value }
+        else { colorObj.color2 = "#ff7f0e" }
+        updateAllRenderedTrees();
+        commonAncestor();
+    }
+
     function conclusionFunc(obj) {
         console.log("obj: ", obj)
         var text = ""
@@ -7554,9 +7585,10 @@ var TreeCompare = function () {
                 }
             }
         }
-        console.log("text:", text)
         return text
     }
+
+
 
     //return all the externalised functions
     return {
@@ -7581,6 +7613,13 @@ var TreeCompare = function () {
         multiSelected: multiSelected,
         purgePlots: purgePlots,
         getReport: getReport,
-        nodeName: nodeName
+        nodeName: nodeName,
+        colorChange: colorChange,
+        trees: trees,
+        renderedTrees: renderedTrees,
+        multiChildren1: multiChildren1,
+        multiChildren2: multiChildren2,
+        leavesOne: leavesOne,
+        leavesTwo: leavesTwo,
     }
 };

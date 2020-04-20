@@ -23,8 +23,10 @@
     <script type="text/javascript" src="js/html2canvas.js"></script>
     <script type="text/javascript" src="js/canvg.min.js"></script>
     <script type="text/javascript" src="js/canvas2image.js"></script>
-    
-    
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/monolith.min.css" />
+    <!-- 'monolith' theme -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css"
         integrity="sha384-v2Tw72dyUXeU3y4aM2Y0tBJQkGfplr39mxZqlTBDUZAb9BGoC40+rdFCG0m10lXk" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/fontawesome.css"
@@ -151,7 +153,7 @@
                     </li>
                     <li><a href="help.html" class="homelinks">Help</a></li>
                     <li><a href="about.html" class="homelinks">About</a></li>
-                    <li><a href="https://adebalilab.org" ><img src="img/Alab.png" width="20px"></a></li>
+                    <li><a href="https://adebalilab.org"><img src="img/Alab.png" width="20px"></a></li>
                 </ul>
             </div>
             <!-- END menu navigation bar -->
@@ -276,7 +278,7 @@
                                     Render
                                 </button>
                                 <button type="button" id="clearButton" class="btn btn-info" style="width: 70px;">
-                                Clear
+                                    Clear
                                 </button>
 
                                 <!-- <a class="singleIn" style="cursor: pointer;" id="" onclick="clearFunc()">Clear</a> -->
@@ -318,12 +320,18 @@
                                 <label>Set Node Names:</label>
                             </div>
                             <div class="nodeNames" style="display: flex;">
-                                <textarea name="node1Name" id="node1Name"  rows="1" 
-                                placeholder="Default: Node 1" style="width: 150px;"
-                                onkeydown="if(event.keyCode == 13 && !event.shiftKey){this.blur(); return false;}" onchange="nodeNameHTML()"></textarea>    
-                                <textarea name="node2Name" id="node2Name"  rows="1"
-                                placeholder="Default: Node 2" style="width: 150px; margin-left: 30px;"
-                                onkeydown="if(event.keyCode == 13 && !event.shiftKey){this.blur(); return false;}" onchange="nodeNameHTML()"></textarea>    
+                                <textarea name="node1Name" id="node1Name" rows="1" placeholder="Default: Node 1"
+                                    style="width: 150px;"
+                                    onkeydown="if(event.keyCode == 13 && !event.shiftKey){this.blur(); return false;}"
+                                    onchange="nodeNameHTML()"></textarea>
+                                <div class="color-picker1" style="border-radius: 1px;"></div>
+                                <textarea id="color1" hidden></textarea>
+                                <textarea name="node2Name" id="node2Name" rows="1" placeholder="Default: Node 2"
+                                    style="width: 150px; margin-left: 30px;"
+                                    onkeydown="if(event.keyCode == 13 && !event.shiftKey){this.blur(); return false;}"
+                                    onchange="nodeNameHTML()"></textarea>
+                                <div class="color-picker2" style="border-radius: 2px;"></div>
+                                <textarea id="color2" hidden></textarea>
                             </div>
                             <div class="commonAncestor">
                                 <label>Common Ancestor: </label>
@@ -336,8 +344,8 @@
                                 <label>Difference of selected: </label>
                             </div>
                             <div id="boxPlotID" style="background-color: #e7e7e7; height: 300px;">
-                            <img hidden id="jpg_plot1"> </img>
-                            <img hidden id="jpg_plot2"> </img>
+                                <img hidden id="jpg_plot1"> </img>
+                                <img hidden id="jpg_plot2"> </img>
                             </div>
                             <div style="display: flex;">
                                 <textarea readonly rows="1" style="width: 100px; border: none; outline-width: 0; 
@@ -524,7 +532,8 @@
                                     Lengths</label>
                             </div>
                             <div class="checkbox">
-                                <label class="settingsCheckboxLabel"><input type="checkbox" id="hideLabels">Hide tip labels</label>
+                                <label class="settingsCheckboxLabel"><input type="checkbox" id="hideLabels">Hide tip
+                                    labels</label>
                             </div>
                             <div class="checkbox">
                                 <label class="settingsCheckboxLabel"><input type="checkbox" id="alignTipLabels">Align
@@ -607,6 +616,99 @@
         }
     </style>
     <script>
+        // Simple example, see optional options for more configuration.
+        const pickr1 = Pickr.create({
+            el: '.color-picker1',
+            theme: 'monolith', // or 'monolith', or 'nano'
+            default: '#1f77b4',
+            swatches: [
+                'rgba(244, 67, 54, 1)',
+                'rgba(233, 30, 99, 0.95)',
+                'rgba(156, 39, 176, 0.9)',
+                'rgba(103, 58, 183, 0.85)',
+                'rgba(63, 81, 181, 0.8)',
+                'rgba(33, 150, 243, 0.75)',
+                'rgba(3, 169, 244, 0.7)',
+                'rgba(0, 188, 212, 0.7)',
+                'rgba(0, 150, 136, 0.75)',
+                'rgba(76, 175, 80, 0.8)',
+                'rgba(139, 195, 74, 0.85)',
+                'rgba(205, 220, 57, 0.9)',
+                'rgba(255, 235, 59, 0.95)',
+                'rgba(255, 193, 7, 1)'
+            ],
+
+            components: {
+                // Main components
+                preview: true,
+                opacity: true,
+                hue: true,
+
+                // Input / output Options
+                interaction: {
+                    hex: true,
+                    rgba: true,
+                    input: true,
+                    cancel: true,
+                    save: true
+                }
+            }
+        });
+
+        const pickr2 = Pickr.create({
+            el: '.color-picker2',
+            theme: 'monolith', // or 'monolith', or 'nano'
+            default: '#ff7f0e',
+            swatches: [
+                'rgba(244, 67, 54, 1)',
+                'rgba(233, 30, 99, 0.95)',
+                'rgba(156, 39, 176, 0.9)',
+                'rgba(103, 58, 183, 0.85)',
+                'rgba(63, 81, 181, 0.8)',
+                'rgba(33, 150, 243, 0.75)',
+                'rgba(3, 169, 244, 0.7)',
+                'rgba(0, 188, 212, 0.7)',
+                'rgba(0, 150, 136, 0.75)',
+                'rgba(76, 175, 80, 0.8)',
+                'rgba(139, 195, 74, 0.85)',
+                'rgba(205, 220, 57, 0.9)',
+                'rgba(255, 235, 59, 0.95)',
+                'rgba(255, 193, 7, 1)'
+            ],
+
+            components: {
+                // Main components
+                preview: true,
+                opacity: true,
+                hue: true,
+
+                // Input / output Options
+                interaction: {
+                    hex: true,
+                    rgba: true,
+                    input: true,
+                    cancel: true,
+                    save: true
+                }
+            }
+        });
+        pickr1.on('save', (color, instance) => {
+            document.getElementById('color1').value = color.toHEXA().toString()
+            TreeCompare().colorChange();
+            pickr1.hide()     
+        });
+        pickr1.on('cancel', (color, instance) =>{
+            pickr1.hide();
+        });
+        pickr2.on('save', (color, instance) => {
+            document.getElementById('color2').value = color.toHEXA().toString()
+            TreeCompare().colorChange();
+            pickr2.hide()
+        });
+        pickr2.on('cancel', (color, instance) =>{
+            pickr2.hide();
+        });
+
         function regSearch() {
             var result = TreeCompare().regexSearch()
             if (result != null) {
@@ -614,11 +716,11 @@
             }
         }
 
-        function nodeNameHTML(){
+        function nodeNameHTML() {
             TreeCompare().nodeName();
         }
 
-        function clearFunc(){
+        function clearFunc() {
             document.getElementById('ancestor12').value = "";
             document.getElementById('boxPlotID').value = "";
             document.getElementById('ttest1').value = "";
@@ -633,7 +735,7 @@
             document.getElementById("mSelected").style.display = "none";
         }
 
-        function report(){
+        function report() {
             TreeCompare().getReport();
         }
     </script>
@@ -1078,6 +1180,17 @@
 
         $("#clearButton").click(function (e) {
 
+            document.getElementById('ancestor12').value = "";
+            document.getElementById('boxPlotID').value = "";
+            document.getElementById('ttest1').value = "";
+            document.getElementById('pval1').value = "";
+            document.getElementById('boxPlot2ID').value = "";
+            document.getElementById('ttest2').value = "";
+            document.getElementById('pval2').value = "";
+            document.getElementById('regExSearch').value = "";
+            document.getElementById('regRes').value = "";
+            document.getElementById('regExVenn').value = "";
+            TreeCompare().purgePlots();
 
             $("#renderErrorMessage").empty();
             $("#colorScale").empty();
