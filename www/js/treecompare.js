@@ -11,8 +11,8 @@ var leavesOne = [];
 var leavesTwo = [];
 
 var TreeCompare = function () {
-    console.log("multiChildren1: ", multiChildren1)
-    console.log("leavesOne: ", leavesOne)
+    //console.log("multiChildren1: ", multiChildren1)
+    //console.log("leavesOne: ", leavesOne)
     var longestNode = {};
 
     var backupRoot = [];
@@ -4101,7 +4101,7 @@ var TreeCompare = function () {
 
 
     //Finding commmon ancestor
-    function commonAncestor() {
+    function commonAncestor(regex) {
         if (multiSelected[0] != null && multiSelected[1] != null) {
             selectedOne = multiSelected[0]
             selectedTwo = multiSelected[1]
@@ -4161,7 +4161,7 @@ var TreeCompare = function () {
             }
             document.getElementById('ancestor12').value = str
             distSelected(st)
-            distFromLeaves(st)
+            distFromLeaves(st, regex)
         }
         else {
             document.getElementById('ancestor12').value = ""
@@ -4499,7 +4499,7 @@ var TreeCompare = function () {
     }
 
     //Distance from leaves
-    function distFromLeaves(ancs) {
+    function distFromLeaves(ancs, regex) {
         selectedOne = multiSelected[0]
         leavesOne = selectedOne.leaves
         leavesOneEachother = []
@@ -4508,81 +4508,210 @@ var TreeCompare = function () {
         leavesTwo = selectedTwo.leaves
         leavesTwoEachother = []
         leavesTwoDist = []
-        regexSearch()
-
-        for (i = 0; i < leavesOne.length; i++) {
-            distance = 0
-            temp = leavesOne[i]
-            while (temp != ancs) {
-                distance += temp.length
-                temp = temp.parent
-            }
-            var tmp = {
-                From: leavesOne[i].name,
-                Distance: distance
-            }
-            leavesOneDist.push(tmp)
-        }
-        for (i = 0; i < leavesTwo.length; i++) {
-            distance = 0
-            temp = leavesTwo[i]
-            while (temp != ancs) {
-                distance += temp.length
-                temp = temp.parent
-            }
-            var tmp = {
-                From: leavesTwo[i].name,
-                Distance: distance
-            }
-            leavesTwoDist.push(tmp)
-
+        if (!regex) {
+            beginning = true;
+            regexSearch(beginning)
         }
 
-        boxPlotEachOther(leavesOneDist, leavesTwoDist)
+        if (regex) {
+            leavesOneTemp = regex.searchOne
+            leavesTwoTemp = regex.searchTwo
 
-        turn = 0
-        count = 0
-        end = (leavesOne.length) * (leavesOne.length - 1) / 2
-        while (true) {
-            for (i = turn + 1; i < leavesOne.length; i++) {
-                str = leavesOne[turn].name + "---" + leavesOne[i].name
-                dis = leavesOne[turn].length + leavesOne[i].length
-                var tmp = {
-                    Between: str,
-                    Distance: dis
+            leavesOne = []
+            leavesTwo = []
+            for (i = 0; i < leavesOneTemp.length; i++) {
+                var temp = []
+                for (j = 0; j < leavesOneTemp.length; j++) {
+                    if (i != j) {
+                        if (leavesOneTemp[i].name == leavesOneTemp[j].name) {
+                            temp.push(leavesOneTemp[i])
+                        }
+                    }
                 }
-                leavesOneEachother.push(tmp)
-                count += 1
-            }
-            turn += 1
-            if (count == end) {
-                break
-            }
-        }
-        turn = 0
-        count = 0
-        end = (leavesTwo.length) * (leavesTwo.length - 1) / 2
-        while (true) {
-            for (i = turn + 1; i < leavesTwo.length; i++) {
-                str = leavesTwo[turn].name + "---" + leavesTwo[i].name
-                dis = leavesTwo[turn].length + leavesTwo[i].length
-                var tmp = {
-                    Between: str,
-                    Distance: dis
+                if (temp.length > 0) {
+                    var min = Number.MAX_SAFE_INTEGER;
+                    for (k = 0; k < temp.length; k++) {
+                        if (min > temp[i].length) {
+                            min = temp[i]
+                        }
+                    }
+                    leavesOne.push(min)
                 }
-                leavesTwoEachother.push(tmp)
-                count += 1
+                else {
+                    leavesOne.push(leavesOneTemp[i])
+                }
             }
-            turn += 1
-            if (count == end) {
-                break
+
+            for (i = 0; i < leavesTwoTemp.length; i++) {
+                var temp = []
+                for (j = 0; j < leavesTwoTemp.length; j++) {
+                    if (i != j) {
+                        if (leavesTwoTemp[i].name == leavesTwoTemp[j].name) {
+                            temp.push(leavesTwoTemp[i])
+                        }
+                    }
+                }
+                if (temp.length > 0) {
+                    var min = Number.MAX_SAFE_INTEGER;
+                    for (k = 0; k < temp.length; k++) {
+                        if (min > temp[i].length) {
+                            min = temp[i]
+                        }
+                    }
+                    leavesTwo.push(min)
+                }
+                else {
+                    leavesTwo.push(leavesTwoTemp[i])
+                }
             }
+
+            for (i = 0; i < leavesOne.length; i++) {
+                distance = 0
+                temp = leavesOne[i]
+                while (temp != ancs) {
+                    distance += temp.length
+                    temp = temp.parent
+                }
+                var tmp = {
+                    From: leavesOne[i].name,
+                    Distance: distance
+                }
+                leavesOneDist.push(tmp)
+            }
+            for (i = 0; i < leavesTwo.length; i++) {
+                distance = 0
+                temp = leavesTwo[i]
+                while (temp != ancs) {
+                    distance += temp.length
+                    temp = temp.parent
+                }
+                var tmp = {
+                    From: leavesTwo[i].name,
+                    Distance: distance
+                }
+                leavesTwoDist.push(tmp)
+
+            }
+
+            boxPlotEachOther(leavesOneDist, leavesTwoDist)
+
+            turn = 0
+            count = 0
+            end = (leavesOne.length) * (leavesOne.length - 1) / 2
+            while (true) {
+                for (i = turn + 1; i < leavesOne.length; i++) {
+                    str = leavesOne[turn].name + "---" + leavesOne[i].name
+                    dis = leavesOne[turn].length + leavesOne[i].length
+                    var tmp = {
+                        Between: str,
+                        Distance: dis
+                    }
+                    leavesOneEachother.push(tmp)
+                    count += 1
+                }
+                turn += 1
+                if (count == end) {
+                    break
+                }
+            }
+            turn = 0
+            count = 0
+            end = (leavesTwo.length) * (leavesTwo.length - 1) / 2
+            while (true) {
+                for (i = turn + 1; i < leavesTwo.length; i++) {
+                    str = leavesTwo[turn].name + "---" + leavesTwo[i].name
+                    dis = leavesTwo[turn].length + leavesTwo[i].length
+                    var tmp = {
+                        Between: str,
+                        Distance: dis
+                    }
+                    leavesTwoEachother.push(tmp)
+                    count += 1
+                }
+                turn += 1
+                if (count == end) {
+                    break
+                }
+            }
+
+            boxPlotLeaves(leavesOneEachother, leavesTwoEachother)
+        }
+        else {
+            for (i = 0; i < leavesOne.length; i++) {
+                distance = 0
+                temp = leavesOne[i]
+                while (temp != ancs) {
+                    distance += temp.length
+                    temp = temp.parent
+                }
+                var tmp = {
+                    From: leavesOne[i].name,
+                    Distance: distance
+                }
+                leavesOneDist.push(tmp)
+            }
+            for (i = 0; i < leavesTwo.length; i++) {
+                distance = 0
+                temp = leavesTwo[i]
+                while (temp != ancs) {
+                    distance += temp.length
+                    temp = temp.parent
+                }
+                var tmp = {
+                    From: leavesTwo[i].name,
+                    Distance: distance
+                }
+                leavesTwoDist.push(tmp)
+
+            }
+
+            boxPlotEachOther(leavesOneDist, leavesTwoDist)
+
+            turn = 0
+            count = 0
+            end = (leavesOne.length) * (leavesOne.length - 1) / 2
+            while (true) {
+                for (i = turn + 1; i < leavesOne.length; i++) {
+                    str = leavesOne[turn].name + "---" + leavesOne[i].name
+                    dis = leavesOne[turn].length + leavesOne[i].length
+                    var tmp = {
+                        Between: str,
+                        Distance: dis
+                    }
+                    leavesOneEachother.push(tmp)
+                    count += 1
+                }
+                turn += 1
+                if (count == end) {
+                    break
+                }
+            }
+            turn = 0
+            count = 0
+            end = (leavesTwo.length) * (leavesTwo.length - 1) / 2
+            while (true) {
+                for (i = turn + 1; i < leavesTwo.length; i++) {
+                    str = leavesTwo[turn].name + "---" + leavesTwo[i].name
+                    dis = leavesTwo[turn].length + leavesTwo[i].length
+                    var tmp = {
+                        Between: str,
+                        Distance: dis
+                    }
+                    leavesTwoEachother.push(tmp)
+                    count += 1
+                }
+                turn += 1
+                if (count == end) {
+                    break
+                }
+            }
+
+            boxPlotLeaves(leavesOneEachother, leavesTwoEachother)
         }
 
-        boxPlotLeaves(leavesOneEachother, leavesTwoEachother)
     }
 
-    function regexSearch() {
+    function regexSearch(beginning) {
         if (multiSelected[0] && multiSelected[1]) {
             if (document.getElementById('regExSearch').value) {
                 var regTemp = document.getElementById('regExSearch').value
@@ -4594,12 +4723,14 @@ var TreeCompare = function () {
             }
             var one = []
             var two = []
+            var regOne = [], regTwo = []
             leavesOne = multiSelected[0].leaves
             leavesTwo = multiSelected[1].leaves
             for (i = 0; i < leavesOne.length; i++) {
                 if (leavesOne[i].name.match(regex)) {
                     if (!one.includes(leavesOne[i].name.match(regex)[0])) {
                         one.push(leavesOne[i].name.match(regex)[0])
+                        regOne.push(leavesOne[i])
                     }
                 }
             }
@@ -4607,6 +4738,7 @@ var TreeCompare = function () {
                 if (leavesTwo[i].name.match(regex)) {
                     if (!two.includes(leavesTwo[i].name.match(regex)[0])) {
                         two.push(leavesTwo[i].name.match(regex)[0])
+                        regTwo.push(leavesTwo[i])
                     }
                 }
             }
@@ -4638,6 +4770,11 @@ var TreeCompare = function () {
                 searchOnlyTwo: two,
                 numSearchOnlyTwo: two.length
             }
+
+            var regSearch = {
+                searchOne: regOne,
+                searchTwo: regTwo
+            }
             /*if (def) {
                 console.log(resSearch)
             }*/
@@ -4650,12 +4787,20 @@ var TreeCompare = function () {
 
             document.getElementById("regRes").value = str
             plotVenn(resSearch)
-            return resSearch
+            if (beginning) {
+                return resSearch
+            }
+            else {
+                commonAncestor(regSearch)
+            }
         }
         else {
             document.getElementById("regRes").value = ""
             plotVenn(null)
-            return null
+            if (beginning) {
+                return null
+            }
+            commonAncestor()
         }
     }
 
@@ -7172,7 +7317,7 @@ var TreeCompare = function () {
         var pval2 = document.getElementById('pval2').value
         doc.text(pval2, 14.5, 15.5)
 
-        console.log(meanObj)
+        //console.log(meanObj)
         if (meanObj.leftMean1 > meanObj.leftMean2) {
             var text = nameObj.node1 + " is more significant than " + nameObj.node2
             doc.text(text, 1.5, 16)
@@ -7273,7 +7418,7 @@ var TreeCompare = function () {
     }
 
     function conclusionFunc(obj) {
-        console.log("obj: ", obj)
+        //console.log("obj: ", obj)
         var text = ""
         left = obj.leftPlot //1-> 1>2, 2-> 2>1, 3->no diff
         right = obj.rightPlot //1-> 1>2, 2-> 2>1, 3->no diff
