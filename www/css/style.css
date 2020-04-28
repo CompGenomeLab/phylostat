@@ -80,6 +80,19 @@ body#manual {
     position: absolute;
 }
 
+#homeMain {
+    height: 100%;
+    width: 100%;
+        background: -webkit-linear-gradient(#1b2c46, #555);
+        /* For Safari 5.1 to 6.0 */
+        background: -o-linear-gradient(#1b2c46, #555);
+        /* For Opera 11.1 to 12.0 */
+        background: -moz-linear-gradient(#1b2c46, #555);
+        /* For Firefox 3.6 to 15 */
+        background: linear-gradient(#1b2c46, #555);
+}
+
+
 #sidebar-wrapper-wrapper {
     margin: 0 auto -60px;
     padding: 0 0 60px;

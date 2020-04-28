@@ -4726,6 +4726,22 @@ var TreeCompare = function () {
             var regOne = [], regTwo = []
             leavesOne = multiSelected[0].leaves
             leavesTwo = multiSelected[1].leaves
+
+            var same = []
+            for(i = 0; i< leavesOne.length; i++){
+                same = []
+                for(j = i+1; j<leavesTwo.length; j++){
+                    if(leavesOne[i].name == leavesOne[j].name){
+                        if(i!=j){
+                            same.push(leavesOne[i]);
+                        }
+                    }
+                }
+                if(same.length>0){
+                    console.log(same);
+                }
+            }
+
             for (i = 0; i < leavesOne.length; i++) {
                 if (leavesOne[i].name.match(regex)) {
                     if (!one.includes(leavesOne[i].name.match(regex)[0])) {
@@ -6446,7 +6462,7 @@ var TreeCompare = function () {
             var rectWidth = 170;
             var rectHeight = 120;
             if (multiSelected[0] && multiSelected[1]) {
-                rectHeight += 18
+                rectHeight += 18*2
             }
 
             var rpad = 10;
@@ -6685,21 +6701,17 @@ var TreeCompare = function () {
 
 
             //Multi selecting, select as first option
-            if (!multiSelected[0]) {
-
-                multiChildren1 = [];
-                multiChildren2 = [];
-                leavesTwo = [];
-                leavesOne = [];
-
+            if (multiSelected[1] != d && multiSelected[0] != d) {
                 add_menu_item(".tooltipElem",
                     function () {
                         return 'Select as first node >'
                     },
                     function () {
                         multiSelected[0] = d;
+                        leavesOne = [];
 
                         function getChildren(d) {
+                            multiChildren1 = [];
                             temp = d.leaves
                             for (i = 0; i < temp.length; i++) {
                                 if (d != temp[i]) {
@@ -6735,13 +6747,14 @@ var TreeCompare = function () {
             };
 
             //Multi selecting, select as second option
-            if (multiSelected[0] && !multiSelected[1] && d != multiSelected[0]) {
+            if (multiSelected[0] && d != multiSelected[0] && multiSelected[1] != d) {
                 add_menu_item(".tooltipElem",
                     function () {
                         return 'Select as second node >'
                     },
                     function () {
-                        multiSelected.push(d);
+                        multiSelected[1] = d;
+                        leavesTwo = [];
                         function getChildren(d) {
                             /*if (d.children) {
                                 for (i = 0; i < d.children.length; i++) {
@@ -6749,6 +6762,7 @@ var TreeCompare = function () {
                                     getChildren(d.children[i])
                                 }
                             }*/
+                            multiChildren2 = []
                             temp = d.leaves
                             for (i = 0; i < temp.length; i++) {
                                 if (d != temp[i]) {
