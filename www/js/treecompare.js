@@ -1911,6 +1911,8 @@ var TreeCompare = function () {
             })
             .on("click", treeData.clickEvent); //comes from getClickEvent
 
+        
+
         //perform the actual drawing
         nodeEnter.append("circle")
             .attr("class", "node")
@@ -1963,6 +1965,14 @@ var TreeCompare = function () {
                 return settings.fontSize + "px"
             });
 
+        function inBoth(){
+            if(multiChildren1.length > multiChildren2.length){
+                return colorObj.color2
+            }
+            else{
+                return colorObj.color1
+            }
+        }
 
         nodeEnter.append("text")
             .attr("class", "triangleText")
@@ -1972,7 +1982,10 @@ var TreeCompare = function () {
                 return settings.fontSize + "px"
             })
             .style("fill", function (d) {
-                if (inChildren1(d)) {
+                if(inChildren1(d) && inChildren2(d)){
+                    return inBoth()
+                }
+                else if (inChildren1(d)) {
                     return colorObj.color1;
                 }
                 else if (inChildren2(d)) {
@@ -2056,6 +2069,9 @@ var TreeCompare = function () {
                 if (multiSelected[1] == d) {
                     return colorObj.color2;
                 };
+                if(inChildren1(d) && inChildren2(d)){
+                    return inBoth()
+                }
                 if (inChildren1(d)) {
                     return colorObj.color1;
                 };
@@ -2072,6 +2088,9 @@ var TreeCompare = function () {
                 if (multiSelected[1] == d) {
                     return colorObj.color2;
                 };
+                if(inChildren1(d) && inChildren2(d)){
+                    return inBoth()
+                }
                 if (inChildren1(d)) {
                     return colorObj.color1;
                 };
@@ -2238,7 +2257,10 @@ var TreeCompare = function () {
                         }
                     })
                     .style("fill", function (d) {
-                        if (inChildren1(d)) {
+                        if(inChildren1(d) && inChildren2(d)){
+                            return inBoth()
+                        }
+                        else if (inChildren1(d)) {
                             return colorObj.color1;
                         }
                         else if (inChildren2(d)) {
@@ -2275,7 +2297,10 @@ var TreeCompare = function () {
                         }
                     })
                     .style("fill", function (d) {
-                        if (inChildren1(d)) {
+                        if(inChildren1(d) && inChildren2(d)){
+                            return inBoth()
+                        }
+                        else if (inChildren1(d)) {
                             return colorObj.color1;
                         }
                         else if (inChildren2(d)) {
@@ -2345,6 +2370,8 @@ var TreeCompare = function () {
                         return colorScaleRest(parseFloat(e["branchSupport"]) / maxBranchSupport)
                     } else if (e["specifiedBranchColor"] && (settings.internalLabels === "color")) { // color branch according to prespecified rgb values in the nhx file
                         return rgb2hex(e["specifiedBranchColor"])
+                    } else if(inChildren1(e) && inChildren2(e)){
+                        return inBoth()
                     } else if (inChildren1(e)) {
                         return colorObj.color1;
                     } else if (inChildren2(e)) {
@@ -2400,6 +2427,8 @@ var TreeCompare = function () {
                         return colorScaleRest(parseFloat(e["branchSupport"]) / maxBranchSupport)
                     } else if (e["specifiedBranchColor"] && (settings.internalLabels === "color")) { // color branch according to prespecified rgb values in the nhx file
                         return rgb2hex(e["specifiedBranchColor"])
+                    } else if(inChildren1(d) && inChildren2(d)){
+                        return inBoth()
                     } else if (inChildren1(e)) {
                         return colorObj.color1;
                     } else if (inChildren2(e)) {
