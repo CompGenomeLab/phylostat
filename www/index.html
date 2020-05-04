@@ -617,8 +617,13 @@
     </style>
     <script>
         window.onload = function(){
+            if(localStorage.getItem("newick")){
             document.getElementById("newickInSingle").value = localStorage.getItem("newick");
             render();
+            }
+            else{
+                location.href = 'home.html';
+            }
         }
         // Simple example, see optional options for more configuration.
         const pickr1 = Pickr.create({
@@ -1215,6 +1220,7 @@
          ------*/
         //$("#renderButton").click(function (e) {
         function render() {
+            localStorage.clear();
             $("#renderErrorMessage").empty();
             hideOptionalSettings();
             //$("#menu-toggle").click();

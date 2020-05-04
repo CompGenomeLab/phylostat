@@ -4521,7 +4521,7 @@ var TreeCompare = function () {
             leavesTwo = []
             for (i = 0; i < leavesOneTemp.length; i++) {
                 var temp = []
-                for (j = 0; j < leavesOneTemp.length; j++) {
+                for (j = i + 1; j < leavesOneTemp.length; j++) {
                     if (i != j) {
                         if (leavesOneTemp[i].name == leavesOneTemp[j].name) {
                             temp.push(leavesOneTemp[i])
@@ -4711,14 +4711,57 @@ var TreeCompare = function () {
 
     }
 
+    function findDist(leafOne, leafTwo) {
+        parentOne = leafOne
+        parentTwo = leafTwo
+        check = true
+        for (i = 0; i <= leafOne.depth; i++) {
+            parentTwo = leafTwo
+            for (j = 0; j <= leafTwo.depth; j++) {
+                if (parentOne.ID == parentTwo.ID) {
+                    st = parentOne
+                    check = false
+                    break
+                }
+                if (parentTwo.depth != 0) {
+                    parentTwo = parentTwo.parent
+                }
+            }
+            if (check == false) {
+                break
+            }
+            else {
+                if (parentOne.depth != 0) {
+                    parentOne = parentOne.parent
+                }
+            }
+        }
+
+        dist1 = 0
+        tempOne = leafOne
+        for (i = 0; i < leafOne.depth - st.depth; i++) {
+            dist1 += tempOne.length;
+            tempOne = tempOne.parent
+        }
+        dist2 = 0
+        tempTwo = leafTwo
+        for (i = 0; i < leafTwo.depth - st.depth; i++) {
+            dist2 += tempTwo.length;
+            tempTwo = tempTwo.parent
+        }
+
+        if (dist1 >= dist2) return 1
+        else if (dist1 < dist2) return 2
+    }
+
     function regexSearch(beginning) {
         if (multiSelected[0] && multiSelected[1]) {
+            var i;
             if (document.getElementById('regExSearch').value) {
                 var regTemp = document.getElementById('regExSearch').value
                 var regex = new RegExp(regTemp, "i");
             }
             else {
-                var def = true
                 var regex = /taxid_[0-9]+/i;
             }
             var one = []
@@ -4726,33 +4769,44 @@ var TreeCompare = function () {
             var regOne = [], regTwo = []
             leavesOne = multiSelected[0].leaves
             leavesTwo = multiSelected[1].leaves
-
-            var same = []
-            for(i = 0; i< leavesOne.length; i++){
-                same = []
-                for(j = i+1; j<leavesTwo.length; j++){
-                    if(leavesOne[i].name == leavesOne[j].name){
-                        if(i!=j){
-                            same.push(leavesOne[i]);
-                        }
-                    }
-                }
-                if(same.length>0){
-                    console.log(same);
-                }
-            }
-
             for (i = 0; i < leavesOne.length; i++) {
                 if (leavesOne[i].name.match(regex)) {
-                    if (!one.includes(leavesOne[i].name.match(regex)[0])) {
+                    temp = leavesOne[i].name.match(regex)[0]
+                    if (one.includes(temp)) {
+                        index = leavesOne.findIndex(x => x.name == leavesOne[i].name.match(regex)['input'])
+                        oneIndex = one.indexOf(temp)
+                        if (findDist(leavesOne[i], leavesOne[index]) == 1) {
+                            one[oneIndex] = temp
+                            regOne[oneIndex] = leavesOne[i]
+                        }
+                        else if (findDist(leavesOne[i], leavesOne[index]) == 2) {
+                            one[oneIndex] = temp
+                            regOne[oneIndex] = leavesOne[index]
+                        }
+                    }
+                    else {
                         one.push(leavesOne[i].name.match(regex)[0])
                         regOne.push(leavesOne[i])
                     }
                 }
             }
+
             for (i = 0; i < leavesTwo.length; i++) {
                 if (leavesTwo[i].name.match(regex)) {
-                    if (!two.includes(leavesTwo[i].name.match(regex)[0])) {
+                    temp = leavesTwo[i].name.match(regex)[0]
+                    if (two.includes(temp)) {
+                        index = leavesTwo.findIndex(x => x.name == leavesTwo[i].name.match(regex)['input'])
+                        twoIndex = two.indexOf(temp)
+                        if (findDist(leavesTwo[i], leavesTwo[index]) == 1) {
+                            two[twoIndex] = temp
+                            regTwo[twoIndex] = leavesTwo[i]
+                        }
+                        else if (findDist(leavesTwo[i], leavesTwo[index]) == 2) {
+                            two[twoIndex] = temp
+                            regTwo[twoIndex] = leavesTwo[index]
+                        }
+                    }
+                    else {
                         two.push(leavesTwo[i].name.match(regex)[0])
                         regTwo.push(leavesTwo[i])
                     }
@@ -6462,7 +6516,10 @@ var TreeCompare = function () {
             var rectWidth = 170;
             var rectHeight = 120;
             if (multiSelected[0] && multiSelected[1]) {
-                rectHeight += 18*2
+                rectHeight += 18 * 2
+            }
+            else if (multiSelected[0] || multiSelected[1]) {
+                rectHeight += 18
             }
 
             var rpad = 10;
