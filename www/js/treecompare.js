@@ -4791,7 +4791,7 @@ var TreeCompare = function () {
                 var regex = new RegExp(regTemp, "i");
             }
             else {
-                var regex = /taxid_[0-9]+/i;
+                var regex = /.*/i;
             }
             var one = []
             var two = []
