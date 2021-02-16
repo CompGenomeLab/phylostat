@@ -7458,7 +7458,7 @@ var TreeCompare = function () {
             doc.text("There is no significant divergence between internal nodes.", 11.5, 16)
             concObj.rightPlot = 3
         }
-        if (parseInt(pval2) < 0.05) {
+        if (parseFloat(pval2) < 0.05) {
             doc.text("P-value is smaller than 0.05.", 11.5, 16.5)
             concObj.pVal = 1
         }
@@ -7477,28 +7477,23 @@ var TreeCompare = function () {
         doc.text(regRes, 1.5, 18.25)
 
         regRes = regRes.split("\n")
-        var firstRes = regRes[0]
-        firstRes = firstRes.split(" ")[1]
-        firstRes = parseInt(firstRes)
-        var secondRes = regRes[1]
-        secondRes = secondRes.split(" ")[1]
-        secondRes = parseInt(secondRes)
-        var commonRes = regRes[2]
-        commonRes = commonRes.split(" ")[1]
-        commonRes = parseInt(commonRes)
+        var firstRes = parseInt(regRes[0].split(" ")[2])
+        var secondRes = parseInt(regRes[1].split(" ")[2])
+        var commonRes = parseInt(regRes[2].split(" ")[1])
 
         if (commonRes == firstRes) {
             concObj.venn = 1
         }
-        if (commonRes == secondRes) {
+        else if (commonRes == secondRes) {
             concObj.venn = 2
         }
-        if (commonRes == 0) {
+        else if (commonRes == 0) {
             concObj.venn = 3
         }
         else {
             concObj.venn = 4
         }
+
 
         doc.setFontType("bold");
         doc.text("Conclusion:", 1.5, 22)
