@@ -7546,6 +7546,7 @@ var TreeCompare = function () {
         
         if (left == 1) {
             text += "Visualization shows that " + nameObj.node1 + "'s distance to common ancestor is larger than " + nameObj.node2 + "'s. "
+            
             if (pVal1==2) {
                 
                 text += " However, P-value of the branch lengths is not significant (pVal >= 0.05). " 
@@ -7571,7 +7572,7 @@ var TreeCompare = function () {
                 }
                 else if (venn == 4) {
                     text += "Also, none of the clades are superset. "
-                }        
+                }  
             }
             
             else if (right == 2) {
@@ -7598,7 +7599,7 @@ var TreeCompare = function () {
             else if (right == 3) {
                 text += "Furthermore, visualization shows that are are no significant difference of internal divergence rate between " + nameObj.node1 + " and " + nameObj.node2 + ". "
                 if (pVal2 == 2) {
-                    text += "However, P-value of the internal divergence rate is not significant (pVal >= 0.05). "
+                    text += "Therefore, P-value of the internal divergence rate is not significant (pVal >= 0.05). "
                 }
                 
                     if (venn == 1) {
@@ -7674,7 +7675,7 @@ var TreeCompare = function () {
                 text +=  "Furthermore, visualization shows that are are no significant difference of internal divergence rate between " + nameObj.node1 + " and " + nameObj.node2 + ". "
                 
                 if (pVal2== 2) {
-                    text += "However, P-value of the internal divergence rate is not significant (pVal >= 0.05). "
+                    text += "Therefore, P-value of the internal divergence rate is not significant (pVal >= 0.05). "
                 }
              
                     if (venn == 1) {
@@ -7696,7 +7697,7 @@ var TreeCompare = function () {
             text += "Visualization shows that there is no difference between " + nameObj.node1 + "'s and " + nameObj.node2 + "'s distance to common ancestor. "
             if (pVal1==2) {
                 
-                text += " However, P-value of the branch lengths is not significant. (pVal >= 0.05) " 
+                text += " Therefore, P-value of the branch lengths is not significant. (pVal >= 0.05) " 
             }
             
             if (right == 1) {
@@ -7748,7 +7749,7 @@ var TreeCompare = function () {
                 text +=  "Furthermore, visualization shows that are are no significant difference of internal divergence rate between " + nameObj.node1 + " and " + nameObj.node2 + ". "
                 
                 if (pVal2== 2) {
-                    text += "However, P-value of the internal divergence rate is not significant (pVal >= 0.05). "
+                    text += "Therefore, P-value of the internal divergence rate is not significant (pVal >= 0.05). "
                 }
                 
                    if (venn == 1) {
@@ -7768,7 +7769,7 @@ var TreeCompare = function () {
      
         // Trying a new part, if all of the conditions 
         
-     if (venn==1 && left==1 && right==1 && pval1==1 && pval2==1){
+     if (venn==1 && left==1 && right==1){
          
          text+="Second clade is closer to the ancestral version."
      }
