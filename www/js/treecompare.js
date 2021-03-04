@@ -7697,7 +7697,7 @@ var TreeCompare = function () {
             text += "Visualization shows that there is no difference between " + nameObj.node1 + "'s and " + nameObj.node2 + "'s distance to common ancestor. "
             if (pVal1==2) {
                 
-                text += " Therefore, P-value of the branch lengths is not significant. (pVal >= 0.05) " 
+                text += " Therefore, P-value of the branch lengths is not significant (pVal >= 0.05). " 
             }
             
             if (right == 1) {
