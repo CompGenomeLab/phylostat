@@ -7440,11 +7440,11 @@ var TreeCompare = function () {
         }
         
         if (parseFloat(pval1) < 0.05) {
-            doc.text("-> P-value is smaller than 0.05.",1.5, 18)
+            doc.text("-> P-value is smaller than 0.05.",1.5, 16.5)
             concObj.pVal1 = 1
         }
         else {
-            doc.text("-> P-value is larger than 0.05.", 1.5, 18)
+            doc.text("-> P-value is larger than 0.05.", 1.5, 16.5)
             concObj.pVal1 = 2
         }
         
@@ -7470,22 +7470,22 @@ var TreeCompare = function () {
         }
         
         if (parseFloat(pval2) < 0.05) {
-            doc.text("-> " +"P-value is smaller than 0.05.", 11.5, 18)
+            doc.text("-> " +"P-value is smaller than 0.05.", 11.5, 16.5)
             concObj.pVal2 = 1
         }
         else {
-            doc.text("-> " +"P-value is larger than 0.05.", 11.5, 18)
+            doc.text("-> " +"P-value is larger than 0.05.", 11.5, 16.5)
             concObj.pVal2 = 2
         }
 
         doc.setFontType("bold");
-        doc.text("RegEX expression:", 1.5, 20)
+        doc.text("RegEX expression:", 1.5, 17.75)
         doc.setFontType('normal');
         var RegEX = document.getElementById('regExSearch').value
         if (!RegEX) RegEX = "taxid_[0-9]+"
         doc.text(RegEX, 4.75, 17.75)
         var regRes = document.getElementById('regRes').value
-        doc.text(regRes, 2, 20)
+        doc.text(regRes, 1.5, 18.25)
 
         regRes = regRes.split("\n")
         var firstRes = parseInt(regRes[0].split(" ")[2])
