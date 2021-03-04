@@ -7420,12 +7420,12 @@ var TreeCompare = function () {
         //console.log(meanObj)
         if (pval1 < 0.05) {
             if (meanObj.leftMean1 > meanObj.leftMean2) {
-                var text = nameObj.node1 + " has a higher divergence rate than\n " + nameObj.node2 + " with respect to their branch lengths."
+                var text = nameObj.node1 + " has a higher divergence rate than\n" + nameObj.node2 + " with respect to their branch lengths."
                 doc.text(text, 1.5, 16)
                 concObj.leftPlot = 1
             }
             else if (meanObj.leftMean2 > meanObj.leftMean1) {
-                var text = nameObj.node2 + " has a higher divergence rate than\n " + nameObj.node1 + " with respect to their branch lengths."
+                var text = nameObj.node2 + " has a higher divergence rate than\n" + nameObj.node1 + " with respect to their branch lengths."
                 doc.text(text, 1.5, 16)
                 concObj.leftPlot = 2
             }
@@ -7485,12 +7485,12 @@ var TreeCompare = function () {
         if (!RegEX) RegEX = "taxid_[0-9]+"
         doc.text(RegEX, 5.25, 17.75)
         var regRes = document.getElementById('regRes').value
-        doc.text(regRes, 1.5, 18.75)
+        doc.text(regRes, 1.5, 18.95)
 
         regRes = regRes.split("\n")
-        var firstRes = parseInt(regRes[0].split(" ")[2])
-        var secondRes = parseInt(regRes[1].split(" ")[2])
-        var commonRes = parseInt(regRes[2].split(" ")[1])
+        var firstRes = parseInt(regRes[0].split(" ")[7])
+        var secondRes = parseInt(regRes[1].split(" ")[7])
+        var commonRes = parseInt(regRes[2].split(" ")[8])
 
         if (commonRes == firstRes) {
             concObj.venn = 1
