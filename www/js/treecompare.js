@@ -7440,11 +7440,11 @@ var TreeCompare = function () {
         }
         
         if (parseFloat(pval1) < 0.05) {
-            doc.text("-> P-value is smaller than 0.05.",1.5, 16.75)
+            //doc.text("-> P-value is smaller than 0.05.",1.5, 16.75)
             concObj.pVal1 = 1
         }
         else {
-            doc.text("-> P-value is larger than 0.05.", 1.5, 16.75)
+            //doc.text("-> P-value is larger than 0.05.", 1.5, 16.75)
             concObj.pVal1 = 2
         }
         
@@ -7470,11 +7470,11 @@ var TreeCompare = function () {
         }
         
         if (parseFloat(pval2) < 0.05) {
-            doc.text("-> " +"P-value is smaller than 0.05.", 11.5, 16.75)
+            //doc.text("-> " +"P-value is smaller than 0.05.", 11.5, 16.75)
             concObj.pVal2 = 1
         }
         else {
-            doc.text("-> " +"P-value is larger than 0.05.", 11.5, 16.75)
+            //doc.text("-> " +"P-value is larger than 0.05.", 11.5, 16.75)
             concObj.pVal2 = 2
         }
 
@@ -7485,7 +7485,7 @@ var TreeCompare = function () {
         if (!RegEX) RegEX = "taxid_[0-9]+"
         doc.text(RegEX, 5.25, 17.75)
         var regRes = document.getElementById('regRes').value
-        doc.text(regRes, 1.5, 19)
+        doc.text(regRes, 1.5, 19.50)
 
         regRes = regRes.split("\n")
         var firstRes = parseInt(regRes[0].split(" ")[2])
@@ -7548,7 +7548,7 @@ var TreeCompare = function () {
             text += "Visualization shows that " + nameObj.node1 + "'s distance to common ancestor is larger than " + nameObj.node2 + "'s. "
             if (pVal1==2) {
                 
-                text += " However, P-value of the branch lengths is not significant. (pVal >= 0.05) " 
+                text += " However, P-value of the branch lengths is not significant (pVal >= 0.05). " 
             }
             
             if (right == 1) {
@@ -7557,7 +7557,7 @@ var TreeCompare = function () {
                 
                 if (pVal2==2) {
                     
-                    text += " However, P-value of the internal divergence rate is not significant. (pVal >= 0.05) " 
+                    text += " However, P-value of the internal divergence rate is not significant (pVal >= 0.05). " 
                 }
     
                 if (venn == 1) {
@@ -7567,10 +7567,10 @@ var TreeCompare = function () {
                     text += "Also, " + nameObj.node1 + " is superset of " + nameObj.node2 + "."
                 }
                 else if (venn == 3) {
-                    text += "However, none of the clades are superset. "
+                    text += "Also, none of the clades are superset. "
                 }
                 else if (venn == 4) {
-                    text += "However, none of the clades are superset. "
+                    text += "Also, none of the clades are superset. "
                 }        
             }
             
@@ -7588,10 +7588,10 @@ var TreeCompare = function () {
                         text += "Also, " +nameObj.node1 + " is superset of " + nameObj.node2 + ". "
                     }
                     else if (venn == 3) {
-                        text += "However, none of the clades are superset. "
+                        text += "Also, none of the clades are superset. "
                     }
                     else if (venn == 4) {
-                        text += "However, none of the clades are superset. "
+                        text += "Also, none of the clades are superset. "
                     }
             }
             
@@ -7608,10 +7608,10 @@ var TreeCompare = function () {
                         text += "Also, " + nameObj.node1 + " is superset of " + nameObj.node2 + ". "
                     }
                     else if (venn == 3) {
-                        text += "However, none of the clades are superset. "
+                        text += "Also, none of the clades are superset. "
                     }
                     else if (venn == 4) {
-                        text += "However, none of the clades are superset. "
+                        text += "Also, none of the clades are superset. "
                     }
             }
         }
@@ -7640,10 +7640,10 @@ var TreeCompare = function () {
                         text += "Also, " +nameObj.node1 + " is superset of " + nameObj.node2 + ". "
                     }
                     else if (venn == 3) {
-                        text += "However, none of the clades are superset. "
+                        text += "Also, none of the clades are superset. "
                     }
                     else if (venn == 4) {
-                        text += "However, none of the clades are superset. "
+                        text += "Also, none of the clades are superset. "
                     }
             }
             
@@ -7662,10 +7662,10 @@ var TreeCompare = function () {
                         text += "Also, " +nameObj.node1 + " is superset of " + nameObj.node2 + ". "
                     }
                     else if (venn == 3) {
-                        text += "However, none of the clades are superset. "
+                        text += "Also, none of the clades are superset. "
                     }
                     else if (venn == 4) {
-                        text += "However, none of the clades are superset. "
+                        text += "Also, none of the clades are superset. "
                     }
              }   
             
@@ -7684,10 +7684,10 @@ var TreeCompare = function () {
                         text += "Also, " +nameObj.node1 + " is superset of " + nameObj.node2 + ". "
                     }
                     else if (venn == 3) {
-                        text += "However, none of the clades are superset. "
+                        text += "Also, none of the clades are superset. "
                     }
                     else if (venn == 4) {
-                        text += "However, none of the clades are superset. "
+                        text += "Also, none of the clades are superset. "
                     }
             }
         }
@@ -7714,10 +7714,10 @@ var TreeCompare = function () {
                         text += "Also, " +nameObj.node1 + " is superset of " + nameObj.node2 + ". "
                     }
                     else if (venn == 3) {
-                        text += "However, none of the clades are superset. "
+                        text += "Also, none of the clades are superset. "
                     }
                     else if (venn == 4) {
-                        text += "However, none of the clades are superset. "
+                        text += "Also, none of the clades are superset. "
                     }
             }
             
@@ -7736,10 +7736,10 @@ var TreeCompare = function () {
                         text += "Also, " +nameObj.node1 + " is superset of " + nameObj.node2 + ". "
                     }
                     else if (venn == 3) {
-                        text += "However, none of the clades are superset. "
+                        text += "Also, none of the clades are superset. "
                     }
                     else if (venn == 4) {
-                        text += "However, none of the clades are superset. "
+                        text += "Also, none of the clades are superset. "
                     }
              }   
             
@@ -7758,10 +7758,10 @@ var TreeCompare = function () {
                         text += "Also, " +nameObj.node1 + " is superset of " + nameObj.node2 + ". "
                     }
                     else if (venn == 3) {
-                        text += "However, none of the clades are superset. "
+                        text += "Also, none of the clades are superset. "
                     }
                     else if (venn == 4) {
-                        text += "However, none of the clades are superset. "
+                        text += "Also, none of the clades are superset. "
                     }
            }
        }
