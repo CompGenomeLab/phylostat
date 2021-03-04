@@ -7485,7 +7485,7 @@ var TreeCompare = function () {
         if (!RegEX) RegEX = "taxid_[0-9]+"
         doc.text(RegEX, 5.25, 17.75)
         var regRes = document.getElementById('regRes').value
-        doc.text(regRes, 1.5, 18)
+        doc.text(regRes, 1.5, 18.75)
 
         regRes = regRes.split("\n")
         var firstRes = parseInt(regRes[0].split(" ")[7])
