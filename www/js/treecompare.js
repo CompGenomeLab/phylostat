@@ -7420,12 +7420,12 @@ var TreeCompare = function () {
         //console.log(meanObj)
         if (pval1 < 0.05) {
             if (meanObj.leftMean1 > meanObj.leftMean2) {
-                var text = "-> " + nameObj.node1 + " has a higher divergence rate than\n " + nameObj.node2 + "with respect to their branch lengths."
+                var text = "-> " + nameObj.node1 + " has a higher divergence rate than\n " + nameObj.node2 + " with respect to their branch lengths."
                 doc.text(text, 1.5, 16)
                 concObj.leftPlot = 1
             }
             else if (meanObj.leftMean2 > meanObj.leftMean1) {
-                var text = "-> " + nameObj.node2 + "  has a higher divergence rate than\n " + nameObj.node1 + "with respect to their branch lengths."
+                var text = "-> " + nameObj.node2 + " has a higher divergence rate than\n " + nameObj.node1 + " with respect to their branch lengths."
                 doc.text(text, 1.5, 16)
                 concObj.leftPlot = 2
             }
@@ -7440,11 +7440,11 @@ var TreeCompare = function () {
         }
         
         if (parseFloat(pval1) < 0.05) {
-            doc.text("-> P-value is smaller than 0.05.",1.5, 18.5)
+            doc.text("-> P-value is smaller than 0.05.",1.5, 16.50)
             concObj.pVal1 = 1
         }
         else {
-            doc.text("-> P-value is larger than 0.05.", 1.5, 18.5)
+            doc.text("-> P-value is larger than 0.05.", 1.5, 16.50)
             concObj.pVal1 = 2
         }
         
@@ -7470,11 +7470,11 @@ var TreeCompare = function () {
         }
         
         if (parseFloat(pval2) < 0.05) {
-            doc.text("-> " +"P-value is smaller than 0.05.", 11.5, 17.5)
+            doc.text("-> " +"P-value is smaller than 0.05.", 11.5, 16.75)
             concObj.pVal2 = 1
         }
         else {
-            doc.text("-> " +"P-value is larger than 0.05.", 11.5, 17.5)
+            doc.text("-> " +"P-value is larger than 0.05.", 11.5, 16.75)
             concObj.pVal2 = 2
         }
 
@@ -7485,7 +7485,7 @@ var TreeCompare = function () {
         if (!RegEX) RegEX = "taxid_[0-9]+"
         doc.text(RegEX, 5.25, 17.75)
         var regRes = document.getElementById('regRes').value
-        doc.text(regRes, 1.5, 18.25)
+        doc.text(regRes, 1.5, 18.50)
 
         regRes = regRes.split("\n")
         var firstRes = parseInt(regRes[0].split(" ")[2])
@@ -7765,6 +7765,18 @@ var TreeCompare = function () {
                     }
            }
        }
+     
+        // Trying a new part, if all of the conditions 
+        
+     if (venn==1 && left==1 && right==1 && pval1==1 && pval2==1){
+         
+         text+="Second clade is closer to the ancestral version."
+     }
+        
+     else if (venn==2 && left==2 && right==2 && pval1==1 && pval2==1){
+         
+         text+="First clade is closer to the ancestral version."
+     }
         
      return text
  }
