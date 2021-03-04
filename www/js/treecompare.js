@@ -4877,11 +4877,11 @@ var TreeCompare = function () {
             /*if (def) {
                 console.log(resSearch)
             }*/
-            var str = "Number of species that are in the first clade: " + resSearch.numSearchOne.toString() +
-                "\nNumber of species that are in the second clade: " + resSearch.numSearchTwo.toString() +
-                "\nNumber of species that are in both of the clades: " + resSearch.numSearchCommon.toString() +
-                "\nNumber of species that are unique to the first clade: " + resSearch.numSearchOnlyOne.toString() +
-                "\nNumber of species that are unique to the second clade: " + resSearch.numSearchOnlyTwo.toString()
+            var str = "Number of species in the first clade: " + resSearch.numSearchOne.toString() +
+                "\nNumber of species in the second clade: " + resSearch.numSearchTwo.toString() +
+                "\nNumber of species in both of the clades: " + resSearch.numSearchCommon.toString() +
+                "\nNumber of unique species in first clade: " + resSearch.numSearchOnlyOne.toString() +
+                "\nNumber of unique species in second clade: " + resSearch.numSearchOnlyTwo.toString()
 
 
             document.getElementById("regRes").value = str
@@ -7390,7 +7390,7 @@ var TreeCompare = function () {
         var venn_canvas = document.createElement('canvas');
         canvg(venn_canvas, vennSvg)
         var venn_img = venn_canvas.toDataURL('image/png');
-        doc.addImage(venn_img, 'PNG', 20, 17, 8, 4)
+        doc.addImage(venn_img, 'PNG', 10, 17, 8, 4)
 
         doc.setFontSize(12);
         doc.setFontType('normal');
@@ -7440,22 +7440,22 @@ var TreeCompare = function () {
         }
         
         if (parseFloat(pval1) < 0.05) {
-            doc.text("-> P-value is smaller than 0.05.", 11.5, 16.5)
+            doc.text("-> P-value is smaller than 0.05.",1.5, 16.5)
             concObj.pVal1 = 1
         }
         else {
-            doc.text("-> P-value is larger than 0.05.", 11.5, 16.5)
+            doc.text("-> P-value is larger than 0.05.", 1.5, 16.5)
             concObj.pVal1 = 2
         }
         
         if (pval2 < 0.05) {
             if (meanObj.rightMean1 > meanObj.rightMean2) {
-                var text = "-> " +nameObj.node1 + " is internally more diverge than " + nameObj.node2
+                var text = "-> " +nameObj.node1 + " is internally more diverge than " + nameObj.node2 + "."
                 doc.text(text, 11.5, 16)
                 concObj.rightPlot = 1
             }
             else if (meanObj.rightMean2 > meanObj.rightMean1) {
-                var text = "-> " +nameObj.node2 + " is internally more diverge than " + nameObj.node1
+                var text = "-> " +nameObj.node2 + " is internally more diverge than " + nameObj.node1 + "."
                 doc.text(text, 11.5, 16)
                 concObj.rightPlot = 2
             }
@@ -7479,13 +7479,13 @@ var TreeCompare = function () {
         }
 
         doc.setFontType("bold");
-        doc.text("Used RegEX search:", 1.5, 17.75)
+        doc.text("RegEX expression:", 1.5, 17.75)
         doc.setFontType('normal');
         var RegEX = document.getElementById('regExSearch').value
         if (!RegEX) RegEX = "taxid_[0-9]+"
         doc.text(RegEX, 4.75, 17.75)
         var regRes = document.getElementById('regRes').value
-        doc.text(regRes, 1.5, 20.25)
+        doc.text(regRes, 2, 17.75)
 
         regRes = regRes.split("\n")
         var firstRes = parseInt(regRes[0].split(" ")[2])
