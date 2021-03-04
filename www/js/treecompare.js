@@ -7440,11 +7440,11 @@ var TreeCompare = function () {
         }
         
         if (parseFloat(pval1) < 0.05) {
-            doc.text("-> P-value is smaller than 0.05.",1.5, 16.5)
+            doc.text("-> P-value is smaller than 0.05.",1.5, 18.5)
             concObj.pVal1 = 1
         }
         else {
-            doc.text("-> P-value is larger than 0.05.", 1.5, 16.5)
+            doc.text("-> P-value is larger than 0.05.", 1.5, 18.5)
             concObj.pVal1 = 2
         }
         
@@ -7470,11 +7470,11 @@ var TreeCompare = function () {
         }
         
         if (parseFloat(pval2) < 0.05) {
-            doc.text("-> " +"P-value is smaller than 0.05.", 11.5, 16.5)
+            doc.text("-> " +"P-value is smaller than 0.05.", 11.5, 17.5)
             concObj.pVal2 = 1
         }
         else {
-            doc.text("-> " +"P-value is larger than 0.05.", 11.5, 16.5)
+            doc.text("-> " +"P-value is larger than 0.05.", 11.5, 17.5)
             concObj.pVal2 = 2
         }
 
@@ -7483,7 +7483,7 @@ var TreeCompare = function () {
         doc.setFontType('normal');
         var RegEX = document.getElementById('regExSearch').value
         if (!RegEX) RegEX = "taxid_[0-9]+"
-        doc.text(RegEX, 4.75, 17.75)
+        doc.text(RegEX, 5.25, 17.75)
         var regRes = document.getElementById('regRes').value
         doc.text(regRes, 1.5, 18.25)
 
@@ -7596,7 +7596,7 @@ var TreeCompare = function () {
             }
             
             else if (right == 3) {
-                text += "Furthermore, visualization shows that are are no significant difference of internal divergence rate between " + nameObj.node1 + " and " + nameObj.node1 + ". "
+                text += "Furthermore, visualization shows that are are no significant difference of internal divergence rate between " + nameObj.node1 + " and " + nameObj.node2 + ". "
                 if (pVal2 == 2) {
                     text += "However, P-value of the internal divergence rate is not significant (pVal >= 0.05). "
                 }
@@ -7671,7 +7671,7 @@ var TreeCompare = function () {
             
             else if (right == 3) {
                 
-                text +=  "Furthermore, visualization shows that are are no significant difference of internal divergence rate between " + nameObj.node1 + " and " + nameObj.node1 + ". "
+                text +=  "Furthermore, visualization shows that are are no significant difference of internal divergence rate between " + nameObj.node1 + " and " + nameObj.node2 + ". "
                 
                 if (pVal2== 2) {
                     text += "However, P-value of the internal divergence rate is not significant (pVal >= 0.05). "
@@ -7745,7 +7745,7 @@ var TreeCompare = function () {
             
             else if (right == 3) {
                 
-                text +=  "Furthermore, visualization shows that are are no significant difference of internal divergence rate between " + nameObj.node1 + " and " + nameObj.node1 + ". "
+                text +=  "Furthermore, visualization shows that are are no significant difference of internal divergence rate between " + nameObj.node1 + " and " + nameObj.node2 + ". "
                 
                 if (pVal2== 2) {
                     text += "However, P-value of the internal divergence rate is not significant (pVal >= 0.05). "
