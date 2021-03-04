@@ -4878,7 +4878,7 @@ var TreeCompare = function () {
                 console.log(resSearch)
             }*/
             var str = "Number of species that are in the first clade: " + resSearch.numSearchOne.toString() +
-                "\nNumber of species that are in the second clade: " " + resSearch.numSearchTwo.toString() +
+                "\nNumber of species that are in the second clade: " + resSearch.numSearchTwo.toString() +
                 "\nNumber of species that are in both of the clades: " + resSearch.numSearchCommon.toString() +
                 "\nNumber of species that are unique to the first clade: " + resSearch.numSearchOnlyOne.toString() +
                 "\nNumber of species that are unique to the second clade: " + resSearch.numSearchOnlyTwo.toString()
