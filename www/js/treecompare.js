@@ -7765,7 +7765,7 @@ var TreeCompare = function () {
                     }
            }
        }
-    }
+        
      return text
  }
 
