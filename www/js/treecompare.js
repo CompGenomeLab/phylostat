@@ -7420,22 +7420,22 @@ var TreeCompare = function () {
         //console.log(meanObj)
         if (pval1 < 0.05) {
             if (meanObj.leftMean1 > meanObj.leftMean2) {
-                var text = "-> " + nameObj.node1 + " has a higher divergence rate than\n " + nameObj.node2 + " with respect to their branch lengths."
+                var text = nameObj.node1 + " has a higher divergence rate than\n " + nameObj.node2 + " with respect to their branch lengths."
                 doc.text(text, 1.5, 16)
                 concObj.leftPlot = 1
             }
             else if (meanObj.leftMean2 > meanObj.leftMean1) {
-                var text = "-> " + nameObj.node2 + " has a higher divergence rate than\n " + nameObj.node1 + " with respect to their branch lengths."
+                var text = nameObj.node2 + " has a higher divergence rate than\n " + nameObj.node1 + " with respect to their branch lengths."
                 doc.text(text, 1.5, 16)
                 concObj.leftPlot = 2
             }
             else {
-                doc.text("-> " +"There is no significant difference between nodes.", 1.5, 16)
+                doc.text("There is no significant difference between nodes.", 1.5, 16)
                 concObj.leftPlot = 3
             }
         }
         else {
-            doc.text("-> " +"There is no significant difference between nodes.", 1.5, 16)
+            doc.text("There is no significant difference between nodes.", 1.5, 16)
             concObj.leftPlot = 3
         }
         
@@ -7450,22 +7450,22 @@ var TreeCompare = function () {
         
         if (pval2 < 0.05) {
             if (meanObj.rightMean1 > meanObj.rightMean2) {
-                var text = "-> " +nameObj.node1 + " is internally more diverge than " + nameObj.node2 + "."
+                var text = nameObj.node1 + " is internally more diverge than " + nameObj.node2 + "."
                 doc.text(text, 11.5, 16)
                 concObj.rightPlot = 1
             }
             else if (meanObj.rightMean2 > meanObj.rightMean1) {
-                var text = "-> " +nameObj.node2 + " is internally more diverge than " + nameObj.node1 + "."
+                var text = nameObj.node2 + " is internally more diverge than " + nameObj.node1 + "."
                 doc.text(text, 11.5, 16)
                 concObj.rightPlot = 2
             }
             else {
-                doc.text("-> " +"There is no significant divergence rate\n between internal nodes.", 11.5, 16)
+                doc.text("There is no significant divergence rate\n between internal nodes.", 11.5, 16)
                 concObj.rightPlot = 3
             }
         }
         else {
-            doc.text("->" +"There is no significant divergence rate\n between internal nodes.", 11.5, 16)
+            doc.text("There is no significant divergence rate\n between internal nodes.", 11.5, 16)
             concObj.rightPlot = 3
         }
         
@@ -7485,7 +7485,7 @@ var TreeCompare = function () {
         if (!RegEX) RegEX = "taxid_[0-9]+"
         doc.text(RegEX, 5.25, 17.75)
         var regRes = document.getElementById('regRes').value
-        doc.text(regRes, 1.5, 19.50)
+        doc.text(regRes, 1.5, 18.75)
 
         regRes = regRes.split("\n")
         var firstRes = parseInt(regRes[0].split(" ")[2])
