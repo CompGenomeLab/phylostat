@@ -7390,7 +7390,7 @@ var TreeCompare = function () {
         var venn_canvas = document.createElement('canvas');
         canvg(venn_canvas, vennSvg)
         var venn_img = venn_canvas.toDataURL('image/png');
-        doc.addImage(venn_img, 'PNG', 10, 17, 8, 4)
+        doc.addImage(venn_img, 'PNG', 20, 17, 8, 4)
 
         doc.setFontSize(12);
         doc.setFontType('normal');
@@ -7420,12 +7420,12 @@ var TreeCompare = function () {
         //console.log(meanObj)
         if (pval1 < 0.05) {
             if (meanObj.leftMean1 > meanObj.leftMean2) {
-                var text = "-> " + nameObj.node1 + " has a higher divergence rate than " + nameObj.node2 + "with respect to their branch lengths."
+                var text = "-> " + nameObj.node1 + " has a higher divergence rate than\n " + nameObj.node2 + "with respect to their branch lengths."
                 doc.text(text, 1.5, 16)
                 concObj.leftPlot = 1
             }
             else if (meanObj.leftMean2 > meanObj.leftMean1) {
-                var text = "-> " + nameObj.node2 + "  has a higher divergence rate than " + nameObj.node1 + "with respect to their branch lengths."
+                var text = "-> " + nameObj.node2 + "  has a higher divergence rate than\n " + nameObj.node1 + "with respect to their branch lengths."
                 doc.text(text, 1.5, 16)
                 concObj.leftPlot = 2
             }
@@ -7485,7 +7485,7 @@ var TreeCompare = function () {
         if (!RegEX) RegEX = "taxid_[0-9]+"
         doc.text(RegEX, 4.75, 17.75)
         var regRes = document.getElementById('regRes').value
-        doc.text(regRes, 1.5, 18.25)
+        doc.text(regRes, 1.5, 20.25)
 
         regRes = regRes.split("\n")
         var firstRes = parseInt(regRes[0].split(" ")[2])
