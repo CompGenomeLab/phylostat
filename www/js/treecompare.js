@@ -4877,11 +4877,11 @@ var TreeCompare = function () {
             /*if (def) {
                 console.log(resSearch)
             }*/
-            var str = "First Selection: " + resSearch.numSearchOne.toString() +
-                "\nSecond Selection: " + resSearch.numSearchTwo.toString() +
-                "\nCommon: " + resSearch.numSearchCommon.toString() +
-                "\nOnly in First Selection: " + resSearch.numSearchOnlyOne.toString() +
-                "\nOnly in Second Selection: " + resSearch.numSearchOnlyTwo.toString()
+            var str = "Number of species that are in the first clade: " + resSearch.numSearchOne.toString() +
+                "\nNumber of species that are in the second clade: " " + resSearch.numSearchTwo.toString() +
+                "\nNumber of species that are in both of the clades: " + resSearch.numSearchCommon.toString() +
+                "\nNumber of species that are unique to the first clade: " + resSearch.numSearchOnlyOne.toString() +
+                "\nNumber of species that are unique to the second clade: " + resSearch.numSearchOnlyTwo.toString()
 
 
             document.getElementById("regRes").value = str
@@ -7398,8 +7398,8 @@ var TreeCompare = function () {
         doc.text(commonAncestor, 7, 2)
 
         doc.setFontType("bold");
-        doc.text("Difference of selected: ", 1.5, 7)
-        doc.text("Difference of leaves: ", 11.5, 7)
+        doc.text("Identifying differential divergence: ", 1.5, 7)
+        doc.text("Internal pair-wise branch length comparison: ", 11.5, 7)
         doc.setFontType('normal');
 
         doc.text("T-Test Score: ", 1.5, 15)
@@ -7420,55 +7420,66 @@ var TreeCompare = function () {
         //console.log(meanObj)
         if (pval1 < 0.05) {
             if (meanObj.leftMean1 > meanObj.leftMean2) {
-                var text = nameObj.node1 + " is more significant than " + nameObj.node2
+                var text = "-> " + nameObj.node1 + " has a higher divergence rate than " + nameObj.node2 + "with respect to their branch lengths."
                 doc.text(text, 1.5, 16)
                 concObj.leftPlot = 1
             }
             else if (meanObj.leftMean2 > meanObj.leftMean1) {
-                var text = nameObj.node2 + " is more significant than " + nameObj.node1
+                var text = "-> " + nameObj.node2 + "  has a higher divergence rate than " + nameObj.node1 + "with respect to their branch lengths."
                 doc.text(text, 1.5, 16)
                 concObj.leftPlot = 2
             }
             else {
-                doc.text("There is no significant difference between nodes.", 1.5, 16)
+                doc.text("-> " +"There is no significant difference between nodes.", 1.5, 16)
                 concObj.leftPlot = 3
             }
         }
         else {
-            doc.text("There is no significant difference between nodes.", 1.5, 16)
+            doc.text("-> " +"There is no significant difference between nodes.", 1.5, 16)
             concObj.leftPlot = 3
         }
+        
+        if (parseFloat(pval1) < 0.05) {
+            doc.text("-> P-value is smaller than 0.05.", 11.5, 16.5)
+            concObj.pVal1 = 1
+        }
+        else {
+            doc.text("-> P-value is larger than 0.05.", 11.5, 16.5)
+            concObj.pVal1 = 2
+        }
+        
         if (pval2 < 0.05) {
             if (meanObj.rightMean1 > meanObj.rightMean2) {
-                var text = nameObj.node1 + " is internally more diverge than " + nameObj.node2
+                var text = "-> " +nameObj.node1 + " is internally more diverge than " + nameObj.node2
                 doc.text(text, 11.5, 16)
                 concObj.rightPlot = 1
             }
             else if (meanObj.rightMean2 > meanObj.rightMean1) {
-                var text = nameObj.node2 + " is internally more diverge than " + nameObj.node1
+                var text = "-> " +nameObj.node2 + " is internally more diverge than " + nameObj.node1
                 doc.text(text, 11.5, 16)
                 concObj.rightPlot = 2
             }
             else {
-                doc.text("There is no significant divergence between internal nodes.", 11.5, 16)
+                doc.text("-> " +"There is no significant divergence between internal nodes.", 11.5, 16)
                 concObj.rightPlot = 3
             }
         }
         else {
-            doc.text("There is no significant divergence between internal nodes.", 11.5, 16)
+            doc.text("->" +"There is no significant divergence between internal nodes.", 11.5, 16)
             concObj.rightPlot = 3
         }
+        
         if (parseFloat(pval2) < 0.05) {
-            doc.text("P-value is smaller than 0.05.", 11.5, 16.5)
-            concObj.pVal = 1
+            doc.text("-> " +"P-value is smaller than 0.05.", 11.5, 16.5)
+            concObj.pVal2 = 1
         }
         else {
-            doc.text("P-value is larger than 0.05.", 11.5, 16.5)
-            concObj.pVal = 2
+            doc.text("-> " +"P-value is larger than 0.05.", 11.5, 16.5)
+            concObj.pVal2 = 2
         }
 
         doc.setFontType("bold");
-        doc.text("RegEX Search:", 1.5, 17.75)
+        doc.text("Used RegEX search:", 1.5, 17.75)
         doc.setFontType('normal');
         var RegEX = document.getElementById('regExSearch').value
         if (!RegEX) RegEX = "taxid_[0-9]+"
@@ -7529,154 +7540,126 @@ var TreeCompare = function () {
         var text = ""
         left = obj.leftPlot //1-> 1>2, 2-> 2>1, 3->no diff
         right = obj.rightPlot //1-> 1>2, 2-> 2>1, 3->no diff
-        pVal = obj.pVal //1-> <.05, 2-> else
+        pVal1 = obj.pVal1 //1-> <.05, 2-> else
+        pVal2 = obj.pVal2 //1-> <.05, 2-> else
         venn = obj.venn //1->second is superset, 2->first is superset, 3->no common, 4->else
+        
         if (left == 1) {
             text += "Visualization shows that " + nameObj.node1 + "'s distance to common ancestor is larger than " + nameObj.node2 + "'s. "
+            if (pVal1==2) {
+                
+                text += " However, P-value of the branch lengths is not significant. (pVal >= 0.05) " 
+            }
+            
             if (right == 1) {
-                text += "Furthermore, internal branch length of " + nameObj.node1 + " is more diverge than of " + nameObj.node2 + ". "
-                if (pVal == 1) {
-                    text += "Moreover, p-value of internal branch lengths is significant.(pVal < 0.05) "
-                    if (venn == 1) {
-                        text += "However, " + nameObj.node2 + " is superset of " + nameObj.node1 + ". "
-                    }
-                    else if (venn == 2) {
-                        text += "Also, " + nameObj.node1 + " is superset of " + nameObj.node2 + ". Some species lost this version. "
-                    }
-                    else if (venn == 3) {
-                        text += "However, none of the clades are superset. "
-                    }
-                    else if (venn == 4) {
-                        text += "However, none of the clades are superset. "
-                    }
+                
+                text += "Furthermore, internal divergence rate of " + nameObj.node1 + " is higher than " + nameObj.node2 + ". "
+                
+                if (pVal2==2) {
+                    
+                    text += " However, P-value of the internal divergence rate is not significant. (pVal >= 0.05) " 
                 }
-                else if (pVal == 2) {
-                    text += "However, p-value of internal branch lengths is not significant.(pVal >= 0.05) "
-                    if (venn == 1) {
-                        text += nameObj.node2 + " is superset of " + nameObj.node1 + "."
-                    }
-                    else if (venn == 2) {
-                        text += nameObj.node1 + " is superset of " + nameObj.node2 + ". "
-                    }
-                    else if (venn == 3) {
-                        text += "None of the clades are superset. "
-                    }
-                    else if (venn == 4) {
-                        text += "None of the clades are superset. "
-                    }
+    
+                if (venn == 1) {
+                    text += "Also, " + nameObj.node2 + " is superset of " + nameObj.node1 + "."
                 }
+                else if (venn == 2) {
+                    text += "Also, " + nameObj.node1 + " is superset of " + nameObj.node2 + "."
+                }
+                else if (venn == 3) {
+                    text += "However, none of the clades are superset. "
+                }
+                else if (venn == 4) {
+                    text += "However, none of the clades are superset. "
+                }        
             }
+            
             else if (right == 2) {
-                text += "However, internal branch length of " + nameObj.node2 + " is more diverge than of " + nameObj.node1 + ". "
-                if (pVal == 1) {
-                    text += "P-value of internal branch lengths is significant.(pVal < 0.05) "
+                text += "Furthermore, internal divergence rate of  " + nameObj.node2 + " is higher than " + nameObj.node1 + ". "
+                
+                if (pVal2== 2) {
+                    text += "However, P-value of the internal divergence rate is not significant (pVal >= 0.05). "
+                }
+                
                     if (venn == 1) {
-                        text += nameObj.node2 + " is superset of " + nameObj.node1 + ". "
+                        text += "Also, " + nameObj.node2 + " is superset of " + nameObj.node1 + ". "
                     }
                     else if (venn == 2) {
-                        text += nameObj.node1 + " is superset of " + nameObj.node2 + ". "
+                        text += "Also, " +nameObj.node1 + " is superset of " + nameObj.node2 + ". "
                     }
                     else if (venn == 3) {
-                        text += "None of the clades are superset. "
+                        text += "However, none of the clades are superset. "
                     }
                     else if (venn == 4) {
-                        text += "None of the clades are superset. "
+                        text += "However, none of the clades are superset. "
                     }
-                }
-                if (pVal == 2) {
-                    text += "P-value of internal branch lengths is not significant.(pVal => 0.05) "
-                    if (venn == 1) {
-                        text += nameObj.node2 + " is superset of " + nameObj.node1 + ". "
-                    }
-                    else if (venn == 2) {
-                        text += nameObj.node1 + " is superset of " + nameObj.node2 + ". "
-                    }
-                    else if (venn == 3) {
-                        text += "None of the clades are superset. "
-                    }
-                    else if (venn == 4) {
-                        text += "None of the clades are superset. "
-                    }
-                }
             }
+            
             else if (right == 3) {
-                text += "However, visualization shows that are are no significant difference of internal branch length between " + nameObj.node1 + " and " + nameObj.node1 + ". "
-                if (pVal == 1) {
-                    text += "P-value of internal branch lengths is significant.(pVal < 0.05) "
+                text += "Furthermore, visualization shows that are are no significant difference of internal divergence rate between " + nameObj.node1 + " and " + nameObj.node1 + ". "
+                if (pVal2 == 2) {
+                    text += "However, P-value of the internal divergence rate is not significant (pVal >= 0.05). "
+                }
+                
                     if (venn == 1) {
-                        text += nameObj.node2 + " is superset of " + nameObj.node1 + ". "
+                        text += "Also, " +nameObj.node2 + " is superset of " + nameObj.node1 + ". "
                     }
                     else if (venn == 2) {
-                        text += nameObj.node1 + " is superset of " + nameObj.node2 + ". "
+                        text += "Also, " + nameObj.node1 + " is superset of " + nameObj.node2 + ". "
                     }
                     else if (venn == 3) {
-                        text += "None of the clades are superset. "
+                        text += "However, none of the clades are superset. "
                     }
                     else if (venn == 4) {
-                        text += "None of the clades are superset. "
+                        text += "However, none of the clades are superset. "
                     }
-                }
-                if (pVal == 2) {
-                    text += "P-value of internal branch lengths is not significant.(pVal >= 0.05) "
-                    if (venn == 1) {
-                        text += nameObj.node2 + " is superset of " + nameObj.node1 + ". "
-                    }
-                    else if (venn == 2) {
-                        text += nameObj.node1 + " is superset of " + nameObj.node2 + ". "
-                    }
-                    else if (venn == 3) {
-                        text += "None of the clades are superset. "
-                    }
-                    else if (venn == 4) {
-                        text += "None of the clades are superset. "
-                    }
-                }
             }
         }
+        
         else if (left == 2) {
+            
             text += "Visualization shows that " + nameObj.node2 + "'s distance to common ancestor is larger than " + nameObj.node1 + "'s. "
+            
+            if (pVal1==2) {
+                
+                text += " However, P-value of the branch lengths is not significant. (pVal >= 0.05) " 
+            }
+            
             if (right == 1) {
-                text += "However, internal branch length of " + nameObj.node1 + " is more diverge than of " + nameObj.node2 + ". "
-                if (pVal == 1) {
-                    text += "P-value of internal branch lengths is significant.(pVal < 0.05) "
+                
+                text += "Furthermore, internal divergence rate of  " + nameObj.node1 + " is higher than " + nameObj.node2 + ". "
+                
+                if (pVal2== 2) {
+                    text += "However, P-value of the internal divergence rate is not significant (pVal >= 0.05). "
+                }
+               
                     if (venn == 1) {
-                        text += nameObj.node2 + " is superset of " + nameObj.node1 + ". "
+                        text += "Also, " +nameObj.node2 + " is superset of " + nameObj.node1 + ". "
                     }
                     else if (venn == 2) {
-                        text += nameObj.node1 + " is superset of " + nameObj.node2 + ". "
+                        text += "Also, " +nameObj.node1 + " is superset of " + nameObj.node2 + ". "
                     }
                     else if (venn == 3) {
-                        text += "None of the clades are superset. "
+                        text += "However, none of the clades are superset. "
                     }
                     else if (venn == 4) {
-                        text += "None of the clades are superset. "
+                        text += "However, none of the clades are superset. "
                     }
-                }
-                if (pVal == 2) {
-                    text += "P-value of internal branch lengths is not significant.(pVal >= 0.05) "
-                    if (venn == 1) {
-                        text += nameObj.node2 + " is superset of " + nameObj.node1 + ". "
-                    }
-                    else if (venn == 2) {
-                        text += nameObj.node1 + " is superset of " + nameObj.node2 + ". "
-                    }
-                    else if (venn == 3) {
-                        text += "None of the clades are superset. "
-                    }
-                    else if (venn == 4) {
-                        text += "None of the clades are superset. "
-                    }
-                }
             }
+            
             else if (right == 2) {
-                text += "Furthermore, internal branch length of " + nameObj.node2 + " is more diverge than of " + nameObj.node1 + ". "
-                if (pVal == 1) {
-                    text += "Moreover, p-value of internal branch lengths is significant.(pVal < 0.05) "
+                
+                text += "Furthermore, internal divergence rate of " + nameObj.node2 + " is higher than " + nameObj.node1 + ". "
+                
+                if (pVal2== 2) {
+                    text += "However, P-value of the internal divergence rate is not significant (pVal >= 0.05). "
+                }
+                
                     if (venn == 1) {
-                        text += "Also, " + nameObj.node2 + " is superset of " + nameObj.node1 + ". Some species lost this version. "
+                        text += "Also, " +nameObj.node2 + " is superset of " + nameObj.node1 + ". "
                     }
                     else if (venn == 2) {
-                        text += "However, " + nameObj.node1 + " is superset of " + nameObj.node2 + ". "
+                        text += "Also, " +nameObj.node1 + " is superset of " + nameObj.node2 + ". "
                     }
                     else if (venn == 3) {
                         text += "However, none of the clades are superset. "
@@ -7684,161 +7667,107 @@ var TreeCompare = function () {
                     else if (venn == 4) {
                         text += "However, none of the clades are superset. "
                     }
-                }
-                if (pVal == 2) {
-                    text += "However, p-value of internal branch lengths is not significant.(pVal => 0.05) "
-                    if (venn == 1) {
-                        text += nameObj.node2 + " is superset of " + nameObj.node1 + ". "
-                    }
-                    else if (venn == 2) {
-                        text += nameObj.node1 + " is superset of " + nameObj.node2 + ". "
-                    }
-                    else if (venn == 3) {
-                        text += "None of the clades are superset. "
-                    }
-                    else if (venn == 4) {
-                        text += "None of the clades are superset. "
-                    }
-                }
-            }
+             }   
+            
             else if (right == 3) {
-                text += "However, visualization shows that are are no significant difference of internal branch length between " + nameObj.node1 + " and " + nameObj.node1 + ". "
-                if (pVal == 1) {
-                    text += "P-value of internal branch lengths is significant.(pVal < 0.05) "
+                
+                text +=  "Furthermore, visualization shows that are are no significant difference of internal divergence rate between " + nameObj.node1 + " and " + nameObj.node1 + ". "
+                
+                if (pVal2== 2) {
+                    text += "However, P-value of the internal divergence rate is not significant (pVal >= 0.05). "
+                }
+             
                     if (venn == 1) {
-                        text += nameObj.node2 + " is superset of " + nameObj.node1 + ". "
+                        text += "Also, " +nameObj.node2 + " is superset of " + nameObj.node1 + ". "
                     }
                     else if (venn == 2) {
-                        text += nameObj.node1 + " is superset of " + nameObj.node2 + ". "
+                        text += "Also, " +nameObj.node1 + " is superset of " + nameObj.node2 + ". "
                     }
                     else if (venn == 3) {
-                        text += "None of the clades are superset. "
+                        text += "However, none of the clades are superset. "
                     }
                     else if (venn == 4) {
-                        text += "None of the clades are superset. "
+                        text += "However, none of the clades are superset. "
                     }
-                }
-                if (pVal == 2) {
-                    text += "P-value of internal branch lengths is not significant.(pVal >= 0.05) "
-                    if (venn == 1) {
-                        text += nameObj.node2 + " is superset of " + nameObj.node1 + ". "
-                    }
-                    else if (venn == 2) {
-                        text += nameObj.node1 + " is superset of " + nameObj.node2 + ". "
-                    }
-                    else if (venn == 3) {
-                        text += "None of the clades are superset. "
-                    }
-                    else if (venn == 4) {
-                        text += "None of the clades are superset. "
-                    }
-                }
             }
         }
+        
         else if (left == 3) {
-            text += "Visualization shows that there is no difference between " + nameObj.node1 + "'s and " + nameObj.node2 + "'s to common ancestor. "
+            text += "Visualization shows that there is no difference between " + nameObj.node1 + "'s and " + nameObj.node2 + "'s distance to common ancestor. "
+            if (pVal1==2) {
+                
+                text += " However, P-value of the branch lengths is not significant. (pVal >= 0.05) " 
+            }
+            
             if (right == 1) {
-                text += "Internal branch length of " + nameObj.node1 + " is more diverge than of " + nameObj.node2 + ". "
-                if (pVal == 1) {
-                    text += "P-value of internal branch lengths is significant.(pVal < 0.05) "
+                
+                text += "Furthermore, internal divergence rate of  " + nameObj.node1 + " is higher than " + nameObj.node2 + ". "
+                
+                if (pVal2== 2) {
+                    text += "However, P-value of the internal divergence rate is not significant (pVal >= 0.05). "
+                }
+                
                     if (venn == 1) {
-                        text += nameObj.node2 + " is superset of " + nameObj.node1 + ". "
+                        text += "Also, " +nameObj.node2 + " is superset of " + nameObj.node1 + ". "
                     }
                     else if (venn == 2) {
-                        text += nameObj.node1 + " is superset of " + nameObj.node2 + ". "
+                        text += "Also, " +nameObj.node1 + " is superset of " + nameObj.node2 + ". "
                     }
                     else if (venn == 3) {
-                        text += "None of the clades are superset. "
+                        text += "However, none of the clades are superset. "
                     }
                     else if (venn == 4) {
-                        text += "None of the clades are superset. "
+                        text += "However, none of the clades are superset. "
                     }
-                }
-                if (pVal == 2) {
-                    text += "P-value of internal branch lengths is not significant.(pVal >= 0.05) "
-                    if (venn == 1) {
-                        text += nameObj.node2 + " is superset of " + nameObj.node1 + ". "
-                    }
-                    else if (venn == 2) {
-                        text += nameObj.node1 + " is superset of " + nameObj.node2 + ". "
-                    }
-                    else if (venn == 3) {
-                        text += "None of the clades are superset. "
-                    }
-                    else if (venn == 4) {
-                        text += "None of the clades are superset. "
-                    }
-                }
             }
+            
             else if (right == 2) {
-                text += "Internal branch length of " + nameObj.node2 + " is more diverge than of " + nameObj.node1 + ". "
-                if (pVal == 1) {
-                    text += "P-value of internal branch lengths is significant.(pVal < 0.05) "
-                    if (venn == 1) {
-                        text += nameObj.node2 + " is superset of " + nameObj.node1 + ". "
+                
+                text += "Furthermore, internal divergence rate of  " + nameObj.node2 + " is higher than " + nameObj.node1 + ". "
+                
+                if (pVal2== 2) {
+                    text += "However, P-value of the internal divergence rate is not significant (pVal >= 0.05). "
+                }
+                
+                   if (venn == 1) {
+                        text += "Also, " +nameObj.node2 + " is superset of " + nameObj.node1 + ". "
                     }
                     else if (venn == 2) {
-                        text += nameObj.node1 + " is superset of " + nameObj.node2 + ". "
+                        text += "Also, " +nameObj.node1 + " is superset of " + nameObj.node2 + ". "
                     }
                     else if (venn == 3) {
-                        text += "None of the clades are superset. "
+                        text += "However, none of the clades are superset. "
                     }
                     else if (venn == 4) {
-                        text += "None of the clades are superset. "
+                        text += "However, none of the clades are superset. "
                     }
-                }
-                if (pVal == 2) {
-                    text += "P-value of internal branch lengths is not significant.(pVal >= 0.05) "
-                    if (venn == 1) {
-                        text += nameObj.node2 + " is superset of " + nameObj.node1 + ". "
-                    }
-                    else if (venn == 2) {
-                        text += nameObj.node1 + " is superset of " + nameObj.node2 + ". "
-                    }
-                    else if (venn == 3) {
-                        text += "None of the clades are superset. "
-                    }
-                    else if (venn == 4) {
-                        text += "None of the clades are superset. "
-                    }
-                }
-            }
+             }   
+            
             else if (right == 3) {
-                text += "Visualization shows that are are no significant difference of internal branch length between " + nameObj.node1 + " and " + nameObj.node1 + ". "
-                if (pVal == 1) {
-                    text += "P-value of internal branch lengths is significant. "
-                    if (venn == 1) {
-                        text += nameObj.node2 + " is superset of " + nameObj.node1 + ". "
+                
+                text +=  "Furthermore, visualization shows that are are no significant difference of internal divergence rate between " + nameObj.node1 + " and " + nameObj.node1 + ". "
+                
+                if (pVal2== 2) {
+                    text += "However, P-value of the internal divergence rate is not significant (pVal >= 0.05). "
+                }
+                
+                   if (venn == 1) {
+                        text += "Also, " +nameObj.node2 + " is superset of " + nameObj.node1 + ". "
                     }
                     else if (venn == 2) {
-                        text += nameObj.node1 + " is superset of " + nameObj.node2 + ". "
+                        text += "Also, " +nameObj.node1 + " is superset of " + nameObj.node2 + ". "
                     }
                     else if (venn == 3) {
-                        text += "None of the clades are superset. "
+                        text += "However, none of the clades are superset. "
                     }
                     else if (venn == 4) {
-                        text += "None of the clades are superset. "
+                        text += "However, none of the clades are superset. "
                     }
-                }
-                if (pVal == 2) {
-                    text += "P-value of internal branch lengths is not significant. "
-                    if (venn == 1) {
-                        text += nameObj.node2 + " is superset of " + nameObj.node1 + ". "
-                    }
-                    else if (venn == 2) {
-                        text += nameObj.node1 + " is superset of " + nameObj.node2 + ". "
-                    }
-                    else if (venn == 3) {
-                        text += "None of the clades are superset. "
-                    }
-                    else if (venn == 4) {
-                        text += "None of the clades are superset. "
-                    }
-                }
-            }
-        }
-        return text
+           }
+       }
     }
+     return text
+ }
 
 
 
