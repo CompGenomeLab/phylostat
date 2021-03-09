@@ -4847,10 +4847,10 @@ var TreeCompare = function () {
                 for (j = 0; j < two.length; j++) {
                     if (one[i] == two[j]) {
                         common.push(one[i])
-                        var indexOne = one.indexOf(i);
+                        var indexOne = one.indexOf([i]);
                         one.splice(indexOne, 1);
                         i--;
-                        var indexTwo = two.indexOf(j);
+                        var indexTwo = two.indexOf([j]);
                         two.splice(indexTwo, 1);
                         j--;
                     }
