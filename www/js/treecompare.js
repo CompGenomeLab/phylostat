@@ -4513,7 +4513,7 @@ var TreeCompare = function () {
             Plotly.newPlot('boxPlot2ID', data)
                 .then(
                     function (gd) {
-                        Plotly.toImage(gd, {format: 'png', height: 600, width: 660 })
+                        Plotly.toImage(gd, {height: 600, width: 660 })
                             .then(
                                 function (url) {
                                     img_jpg_plot2.attr("src", url);
