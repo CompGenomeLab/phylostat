@@ -4873,6 +4873,68 @@ var TreeCompare = function () {
                     }
                 }
             }
+            
+            // Elif's paired test 
+            
+            if (regex){
+
+                each_diff=[]
+
+                overall_diff=0
+
+                for (i=0;i<common.length;i++){
+
+                    one_diff=0
+                    two_diff=0
+
+                    for (j=0;j<leavesOne.length;j++){
+
+
+                        if ((leavesOne[j].name).includes(common[i])){
+
+                            one_diff=leavesOne[i].length
+                            break
+                        }
+
+                    }
+
+                    for (a=0;a<leavesTwo.length;a++){
+
+
+                        if((leavesTwo[a].name).includes(common[i])){
+
+                            two_diff=leavesTwo[i].length
+                            break
+
+                         }
+                    }
+
+
+                    diff= two_diff-one_diff
+                    diff= Math.abs(diff)
+                    each_diff.push(diff)
+                    overall_diff+=diff
+                }
+
+                X_d= overall_diff/common.length
+                up=0
+                for (i=0; i<each_diff.length;i++){
+
+                    sol=0
+                    temp_n=each_diff[i]-X_d
+                    sol=temp_n*temp_n
+                    up+=sol
+
+                }
+
+                sd_prev= up/((common.length)-1)
+                sd = Math.sqrt(sd_prev)
+                sample_size=common.length
+                mean_zero=0 // Don't know what to put now
+                paired_t= overall_diff-mean_zero/(sd/Math.sqrt(sample_size))
+                pval_paired = jStat.ttest(paired_t, sample_size, 1)
+                
+            }
 
             var resSearch = {
                 searchOne: one.concat(common),
