@@ -4329,6 +4329,10 @@ var TreeCompare = function () {
             x = Math.sqrt(x1 + x2)
 
             tTest = mean1 - mean2
+            
+            // Elif's implementation
+            welchs_t= tTest/x
+            // End
 
             n1 = one.length;
             n2 = two.length;
@@ -4343,6 +4347,7 @@ var TreeCompare = function () {
 
             //T distribution is symmetric so there is no need for negative values, it makes p value weird 
             tTest = Math.abs(tTest)
+            welchs_t= Math.abs(welchs_t)
             //tTest = tTest / x
             tTest = tTest / tmp;
             document.getElementById('ttest1').value = tTest
@@ -4360,6 +4365,10 @@ var TreeCompare = function () {
             if (two) {
                 pval = jStat.ttest(tTest, df, 1)
                 document.getElementById("pval1").value = pval
+                
+                // Elif's implementation
+                pval_welch_1= jStat.ttest(welchs_t, df, 1)
+                // end
             }
         }
     }
@@ -4490,10 +4499,13 @@ var TreeCompare = function () {
             x2 = stdev2 * stdev2 / two.length
 
             x = Math.sqrt(x1 + x2)
+            
 
             tTest = mean1 - mean2
             n1 = one.length;
             n2 = two.length;
+            
+            welchs_t= tTest/x
 
             tmp1 = (n1 - 1) * stdev1 * stdev1
             tmp2 = (n2 - 1) * stdev2 * stdev2
@@ -4505,6 +4517,7 @@ var TreeCompare = function () {
 
             //T distribution is symmetric so there is no need for negative values, it makes p value weird 
             tTest = Math.abs(tTest)
+            welchs_t= Math.abs(welchs_t)
             //tTest = tTest / x
             //console.log("x: ", tTest / x, "\n")
             //console.log("tmp: ", tTest / tmp)
@@ -4523,6 +4536,10 @@ var TreeCompare = function () {
             if (two) {
                 pval = jStat.ttest(tTest, df, 1)
                 document.getElementById("pval2").value = pval
+                
+                // Elif's implementation
+                pval_welch_2= jStat.ttest(welchs_t, df, 1)
+                // end
             }
         }
     }
