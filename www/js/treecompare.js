@@ -7487,7 +7487,7 @@ var TreeCompare = function () {
         var venn_canvas = document.createElement('canvas');
         canvg(venn_canvas, vennSvg)
         var venn_img = venn_canvas.toDataURL('image/png');
-        doc.addImage(venn_img, 'PNG', 10, 17, 8, 4)
+        doc.addImage(venn_img, 'PNG', 10, 18.5, 8, 4)
 
         doc.setFontSize(12);
         doc.setFontType('normal');
@@ -7501,38 +7501,57 @@ var TreeCompare = function () {
 
         doc.text("T-Test Score: ", 1.5, 15)
         doc.text("P-Value\t: ", 1.5, 15.5)
+        doc.text("Welch's T-Test Score: ", 1.5, 16)
+        doc.text("Welch's P-Value\t: ", 1.5, 16.5)
+        doc.text("Paired T-Test Score: ", 1.5, 17)
+        doc.text("Paired P-Value\t: ", 1.5, 17.5)
+        
         doc.text("T-Test Score: ", 11.5, 15)
         doc.text("P-Value\t: ", 11.5, 15.5)
+        doc.text("Welch's T-Test Score: ", 11.5, 16)
+        doc.text("Welch's P-Value\t: ", 11.5, 16.5)
 
 
         var ttest1 = document.getElementById('ttest1').value
         doc.text(ttest1, 4.5, 15)
         var pval1 = document.getElementById('pval1').value
         doc.text(pval1, 4.5, 15.5)
+        var pval_welch_1= document.getElementById('pval_welch_1').value
+        doc.text(pval_welch_1, 6.25, 16.5)
+        var ttest1_w= document.getElementById('ttest1_w').value
+        doc.text(ttest1_w, 6.25, 16)
+        var paired_t= document.getElementById('paired_t').value
+        doc.text(paired_t, 6.25, 17)
+        var pval_paired= document.getElementById('pval_paired').value
+        doc.text(pval_paired, 6.25, 17.5)
         var ttest2 = document.getElementById('ttest2').value
         doc.text(ttest2, 14.5, 15)
         var pval2 = document.getElementById('pval2').value
         doc.text(pval2, 14.5, 15.5)
+        var ttest2_w = document.getElementById('ttest2_w').value
+        doc.text(ttest2, 16.2, 16)
+        var pval_welch_2 = document.getElementById('pval_welch_2').value
+        doc.text(pval_welch_2, 16.2, 16.5)
 
         //console.log(meanObj)
         if (pval1 < 0.05) {
             if (meanObj.leftMean1 > meanObj.leftMean2) {
                 var text = nameObj.node1 + " has a higher divergence rate than\n" + nameObj.node2 + "."
-                doc.text(text, 1.5, 16)
+                doc.text(text, 1.5, 18)
                 concObj.leftPlot = 1
             }
             else if (meanObj.leftMean2 > meanObj.leftMean1) {
                 var text = nameObj.node2 + " has a higher divergence rate than\n" + nameObj.node1 + "."
-                doc.text(text, 1.5, 16)
+                doc.text(text, 1.5, 18)
                 concObj.leftPlot = 2
             }
             else {
-                doc.text("There is no significant difference between nodes.", 1.5, 16)
+                doc.text("There is no significant difference between nodes.", 1.5, 18)
                 concObj.leftPlot = 3
             }
         }
         else {
-            doc.text("There is no significant difference between nodes.", 1.5, 16)
+            doc.text("There is no significant difference between nodes.", 1.5, 18)
             concObj.leftPlot = 3
         }
         
@@ -7548,21 +7567,21 @@ var TreeCompare = function () {
         if (pval2 < 0.05) {
             if (meanObj.rightMean1 > meanObj.rightMean2) {
                 var text = nameObj.node1 + " is internally more diverge than " + nameObj.node2 + "."
-                doc.text(text, 11.5, 16)
+                doc.text(text, 11.5, 17)
                 concObj.rightPlot = 1
             }
             else if (meanObj.rightMean2 > meanObj.rightMean1) {
                 var text = nameObj.node2 + " is internally more diverge than " + nameObj.node1 + "."
-                doc.text(text, 11.5, 16)
+                doc.text(text, 11.5, 17)
                 concObj.rightPlot = 2
             }
             else {
-                doc.text("There is no significant divergence rate\n between internal nodes.", 11.5, 16)
+                doc.text("There is no significant divergence rate\n between internal nodes.", 11.5, 17)
                 concObj.rightPlot = 3
             }
         }
         else {
-            doc.text("There is no significant divergence rate\n between internal nodes.", 11.5, 16)
+            doc.text("There is no significant divergence rate\n between internal nodes.", 11.5, 17)
             concObj.rightPlot = 3
         }
         
@@ -7576,13 +7595,13 @@ var TreeCompare = function () {
         }
 
         doc.setFontType("bold");
-        doc.text("RegEX expression:", 1.5, 17.75)
+        doc.text("RegEX expression:", 1.5, 19.5)
         doc.setFontType('normal');
         var RegEX = document.getElementById('regExSearch').value
         if (!RegEX) RegEX = "taxid_[0-9]+"
-        doc.text(RegEX, 5.50, 17.75)
+        doc.text(RegEX, 5.50, 19.5)
         var regRes = document.getElementById('regRes').value
-        doc.text(regRes, 1.5, 18.75)
+        doc.text(regRes, 1.5, 20)
 
         regRes = regRes.split("\n")
         var firstRes = parseInt(regRes[0].split(" ")[7])
@@ -7604,12 +7623,12 @@ var TreeCompare = function () {
 
 
         doc.setFontType("bold");
-        doc.text("Conclusion:", 1.5, 22)
+        doc.text("Conclusion:", 1.5, 23)
         doc.setFontType("normal");
         var conclusion = conclusionFunc(concObj)
         conclusion = doc.splitTextToSize(conclusion, 18)
         //Add if/else statements to actually give a conclusion.
-        doc.text(conclusion, 1.5, 22.5)
+        doc.text(conclusion, 1.5, 23.5)
         doc.save("report.pdf");
     }
 
