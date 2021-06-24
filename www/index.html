@@ -347,25 +347,25 @@
                             <div style="display: flex;">
                                 <textarea readonly rows="1" style="width: 100px; border: none; outline-width: 0; 
                                     background-color: #e7e7e7; border-top: 1px solid black;">Paired T-Test:</textarea>
-                                <textarea id="ttest1" rows="1" readonly style="width: 230px; border: none; outline-width: 0; 
+                                <textarea id="paired_t" rows="1" readonly style="width: 230px; border: none; outline-width: 0; 
                                     background-color: #e7e7e7; border-top: 1px solid black;"></textarea>
                             </div>
                             <div style="display: flex;">
                                 <textarea readonly rows="1" style="width: 100px; border: none; outline-width: 0; 
                                     background-color: #e7e7e7; border-top: 1px solid black;">Paired P-Value:</textarea>
-                                <textarea id="ttest1" rows="1" readonly style="width: 230px; border: none; outline-width: 0; 
+                                <textarea id="pval_paired" rows="1" readonly style="width: 230px; border: none; outline-width: 0; 
                                     background-color: #e7e7e7; border-top: 1px solid black;"></textarea>
                             </div>
                             <div style="display: flex;">
                                 <textarea readonly rows="1" style="width: 100px; border: none; outline-width: 0; 
                                     background-color: #e7e7e7; border-top: 1px solid black;">Welch's T-test:</textarea>
-                                <textarea id="ttest1" rows="1" readonly style="width: 230px; border: none; outline-width: 0; 
+                                <textarea id="ttest1_w" rows="1" readonly style="width: 230px; border: none; outline-width: 0; 
                                     background-color: #e7e7e7; border-top: 1px solid black;"></textarea>
                             </div>
                             <div style="display: flex;">
                                 <textarea readonly rows="1" style="width: 100px; border: none; outline-width: 0; 
-                                    background-color: #e7e7e7; border-top: 1px solid black;">Welch's P-Value: </textarea>
-                                <textarea id="ttest1" rows="1" readonly style="width: 230px; border: none; outline-width: 0; 
+                                    background-color: #e7e7e7; border-top: 1px solid black;">Welch's Pv: </textarea>
+                                <textarea id="pval_welch_1" rows="1" readonly style="width: 230px; border: none; outline-width: 0; 
                                     background-color: #e7e7e7; border-top: 1px solid black;"></textarea>
                             </div>
                             <div class="boxplot2">
@@ -388,13 +388,13 @@
                             <div style="display: flex;">
                                 <textarea readonly rows="1" style="width: 100px; border: none; outline-width: 0; 
                                     background-color: #e7e7e7; border-top: 1px solid black;">Welch's T-test:</textarea>
-                                <textarea id="ttest1" rows="1" readonly style="width: 230px; border: none; outline-width: 0; 
+                                <textarea id="ttest2_w" rows="1" readonly style="width: 230px; border: none; outline-width: 0; 
                                     background-color: #e7e7e7; border-top: 1px solid black;"></textarea>
                             </div>
                             <div style="display: flex;">
                                 <textarea readonly rows="1" style="width: 100px; border: none; outline-width: 0; 
                                     background-color: #e7e7e7; border-top: 1px solid black;">Welch's P-Value: </textarea>
-                                <textarea id="ttest1" rows="1" readonly style="width: 230px; border: none; outline-width: 0; 
+                                <textarea id="pval_welch_2" rows="1" readonly style="width: 230px; border: none; outline-width: 0; 
                                     background-color: #e7e7e7; border-top: 1px solid black;"></textarea>
                             </div>
                             <p></p>
@@ -752,9 +752,16 @@
             document.getElementById('boxPlotID').value = "";
             document.getElementById('ttest1').value = "";
             document.getElementById('pval1').value = "";
+            document.getElementById('pval_welch_1').value = "";
+            document.getElementById('ttest1_w').value = "";
+            document.getElementById('paired_t').value = "";
+            document.getElementById('pval_paired').value = "";
+            
             document.getElementById('boxPlot2ID').value = "";
             document.getElementById('ttest2').value = "";
             document.getElementById('pval2').value = "";
+            document.getElementById('pval_welch_2').value = "";
+            document.getElementById('ttest2_w').value = "";
             document.getElementById('regExSearch').value = "";
             document.getElementById('regRes').value = "";
             document.getElementById('regExVenn').value = "";
@@ -1211,9 +1218,15 @@
             document.getElementById('boxPlotID').value = "";
             document.getElementById('ttest1').value = "";
             document.getElementById('pval1').value = "";
+            document.getElementById('pval_welch_1').value = "";
+            document.getElementById('ttest1_w').value = "";
+            document.getElementById('paired_t').value = "";
+            document.getElementById('pval_paired').value = "";
             document.getElementById('boxPlot2ID').value = "";
             document.getElementById('ttest2').value = "";
             document.getElementById('pval2').value = "";
+            document.getElementById('pval_welch_2').value = "";
+            document.getElementById('ttest2_w').value = "";
             document.getElementById('regExSearch').value = "";
             document.getElementById('regRes').value = "";
             document.getElementById('regExVenn').value = "";
