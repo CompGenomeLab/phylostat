@@ -4876,7 +4876,11 @@ var TreeCompare = function () {
             
             // Elif's paired test 
             
-            if (regex){
+            paired_t=""
+            pval_paired=""
+            
+            // If there is any regex given, it calculates the paired t-test if there is not paired values equaled to N/A.
+            if (regex != "/.*/i"){ 
 
                 each_diff=[]
 
@@ -4934,6 +4938,13 @@ var TreeCompare = function () {
                 paired_t= overall_diff-mean_zero/(sd/Math.sqrt(sample_size))
                 pval_paired = jStat.ttest(paired_t, sample_size, 1)
                 
+            }
+            
+            
+            else {
+
+                paired_t="N/A"
+                pval_paired="N/A"
             }
 
             var resSearch = {
