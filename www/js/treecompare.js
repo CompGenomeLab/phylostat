@@ -4351,6 +4351,7 @@ var TreeCompare = function () {
             //tTest = tTest / x
             tTest = tTest / tmp;
             document.getElementById('ttest1').value = tTest
+            document.getElementById('ttest1_w').value = welchs_t
 
             Plotly.newPlot('boxPlotID', data)
                 .then(
@@ -4368,6 +4369,7 @@ var TreeCompare = function () {
                 
                 // Elif's implementation
                 pval_welch_1= jStat.ttest(welchs_t, df, 1)
+                document.getElementById("pval_welch_1").value = pval_welch_1
                 // end
             }
         }
@@ -4523,6 +4525,7 @@ var TreeCompare = function () {
             //console.log("tmp: ", tTest / tmp)
             tTest = tTest / tmp;
             document.getElementById('ttest2').value = tTest
+            document.getElementById('ttest2_w').value = welchs_t
             Plotly.newPlot('boxPlot2ID', data)
                 .then(
                     function (gd) {
@@ -4539,6 +4542,7 @@ var TreeCompare = function () {
                 
                 // Elif's implementation
                 pval_welch_2= jStat.ttest(welchs_t, df, 1)
+                document.getElementById("pval_welch_2").value = pval_welch_2
                 // end
             }
         }
@@ -4946,6 +4950,9 @@ var TreeCompare = function () {
                 paired_t="N/A"
                 pval_paired="N/A"
             }
+            
+            document.getElementById("paired_t").value = paired_t
+            document.getElementById("pval_paired").value = pval_paired
 
             var resSearch = {
                 searchOne: one.concat(common),
