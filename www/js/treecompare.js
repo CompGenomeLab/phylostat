@@ -10,6 +10,14 @@ var multiChildren2 = [];
 var leavesOne = [];
 var leavesTwo = [];
 
+
+// When the user clicks on <div>, open the popup
+function myFunction() {
+  var popup = document.getElementById("myPopup");
+  popup.classList.toggle("show");
+}
+
+
 var TreeCompare = function () {
     //console.log("multiChildren1: ", multiChildren1)
     //console.log("leavesOne: ", leavesOne)
