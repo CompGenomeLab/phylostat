@@ -5000,6 +5000,9 @@ var TreeCompare = function () {
 
                 paired_t="N/A"
                 pval_paired="N/A"
+            }
+            
+            if (regex == "/.*/i"){ 
                 pval_paired2="N/A"
                 paired_t2="N/A"
             }
