@@ -191,13 +191,6 @@ var test = module.exports.test = function(samples, key) {
 // Obtained code
 
 
-// When the user clicks on <div>, open the popup
-function myFunction() {
-  var popup = document.getElementById("myPopup");
-  popup.classList.toggle("show");
-}
-
-
 var TreeCompare = function () {
     //console.log("multiChildren1: ", multiChildren1)
     //console.log("leavesOne: ", leavesOne)
