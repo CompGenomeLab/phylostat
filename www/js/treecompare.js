@@ -4415,6 +4415,9 @@ var TreeCompare = function () {
             for (i = 0; i < two.length; i++) {
                 tempTwo.push(two[i].Distance)
             }
+            
+            global_one= one
+            global_two= two
             one = tempOne
             two = tempTwo
             var trace1 = {
@@ -4685,6 +4688,54 @@ var TreeCompare = function () {
             }
 
             boxPlotLeaves(leavesOneEachother, leavesTwoEachother)
+            
+            // Second paired test
+            differences_list=[]
+
+            for(i=0; i<global_one.length ; i++){
+
+
+
+                var list_name= (global_one[i].Between).split("|")
+                taxid1=list_name[2]+"|"+list_name[3]
+                taxid2=list_name[9]+"|"+list_name[10]
+
+                for(k=0; k<global_two.length; k++){
+
+                    var name1= global_two[k].Between
+                    var check1= name1.indexOf(taxid1)
+             
+                    var check2= name1.indexOf(taxid2)
+                    if (check1 != -1 && check2 != -1){
+
+                        diff2= (global_one[i].Distance)-(global_two[k].Distance)
+                        differences_list.push(diff2)
+                    }
+
+                }
+
+            }
+
+            diff2= Math.abs(diff2)
+
+            X_d2= diff2/differences_list.length
+            up=0
+            for (i=0; i<differences_list.length;i++){
+
+                sol=0
+                temp_n=differences_list[i]-X_d2
+                sol=temp_n*temp_n
+                up+=sol
+
+            }
+
+            sd_prev= up/((differences_list.length)-1)
+            sd = Math.sqrt(sd_prev)
+            sample_size=differences_list.length
+            mean_zero=0 // Don't know what to put now
+            paired_t2= diff2-mean_zero/(sd/Math.sqrt(sample_size))
+            pval_paired2 = jStat.ttest(paired_t, sample_size, 1)
+            
         }
         else {
             for (i = 0; i < leavesOne.length; i++) {
@@ -4949,11 +5000,15 @@ var TreeCompare = function () {
 
                 paired_t="N/A"
                 pval_paired="N/A"
+                pval_paired2="N/A"
+                paired_t2="N/A"
             }
             
             document.getElementById("paired_t").value = paired_t
+            document.getElementById("paired_t2").value = paired_t2
             document.getElementById("pval_paired").value = pval_paired
-
+            document.getElementById("pval_paired2").value = pval_paired2
+            
             var resSearch = {
                 searchOne: one.concat(common),
                 numSearchOne: one.concat(common).length,
