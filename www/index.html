@@ -397,6 +397,20 @@
                                 <textarea id="pval_welch_2" rows="1" readonly style="width: 230px; border: none; outline-width: 0; 
                                     background-color: #e7e7e7; border-top: 1px solid black;"></textarea>
                             </div>
+                            </div>
+                            <div style="display: flex;">
+                                <textarea readonly rows="1" style="width: 100px; border: none; outline-width: 0; 
+                                    background-color: #e7e7e7; border-top: 1px solid black;">Paired T-Test:</textarea>
+                                <textarea id="paired_t2" rows="1" readonly style="width: 230px; border: none; outline-width: 0; 
+                                    background-color: #e7e7e7; border-top: 1px solid black;"></textarea>
+                            </div>
+                            </div>
+                            <div style="display: flex;">
+                                <textarea readonly rows="1" style="width: 100px; border: none; outline-width: 0; 
+                                    background-color: #e7e7e7; border-top: 1px solid black;">Paired P-Value:</textarea>
+                                <textarea id="pval_paired2" rows="1" readonly style="width: 230px; border: none; outline-width: 0; 
+                                    background-color: #e7e7e7; border-top: 1px solid black;"></textarea>
+                            </div>
                             <p></p>
                             <div style="display: flex;">
                                 <label style="width: 100%;">RegEx Search:</label>
@@ -762,6 +776,8 @@
             document.getElementById('pval2').value = "";
             document.getElementById('pval_welch_2').value = "";
             document.getElementById('ttest2_w').value = "";
+            document.getElementById('paired_t2').value = "";
+            document.getElementById('pval_paired2').value = "";
             document.getElementById('regExSearch').value = "";
             document.getElementById('regRes').value = "";
             document.getElementById('regExVenn').value = "";
@@ -1221,6 +1237,8 @@
             document.getElementById('pval_welch_1').value = "";
             document.getElementById('ttest1_w').value = "";
             document.getElementById('paired_t').value = "";
+            document.getElementById('paired_t2').value = "";
+            document.getElementById('pval_paired2').value = "";
             document.getElementById('pval_paired').value = "";
             document.getElementById('boxPlot2ID').value = "";
             document.getElementById('ttest2').value = "";
