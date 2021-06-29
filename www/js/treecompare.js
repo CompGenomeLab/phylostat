@@ -4669,7 +4669,7 @@ var TreeCompare = function () {
             // kucukten buyuge siraliyor
             all_lengths_sorted = all_lengths_1.sort((first, second) => first.Distance - second.Distance)
             
-            for (i=0;i<all_lengths_sorted.length+1;i++){
+            for (i=0;i<all_lengths_sorted.length;i++){
                 
                 all_lengths_sorted[i].rank = i+1
               
@@ -4679,7 +4679,7 @@ var TreeCompare = function () {
 
             for (let i = 0; i < all_lengths_sorted.length;) {
                 let occurence = 1;
-                while ((i + occurence < all_lengths_sorted.length) && (all_lengths_sortedr[i].Distance == all_lengths_sorted[i+occurence].Distance)) {
+                while ((i + occurence < all_lengths_sorted.length) && (all_lengths_sorted[i].Distance == all_lengths_sorted[i+occurence].Distance)) {
                     occurence++;
                 }
 
@@ -4730,7 +4730,7 @@ var TreeCompare = function () {
 
             z_score_top = main_u-(n1*n2)/2
             z_score_bottom= (n1*n2)*(n1+n2+1)/2
-            z_score= z_score_top/math.sqrt(z_score_bottom)          
+            z_score= z_score_top/Math.sqrt(z_score_bottom)          
             p_val_mann_whitney1=jStat.ztest(z_score,2)
             
             boxPlotEachOther(leavesOneDist, leavesTwoDist)
