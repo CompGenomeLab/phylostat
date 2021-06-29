@@ -4778,8 +4778,103 @@ var TreeCompare = function () {
                     break
                 }
             }
+            
+                        temp_leaves3=leavesOneEachother
+            temp_leaves4=leavesTwoEachother
+            all_lengths_2=[]
+            for(i=0; i<temp_leaves3.length; i++){
+                
+                temp_leaves3[i].From = "A"
+                all_lengths_2.push(temp_leaves3[i])
+
+            }
+
+            for(i=0; i<temp_leaves4.length; i++){
+                
+                temp_leaves4[i].From = "B"
+                all_lengths_2.push(temp_leaves4[i])
+
+            }
+
+            // kucukten buyuge siraliyor
+            all_lengths_sorted2 = all_lengths_2.sort((first, second) => first.Distance - second.Distance)
+            
+            for (i=0;i<all_lengths_sorted2.length;i++){
+                
+                all_lengths_sorted2[i].rank = i+1
+              
+            }
+
+            // Ali Parlakci implementation
+
+            for (let i = 0; i < all_lengths_sorted2.length;) {
+                let occurence = 1;
+                while ((i + occurence < all_lengths_sorted2.length) && (all_lengths_sorted2[i].Distance == all_lengths_sorted2[i+occurence].Distance)) {
+                    occurence++;
+                }
+
+
+                ranks = 0;
+                for (let j = i; j < i + occurence; j++) {
+                    ranks += all_lengths_sorted2[j].rank;
+                }
+
+                for (let j = i; j < i + occurence; j++) {
+                    all_lengths_sorted2[j].rank = ranks / occurence;
+                }
+
+                i += occurence;
+            }
+            
+            // Ali Parlakci implementation
+
+            n3= temp_leaves3.length
+            n4= temp_leaves4.length
+            rank_sum3=0
+            rank_sum4=0
+
+            for (i=0;i<all_lengths_sorted2.length;i++){
+
+                if (all_lengths_sorted2[i].From == "A"){
+
+
+                    rank_sum3+=all_lengths_sorted2[i].rank
+                }
+
+
+                if (all_lengths_sorted2[i].From == "B"){
+
+
+                    rank_sum4+=all_lengths_sorted2[i].rank
+                }
+
+            }
+
+            u1_second= n3*n4+ (n3*(n3+1))/2 - rank_sum3
+            u2_second=n3*n4+ (n4*(n4+1))/2 - rank_sum4
+
+            if (u1_second > u2_second){
+
+                main_u2= u2_second
+            }
+
+            else {
+
+                main_u2= u1_second
+            }
+
+            z_score_top2 = main_u2-(n3*n4)/2
+            z_score_bottom2= (n3*n4)*(n3+n4+1)/2
+            z_score_2= z_score_top2/Math.sqrt(z_score_bottom2)          
+            p_val_mann_whitney2=jStat.ztest(z_score_2,2)
+            
+            document.getElementById("p_val_mann_whitney2").value = p_val_mann_whitney2
+            document.getElementById("z_score_2").value = z_score_2
+            document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
+            document.getElementById("z_score").value = z_score
 
             boxPlotLeaves(leavesOneEachother, leavesTwoEachother)
+            
             
             // Second paired test
             differences_list=[]
