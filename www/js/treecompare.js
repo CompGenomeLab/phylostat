@@ -4556,10 +4556,14 @@ var TreeCompare = function () {
     function distFromLeaves(ancs, regex) {
         selectedOne = multiSelected[0]
         leavesOne = selectedOne.leaves
+        leave_one_before_regex=[]
+        leave_one_before_regex=leavesOne
         leavesOneEachother = []
         leavesOneDist = []
         selectedTwo = multiSelected[1]
         leavesTwo = selectedTwo.leaves
+        leave_two_before_regex=[]
+        leave_two_before_regex=leavesTwo
         leavesTwoEachother = []
         leavesTwoDist = []
         if (!regex) {
@@ -4779,7 +4783,82 @@ var TreeCompare = function () {
                 }
             }
             
-                        temp_leaves3=leavesOneEachother
+            
+            leavesOneEachother_before_regex=[]
+            leavesTwoEachother_before_regex=[]
+
+            turn = 0
+            count = 0
+            end = (leave_one_before_regex.length) * (leave_one_before_regex.length - 1) / 2
+            while (true) {
+                for (i = turn + 1; i < leave_one_before_regex.length; i++) {
+                    str = leave_one_before_regex[turn].name + "---" + leave_one_before_regex[i].name
+                    dis = leave_one_before_regex[turn].length + leave_one_before_regex[i].length
+                    var tmp = {
+                        Between: str,
+                        Distance: dis
+                    }
+                    leavesOneEachother_before_regex.push(tmp)
+                    count += 1
+                }
+                turn += 1
+                if (count == end) {
+                    break
+                }
+            }
+
+            turn = 0
+            count = 0
+            end = (leave_two_before_regex.length) * (leave_two_before_regex.length - 1) / 2
+            while (true) {
+                for (i = turn + 1; i < leave_two_before_regex.length; i++) {
+                    str = leave_two_before_regex[turn].name + "---" + leave_two_before_regex[i].name
+                    dis = leave_two_before_regex[turn].length + leave_two_before_regex[i].length
+                    var tmp = {
+                        Between: str,
+                        Distance: dis
+                    }
+                    leavesTwoEachother_before_regex.push(tmp)
+                    count += 1
+                }
+                turn += 1
+                if (count == end) {
+                    break
+                }
+            }
+            
+            // Partially Overlapping 
+
+            leave_one_before_regex_distances=[]
+            for (i=0; i<leave_one_before_regex.length; i++){
+
+                leave_one_before_regex_distances.push(leave_one_before_regex[i].length)
+            }
+
+            leave_two_before_regex_distances=[]
+            for (i=0; i<leave_two_before_regex.length; i++){
+
+                leave_two_before_regex_distances.push(leave_two_before_regex[i].length)
+            }
+
+            x1_po= jStat.mean(leave_one_before_regex_distances)
+            x2_po= jStat.mean(leave_two_before_regex_distances)
+            na= leave_one_before_regex_distances.length
+            nb= leave_two_before_regex_distances.length
+            nc= 0 // The paired sample size should come here
+            stev1=jStat.stdev(leave_one_before_regex_distances)
+            stev2=jStat.stdev(leave_two_before_regex_distances)
+            r=0.687 // ask if it is always constant and this number
+            n1_po= na + nc
+            n2_po= nb + nc
+            t_po1=(x1_po-x2_po)/sp* Math.sqrt((stev1*stev1/n1_po)+ (stev2*stev2/n2_po)- 2*r*stev1*stev2*nc/n1_po*n2_po)
+            weird1= ((stev1*stev1/n1_po)+ (stev2*stev2/n2_po))*((stev1*stev1/n1_po)+ (stev2*stev2/n2_po))/ ((stev1*stev1/n1_po)*(stev1*stev1/n1_po)/(n1_po-1) + (stev2*stev2/n2_po)*(stev2*stev2/n2_po)/(n2_po-1) ) 
+            df_po1= (nc-1) + (weird1-nc+1)/(na+nb+2*nc)*(na+nb)
+            pval_po1= jStat.ttest(Math.abs(t_po1), df_po1, 1)
+
+            // Partially Overlapping
+            
+            temp_leaves3=leavesOneEachother
             temp_leaves4=leavesTwoEachother
             all_lengths_2=[]
             for(i=0; i<temp_leaves3.length; i++){
