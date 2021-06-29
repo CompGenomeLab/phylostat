@@ -4703,15 +4703,20 @@ var TreeCompare = function () {
             rank_sum1=0
             rank_sum2=0
 
-            for (i=0;i<temp_leaves.length;i++){
+            for (i=0;i<all_lengths_sorted.length;i++){
 
-                rank_sum1+=temp_leaves[i].Distance
+                if (all_lengths_sorted[i].From == "A"){
 
-            }
 
-            for (i=0;i<temp_leaves2.length;i++){
+                    rank_sum1+=all_lengths_sorted[i].rank
+                }
 
-                rank_sum2+=temp_leaves2[i].Distance
+
+                if (all_lengths_sorted[i].From == "B"){
+
+
+                    rank_sum2+=all_lengths_sorted[i].rank
+                }
 
             }
 
