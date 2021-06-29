@@ -4646,7 +4646,93 @@ var TreeCompare = function () {
                 leavesTwoDist.push(tmp)
 
             }
+            
+            // Mann Whitney first criteria 
+            
+            temp_leaves=leavesOneDist
+            temp_leaves2=leavesTwoDist
+            all_lengths_1=[]
+            for(i=0; i<temp_leaves.length; i++){
+                
+                temp_leaves[i].From = "A"
+                all_lengths_1.push(temp_leaves[i])
 
+            }
+
+            for(i=0; i<temp_leaves2.length; i++){
+                
+                temp_leaves2[i].From = "B"
+                all_lengths_1.push(temp_leaves2[i])
+
+            }
+
+            // kucukten buyuge siraliyor
+            all_lengths_sorted = all_lengths_1.sort((first, second) => first.Distance - second.Distance)
+            
+            for (i=0;i<all_lengths_sorted.length+1;i++){
+                
+                all_lengths_sorted[i].rank = i+1
+              
+            }
+
+            // Ali Parlakci implementation
+
+            for (let i = 0; i < all_lengths_sorted.length;) {
+                let occurence = 1;
+                while ((i + occurence < all_lengths_sorted.length) && (all_lengths_sortedr[i].Distance == all_lengths_sorted[i+occurence].Distance)) {
+                    occurence++;
+                }
+
+
+                ranks = 0;
+                for (let j = i; j < i + occurence; j++) {
+                    ranks += all_lengths_sorted[j].rank;
+                }
+
+                for (let j = i; j < i + occurence; j++) {
+                    all_lengths_sorted[j].rank = ranks / occurence;
+                }
+
+                i += occurence;
+            }
+            
+            // Ali Parlakci implementation
+
+            n1= temp_leaves.length
+            n2= temp_leaves2.length
+            rank_sum1=0
+            rank_sum2=0
+
+            for (i=0;i<temp_leaves.length;i++){
+
+                rank_sum1+=temp_leaves[i].Distance
+
+            }
+
+            for (i=0;i<temp_leaves2.length;i++){
+
+                rank_sum2+=temp_leaves2[i].Distance
+
+            }
+
+            u1_first= n1*n2+ (n1*(n1+1))/2 - rank_sum1
+            u2_first=n1*n2+ (n2*(n2+1))/2 - rank_sum2
+
+            if (u1_first> u2_first){
+
+                main_u= u2_first
+            }
+
+            else {
+
+                main_u= u1_first
+            }
+
+            z_score_top = main_u-(n1*n2)/2
+            z_score_bottom= (n1*n2)*(n1+n2+1)/2
+            z_score= z_score_top/math.sqrt(z_score_bottom)          
+            p_val_mann_whitney1=jStat.ztest(z_score,2)
+            
             boxPlotEachOther(leavesOneDist, leavesTwoDist)
 
             turn = 0
