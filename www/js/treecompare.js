@@ -4924,12 +4924,96 @@ var TreeCompare = function () {
                 
         }
             
-            document.getElementById("p_val_mann_whitney2").value = p_val_mann_whitney2
-            document.getElementById("z_score_2").value = z_score_2
-            document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
-            document.getElementById("z_score").value = z_score
+   
 
             boxPlotLeaves(leavesOneEachother, leavesTwoEachother)
+            
+             
+            // Partially Overlapping implementation
+            
+            leave_one_before_regex_distances=[]
+            for (i=0; i<leave_one_before_regex.length; i++){
+
+                leave_one_before_regex_distances.push(leave_one_before_regex[i].length)
+            }
+
+            leave_two_before_regex_distances=[]
+            for (i=0; i<leave_two_before_regex.length; i++){
+
+                leave_two_before_regex_distances.push(leave_two_before_regex[i].length)
+            }
+
+            x1_po= jStat.mean(leave_one_before_regex_distances)
+            x2_po= jStat.mean(leave_two_before_regex_distances)
+            na= leave_one_before_regex_distances.length
+            nb= leave_two_before_regex_distances.length
+            nc= global_common.length
+            stev1=jStat.stdev(leave_one_before_regex_distances)
+            stev2=jStat.stdev(leave_two_before_regex_distances)
+            r=0
+           
+            difference1=[]
+            difference2=[]
+
+            up_part=0
+            left_down=0
+            right_down=0
+
+            for (k=0; k<global_common.length; k++){
+
+                one_find=0
+                two_find=0
+                target= global_common[k]
+
+
+                for (i=0; i<leave_one_before_regex.length ; i++){
+
+                    target_name= leave_one_before_regex[i].name
+
+
+                    if (target_name.indexOf(target) != -1){
+
+                           one_find=leave_one_before_regex[i].length-x1_po
+                           wanted_diff= one_find*one_find
+                           left_down+=wanted_diff
+                           break
+                    }
+                 
+                }
+
+               for (i=0; i<leave_two_before_regex.length ; i++){
+
+
+                   if ((leave_two_before_regex[i].name).indexOf(target) != -1){
+
+                        two_find=leave_two_before_regex[i].length-x2_po
+                        wanted_diff= two_find*two_find
+                        right_down+=wanted_diff
+                        break
+
+                   }
+
+                }
+
+                up_part+=(one_find*two_find)
+
+            }
+
+            r= up_part/ Math.sqrt(left_down*right_down)
+
+
+
+            n1_po= na + nc
+            n2_po= nb + nc
+            sp_up= ((n1_po-1)*stev1*stev1)+((n2_po-1)*stev2*stev2)
+            sp_down= (n1_po-1)+(n2_po-1)
+            sp= Math.sqrt(sp_up/sp_down)
+            m=Math.sqrt(stev1*stev1/n1_po)
+            t_po1=(x1_po-x2_po)/sp*m + (stev2*stev2/n2_po)- (2*r*stev1*stev2*nc/n1_po*n2_po)
+            weird1= ((stev1*stev1/n1_po)+ (stev2*stev2/n2_po))*((stev1*stev1/n1_po)+ (stev2*stev2/n2_po))/ ((stev1*stev1/n1_po)*(stev1*stev1/n1_po)/(n1_po-1) + (stev2*stev2/n2_po)*(stev2*stev2/n2_po)/(n2_po-1) ) 
+            df_po1= (nc-1) + (weird1-nc+1)/(na+nb+2*nc)*(na+nb)
+            t_po1=Math.abs(t_po1)
+            pval_po1= jStat.ttest(t_po1, df_po1, 1)
             
           
             
@@ -5052,7 +5136,7 @@ var TreeCompare = function () {
         else if (dist1 < dist2) return 2
     }
     
-    
+    global_common=[]
 
     function regexSearch(beginning) {
         if (multiSelected[0] && multiSelected[1]) {
@@ -5112,7 +5196,7 @@ var TreeCompare = function () {
                     }
                 }
             }
-
+            
             var common = [];
             for (i = 0; i < one.length; i++) {
                 for (j = 0; j < two.length; j++) {
@@ -5127,6 +5211,8 @@ var TreeCompare = function () {
                     }
                 }
             }
+            
+            global_common=common
             
             
                         
@@ -5211,7 +5297,7 @@ var TreeCompare = function () {
             
             bool= false
             
-            if (regex == "/.*/i"){ 
+            if (regex == "/.*/i" || !regex){ 
 
                 bool = true 
                 p_val_mann_whitney2="N/A"
@@ -5273,6 +5359,10 @@ var TreeCompare = function () {
             document.getElementById("paired_t2").value = paired_t2
             document.getElementById("pval_paired").value = pval_paired
             document.getElementById("pval_paired2").value = pval_paired2
+            document.getElementById("p_val_mann_whitney2").value = p_val_mann_whitney2
+            document.getElementById("z_score_2").value = z_score_2
+            document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
+            document.getElementById("z_score").value = z_score
             
             if (regex == "/.*/i"){ 
                 pval_paired2="N/A"
