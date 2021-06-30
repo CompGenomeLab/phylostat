@@ -5304,6 +5304,8 @@ var TreeCompare = function () {
                 z_score_2="N/A"
                 p_val_mann_whitney1="N/A"
                 z_score="N/A"
+                pval_po1="N/A"
+                t_po1="N/A"
             }
 
             else {
@@ -5363,6 +5365,8 @@ var TreeCompare = function () {
             document.getElementById("z_score_2").value = z_score_2
             document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
             document.getElementById("z_score").value = z_score
+            document.getElementById("pval_po1").value = pval_po1
+            document.getElementById("t_po1").value = t_po1
             
             if (regex == "/.*/i"){ 
                 pval_paired2="N/A"
