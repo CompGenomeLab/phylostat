@@ -5250,12 +5250,14 @@ var TreeCompare = function () {
                 paired_t2= diff2-mean_zero/(sd/Math.sqrt(sample_size))
                 pval_paired2 = jStat.ttest(paired_t, sample_size, 1)
              }
-           }
+         
      
             document.getElementById("paired_t").value = paired_t
             document.getElementById("paired_t2").value = paired_t2
             document.getElementById("pval_paired").value = pval_paired
             document.getElementById("pval_paired2").value = pval_paired2
+            
+        }
         
         // Partially Overlapping should come here & the last test
             
