@@ -5209,6 +5209,8 @@ var TreeCompare = function () {
                 paired_t2="N/A"
             }
             
+            bool= false
+            
             if (regex == "/.*/i"){ 
 
                 bool = true 
