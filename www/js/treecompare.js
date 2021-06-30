@@ -4652,95 +4652,98 @@ var TreeCompare = function () {
             }
             
             // Mann Whitney first criteria 
-            
-            temp_leaves=leavesOneDist
-            temp_leaves2=leavesTwoDist
-            all_lengths_1=[]
-            for(i=0; i<temp_leaves.length; i++){
-                
-                temp_leaves[i].From = "A"
-                all_lengths_1.push(temp_leaves[i])
+            if (bool == false){
+                
+                temp_leaves=leavesOneDist
+                temp_leaves2=leavesTwoDist
+                all_lengths_1=[]
+                for(i=0; i<temp_leaves.length; i++){
 
-            }
+                    temp_leaves[i].From = "A"
+                    all_lengths_1.push(temp_leaves[i])
 
-            for(i=0; i<temp_leaves2.length; i++){
-                
-                temp_leaves2[i].From = "B"
-                all_lengths_1.push(temp_leaves2[i])
+                }
 
-            }
+                for(i=0; i<temp_leaves2.length; i++){
 
-            // kucukten buyuge siraliyor
-            all_lengths_sorted = all_lengths_1.sort((first, second) => first.Distance - second.Distance)
-            
-            for (i=0;i<all_lengths_sorted.length;i++){
-                
-                all_lengths_sorted[i].rank = i+1
-              
-            }
+                    temp_leaves2[i].From = "B"
+                    all_lengths_1.push(temp_leaves2[i])
 
-            // Ali Parlakci implementation
+                }
 
-            for (let i = 0; i < all_lengths_sorted.length;) {
-                let occurence = 1;
-                while ((i + occurence < all_lengths_sorted.length) && (all_lengths_sorted[i].Distance == all_lengths_sorted[i+occurence].Distance)) {
-                    occurence++;
-                }
+                // kucukten buyuge siraliyor
+                all_lengths_sorted = all_lengths_1.sort((first, second) => first.Distance - second.Distance)
 
+                for (i=0;i<all_lengths_sorted.length;i++){
 
-                ranks = 0;
-                for (let j = i; j < i + occurence; j++) {
-                    ranks += all_lengths_sorted[j].rank;
-                }
+                    all_lengths_sorted[i].rank = i+1
 
-                for (let j = i; j < i + occurence; j++) {
-                    all_lengths_sorted[j].rank = ranks / occurence;
-                }
+                }
 
-                i += occurence;
-            }
-            
-            // Ali Parlakci implementation
+                // Ali Parlakci implementation
 
-            n1= temp_leaves.length
-            n2= temp_leaves2.length
-            rank_sum1=0
-            rank_sum2=0
-
-            for (i=0;i<all_lengths_sorted.length;i++){
-
-                if (all_lengths_sorted[i].From == "A"){
+                for (let i = 0; i < all_lengths_sorted.length;) {
+                    let occurence = 1;
+                    while ((i + occurence < all_lengths_sorted.length) && (all_lengths_sorted[i].Distance == all_lengths_sorted[i+occurence].Distance)) {
+                        occurence++;
+                    }
 
 
-                    rank_sum1+=all_lengths_sorted[i].rank
-                }
+                    ranks = 0;
+                    for (let j = i; j < i + occurence; j++) {
+                        ranks += all_lengths_sorted[j].rank;
+                    }
+
+                    for (let j = i; j < i + occurence; j++) {
+                        all_lengths_sorted[j].rank = ranks / occurence;
+                    }
+
+                    i += occurence;
+                }
+
+                // Ali Parlakci implementation
+
+                n1= temp_leaves.length
+                n2= temp_leaves2.length
+                rank_sum1=0
+                rank_sum2=0
+
+                for (i=0;i<all_lengths_sorted.length;i++){
+
+                    if (all_lengths_sorted[i].From == "A"){
 
 
-                if (all_lengths_sorted[i].From == "B"){
+                        rank_sum1+=all_lengths_sorted[i].rank
+                    }
 
 
-                    rank_sum2+=all_lengths_sorted[i].rank
-                }
+                    if (all_lengths_sorted[i].From == "B"){
 
-            }
 
-            u1_first= n1*n2+ (n1*(n1+1))/2 - rank_sum1
-            u2_first=n1*n2+ (n2*(n2+1))/2 - rank_sum2
+                        rank_sum2+=all_lengths_sorted[i].rank
+                    }
 
-            if (u1_first> u2_first){
+                }
 
-                main_u= u2_first
-            }
+                u1_first= n1*n2+ (n1*(n1+1))/2 - rank_sum1
+                u2_first=n1*n2+ (n2*(n2+1))/2 - rank_sum2
 
-            else {
+                if (u1_first> u2_first){
 
-                main_u= u1_first
-            }
+                    main_u= u2_first
+                }
 
-            z_score_top = main_u-(n1*n2)/2
-            z_score_bottom= (n1*n2)*(n1+n2+1)/2
-            z_score= z_score_top/Math.sqrt(z_score_bottom)          
-            p_val_mann_whitney1=jStat.ztest(z_score,2)
+                else {
+
+                    main_u= u1_first
+                }
+
+                z_score_top = main_u-(n1*n2)/2
+                z_score_bottom= (n1*n2)*(n1+n2+1)/2
+                z_score= z_score_top/Math.sqrt(z_score_bottom)          
+                p_val_mann_whitney1=jStat.ztest(z_score,2)
+                
+            }
             
             boxPlotEachOther(leavesOneDist, leavesTwoDist)
 
@@ -4782,6 +4785,9 @@ var TreeCompare = function () {
                     break
                 }
             }
+            
+            
+            if(bool == false) {
             
             
             leavesOneEachother_before_regex=[]
@@ -4915,6 +4921,8 @@ var TreeCompare = function () {
             z_score_bottom2= (n3*n4)*(n3+n4+1)/2
             z_score_2= z_score_top2/Math.sqrt(z_score_bottom2)          
             p_val_mann_whitney2=jStat.ztest(z_score_2,2)
+                
+        }
             
             document.getElementById("p_val_mann_whitney2").value = p_val_mann_whitney2
             document.getElementById("z_score_2").value = z_score_2
@@ -5200,6 +5208,15 @@ var TreeCompare = function () {
                 pval_paired2="N/A"
                 paired_t2="N/A"
             }
+            
+            if (regex == "/.*/i"){ 
+
+                bool = true 
+                p_val_mann_whitney2="N/A"
+                z_score_2="N/A"
+                p_val_mann_whitney1="N/A"
+                z_score="N/A"
+            }
 
             else {
 
@@ -5254,6 +5271,11 @@ var TreeCompare = function () {
             document.getElementById("paired_t2").value = paired_t2
             document.getElementById("pval_paired").value = pval_paired
             document.getElementById("pval_paired2").value = pval_paired2
+            
+            if (regex == "/.*/i"){ 
+                pval_paired2="N/A"
+                paired_t2="N/A"
+            }
         
         // Partially Overlapping should come here & the last test
             
