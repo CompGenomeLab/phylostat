@@ -4922,6 +4922,11 @@ var TreeCompare = function () {
             z_score_2= z_score_top2/Math.sqrt(z_score_bottom2)          
             p_val_mann_whitney2=jStat.ztest(z_score_2,2)
                 
+            document.getElementById("p_val_mann_whitney2").value = p_val_mann_whitney2
+            document.getElementById("z_score_2").value = z_score_2
+            document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
+            document.getElementById("z_score").value = z_score
+                
         }
             
    
@@ -5063,9 +5068,10 @@ var TreeCompare = function () {
             wanted_leafs1=[]
             wanted_leafs2=[]
 
-            for (i=0; i<leavesOneEachother_before_regex.length; i++){
+            
+            for (let i=0; i<global_one.length; i++){
 
-                var list_name1= (leavesOneEachother_before_regex[i].Between).split("|")
+                var list_name1= (global_one[i].Between).split("|")
                 taxid1=list_name1[2]+"|"+list_name1[3]
                 taxid2=list_name1[9]+"|"+list_name1[10]
                 var n= global_common.includes(taxid1)
@@ -5073,24 +5079,24 @@ var TreeCompare = function () {
 
                 if (m && n){
 
-                    wanted_leafs1.push(leavesOneEachother_before_regex[i].Distance)
+                    wanted_leafs1.push(global_one[i].Distance)
                 }
 
 
             }
 
 
-            for (i=0; i<leavesTwoEachother_before_regex.length; i++){
+            for (i=0; i<global_two.length; i++){
 
-                var list_name1= (leavesTwoEachother_before_regex[i].Between).split("|")
+                let list_name1= (global_two[i].Between).split("|")
                 taxid1=list_name1[2]+"|"+list_name1[3]
                 taxid2=list_name1[9]+"|"+list_name1[10]
-                var n= global_common.includes(taxid1)
-                var m= global_common.includes(taxid2)
+                let n= global_common.includes(taxid1)
+                let m= global_common.includes(taxid2)
                 
                 if (m && n){
 
-                    wanted_leafs2.push(leavesTwoEachother_before_regex[i].Distance)
+                    wanted_leafs2.push(global_two[i].Distance)
                 }
 
 
@@ -5131,6 +5137,8 @@ var TreeCompare = function () {
             // r implementation here
             
             
+            
+            
      
 
 
@@ -5144,6 +5152,16 @@ var TreeCompare = function () {
             df_po2= (nc-1) + (weird1-nc+1)/(na+nb+2*nc)*(na+nb)
             t_po2=Math.abs(t_po2)
             pval_po2= jStat.ttest(t_po2, df_po2, 1)
+            
+            if(bool==false){ 
+
+            document.getElementById("pval_po1").value = pval_po1
+            document.getElementById("t_po1").value = t_po1
+            document.getElementById("pval_po2").value = pval_po2
+            document.getElementById("t_po2").value = t_po2
+
+            }
+            
             
           
             
@@ -5410,6 +5428,8 @@ var TreeCompare = function () {
                 mean_zero=0 // Don't know what to put now
                 paired_t= overall_diff-mean_zero/(sd/Math.sqrt(sample_size))
                 pval_paired = jStat.ttest(paired_t, sample_size, 1)
+                document.getElementById("paired_t").value = paired_t
+                document.getElementById("pval_paired").value = pval_paired
                 
             }
             
@@ -5418,6 +5438,8 @@ var TreeCompare = function () {
 
                 paired_t="N/A"
                 pval_paired="N/A"
+                document.getElementById("paired_t").value = paired_t
+                document.getElementById("pval_paired").value = pval_paired
             }
             
             if (regex == "/.*/i"){ 
@@ -5430,6 +5452,8 @@ var TreeCompare = function () {
             if (regex == "/.*/i" || !regex){ 
 
                 bool = true 
+                pval_paired2="N/A"
+                paired_t2="N/A"
                 p_val_mann_whitney2="N/A"
                 z_score_2="N/A"
                 p_val_mann_whitney1="N/A"
@@ -5438,6 +5462,17 @@ var TreeCompare = function () {
                 t_po1="N/A"
                 pval_po2="N/A"
                 t_po2="N/A"
+                
+                document.getElementById("p_val_mann_whitney2").value = p_val_mann_whitney2
+                document.getElementById("z_score_2").value = z_score_2
+                document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
+                document.getElementById("z_score").value = z_score
+                document.getElementById("pval_po1").value = pval_po1
+                document.getElementById("t_po1").value = t_po1
+                document.getElementById("pval_po2").value = pval_po2
+                document.getElementById("t_po2").value = t_po2
+                document.getElementById("pval_paired2").value = pval_paired2
+                document.getElementById("paired_t2").value = paired_t2
             }
 
             else {
@@ -5486,28 +5521,11 @@ var TreeCompare = function () {
                 mean_zero=0 // Don't know what to put now
                 paired_t2= diff2-mean_zero/(sd/Math.sqrt(sample_size))
                 pval_paired2 = jStat.ttest(paired_t, sample_size, 1)
+                document.getElementById("pval_paired2").value = pval_paired2
+                document.getElementById("paired_t2").value = paired_t2
             }
          
      
-            document.getElementById("paired_t").value = paired_t
-            document.getElementById("paired_t2").value = paired_t2
-            document.getElementById("pval_paired").value = pval_paired
-            document.getElementById("pval_paired2").value = pval_paired2
-            document.getElementById("p_val_mann_whitney2").value = p_val_mann_whitney2
-            document.getElementById("z_score_2").value = z_score_2
-            document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
-            document.getElementById("z_score").value = z_score
-            document.getElementById("pval_po1").value = pval_po1
-            document.getElementById("t_po1").value = t_po1
-            document.getElementById("pval_po2").value = pval_po2
-            document.getElementById("t_po2").value = t_po2
-            
-            if (regex == "/.*/i"){ 
-                pval_paired2="N/A"
-                paired_t2="N/A"
-            }
-        
-        // Partially Overlapping should come here & the last test
             
             var resSearch = {
                 searchOne: one.concat(common),
