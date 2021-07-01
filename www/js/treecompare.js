@@ -5015,6 +5015,69 @@ var TreeCompare = function () {
             t_po1=Math.abs(t_po1)
             pval_po1= jStat.ttest(t_po1, df_po1, 1)
             
+            
+
+            // Partially overlapping second criteria 
+
+            wanted_leafs1=[]
+            wanted_leafs2=[]
+
+            for (i=0; i<leavesOneEachother_before_regex.length; i++){
+
+                var list_name1= (leavesOneEachother_before_regex[i].Between).split("|")
+                taxid1=list_name1[2]+"|"+list_name1[3]
+                taxid2=list_name1[9]+"|"+list_name1[10]
+                var n= global_common.includes(taxid1)
+                var m= global_common.includes(taxid2)
+
+                if (m && n){
+
+                    wanted_leafs1.push(leavesOneEachother_before_regex[i].Distance)
+                }
+
+
+            }
+
+
+            for (i=0; i<leavesTwoEachother_before_regex.length; i++){
+
+                var list_name1= (leavesTwoEachother_before_regex[i].Between).split("|")
+                taxid1=list_name1[2]+"|"+list_name1[3]
+                taxid2=list_name1[9]+"|"+list_name1[10]
+                var n= global_common.includes(taxid1)
+                var m= global_common.includes(taxid2)
+                
+                if (m && n){
+
+                    wanted_leafs2.push(leavesTwoEachother_before_regex[i].Distance)
+                }
+
+
+            }
+
+
+            x1_po= jStat.mean(wanted_leafs1)
+            x2_po= jStat.mean(wanted_leafs2)
+            na= wanted_leafs1.length
+            nb= wanted_leafs2.length
+            nc= global_common.length // Bu ne olacak
+            stev1=jStat.stdev(wanted_leafs1)
+            stev2=jStat.stdev(wanted_leafs2)
+
+
+
+            n1_po= na + nc
+            n2_po= nb + nc
+            sp_up= ((n1_po-1)*stev1*stev1)+((n2_po-1)*stev2*stev2)
+            sp_down= (n1_po-1)+(n2_po-1)
+            sp= Math.sqrt(sp_up/sp_down)
+            m=Math.sqrt(stev1*stev1/n1_po)
+            t_po2=(x1_po-x2_po)/sp*m + (stev2*stev2/n2_po)- (2*r*stev1*stev2*nc/n1_po*n2_po)
+            weird1= ((stev1*stev1/n1_po)+ (stev2*stev2/n2_po))*((stev1*stev1/n1_po)+ (stev2*stev2/n2_po))/ ((stev1*stev1/n1_po)*(stev1*stev1/n1_po)/(n1_po-1) + (stev2*stev2/n2_po)*(stev2*stev2/n2_po)/(n2_po-1) ) 
+            df_po2= (nc-1) + (weird1-nc+1)/(na+nb+2*nc)*(na+nb)
+            t_po2=Math.abs(t_po2)
+            pval_po2= jStat.ttest(t_po2, df_po2, 1)
+            
           
             
         }
@@ -5306,6 +5369,8 @@ var TreeCompare = function () {
                 z_score="N/A"
                 pval_po1="N/A"
                 t_po1="N/A"
+                pval_po2="N/A"
+                t_po2="N/A"
             }
 
             else {
@@ -5367,6 +5432,8 @@ var TreeCompare = function () {
             document.getElementById("z_score").value = z_score
             document.getElementById("pval_po1").value = pval_po1
             document.getElementById("t_po1").value = t_po1
+            document.getElementById("pval_po2").value = pval_po2
+            document.getElementById("t_po2").value = t_po2
             
             if (regex == "/.*/i"){ 
                 pval_paired2="N/A"
