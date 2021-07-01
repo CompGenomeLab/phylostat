@@ -4942,11 +4942,13 @@ var TreeCompare = function () {
 
                 leave_two_before_regex_distances.push(leave_two_before_regex[i].length)
             }
+            
+            
 
             x1_po= jStat.mean(leave_one_before_regex_distances)
             x2_po= jStat.mean(leave_two_before_regex_distances)
-            na= leave_one_before_regex_distances.length
-            nb= leave_two_before_regex_distances.length
+            n1_po= leave_one_before_regex_distances.length
+            n2_po= leave_two_before_regex_distances.length
             nc= global_common.length
             stev1=jStat.stdev(leave_one_before_regex_distances)
             stev2=jStat.stdev(leave_two_before_regex_distances)
@@ -4954,10 +4956,49 @@ var TreeCompare = function () {
            
             difference1=[]
             difference2=[]
+            r_sum1=[]
+            r_sum2=[]
 
             up_part=0
             left_down=0
             right_down=0
+            
+            for (k=0; k<global_common.length; k++){
+
+         
+                target= global_common[k]
+
+
+                for (i=0; i<leave_one_before_regex.length ; i++){
+
+                    target_name= leave_one_before_regex[i].name
+
+
+                    if (target_name.indexOf(target) != -1){
+
+                           r_sum1.push(leave_one_before_regex[i].length)
+                  
+                           break
+                    }
+                 
+               }
+
+               for (i=0; i<leave_two_before_regex.length ; i++){
+
+
+                   if ((leave_two_before_regex[i].name).indexOf(target) != -1){
+
+                        r_sum2.push(leave_two_before_regex[i].length)
+                        break
+
+                   }
+
+                }
+            }
+            
+            rmean1= jStat.mean(r_sum1)
+            rmean2= jStat.mean(r_Sum2)
+            
 
             for (k=0; k<global_common.length; k++){
 
@@ -4973,7 +5014,7 @@ var TreeCompare = function () {
 
                     if (target_name.indexOf(target) != -1){
 
-                           one_find=leave_one_before_regex[i].length-x1_po
+                           one_find=leave_one_before_regex[i].length-rmean1
                            wanted_diff= one_find*one_find
                            left_down+=wanted_diff
                            break
@@ -4986,7 +5027,7 @@ var TreeCompare = function () {
 
                    if ((leave_two_before_regex[i].name).indexOf(target) != -1){
 
-                        two_find=leave_two_before_regex[i].length-x2_po
+                        two_find=leave_two_before_regex[i].length-rmean2
                         wanted_diff= two_find*two_find
                         right_down+=wanted_diff
                         break
@@ -5003,8 +5044,6 @@ var TreeCompare = function () {
 
 
 
-            n1_po= na + nc
-            n2_po= nb + nc
             sp_up= ((n1_po-1)*stev1*stev1)+((n2_po-1)*stev2*stev2)
             sp_down= (n1_po-1)+(n2_po-1)
             sp= Math.sqrt(sp_up/sp_down)
@@ -5054,25 +5093,51 @@ var TreeCompare = function () {
 
 
             }
+            
+            all_distances1=[]
+            all_distances2=[]
+            
+             for (i=0; i<leavesOneEachother_before_regex.length; i++){
+                 
+                 
+                 all_distances1.push(leavesOneEachother_before_regex[i].Distance)
+                
+            }
+            
+             for (i=0; i<leavesTwoEachother_before_regex.length; i++){
+                 
+                 
+                 all_distances2.push(leavesTwoEachother_before_regex[i].Distance)
+                
+            }
+            
+            x1_po= jStat.mean(all_distances1)
+            x2_po= jStat.mean(all_distances2)
+            
+            n1_po= all_distances1.length
+            n2_po= all_distances2.length
+            nc= global_common.length
+            na= n1_po - nc 
+            nb= n2_po - nc
+            stev1=jStat.stdev(all_distances1)
+            stev2=jStat.stdev(all_distances2)
+            
+            r_second=0
+            r_mean1=jStat.mean(wanted_leafs1)
+            r_mean2=jStat.mean(wanted_leafs2)
+            
+            // r implementation here
+            
+            
+     
 
 
-            x1_po= jStat.mean(wanted_leafs1)
-            x2_po= jStat.mean(wanted_leafs2)
-            na= wanted_leafs1.length
-            nb= wanted_leafs2.length
-            nc= global_common.length // Bu ne olacak
-            stev1=jStat.stdev(wanted_leafs1)
-            stev2=jStat.stdev(wanted_leafs2)
 
-
-
-            n1_po= na + nc
-            n2_po= nb + nc
             sp_up= ((n1_po-1)*stev1*stev1)+((n2_po-1)*stev2*stev2)
             sp_down= (n1_po-1)+(n2_po-1)
             sp= Math.sqrt(sp_up/sp_down)
             m=Math.sqrt(stev1*stev1/n1_po)
-            t_po2=(x1_po-x2_po)/sp*m + (stev2*stev2/n2_po)- (2*r*stev1*stev2*nc/n1_po*n2_po)
+            t_po2=(x1_po-x2_po)/sp*m + (stev2*stev2/n2_po)- (2*r_second*stev1*stev2*nc/n1_po*n2_po)
             weird1= ((stev1*stev1/n1_po)+ (stev2*stev2/n2_po))*((stev1*stev1/n1_po)+ (stev2*stev2/n2_po))/ ((stev1*stev1/n1_po)*(stev1*stev1/n1_po)/(n1_po-1) + (stev2*stev2/n2_po)*(stev2*stev2/n2_po)/(n2_po-1) ) 
             df_po2= (nc-1) + (weird1-nc+1)/(na+nb+2*nc)*(na+nb)
             t_po2=Math.abs(t_po2)
