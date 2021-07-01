@@ -4950,6 +4950,8 @@ var TreeCompare = function () {
             n1_po= leave_one_before_regex_distances.length
             n2_po= leave_two_before_regex_distances.length
             nc= global_common.length
+            na= n1_po - nc 
+            nb= n2_po - nc
             stev1=jStat.stdev(leave_one_before_regex_distances)
             stev2=jStat.stdev(leave_two_before_regex_distances)
             r=0
@@ -4997,7 +4999,7 @@ var TreeCompare = function () {
             }
             
             rmean1= jStat.mean(r_sum1)
-            rmean2= jStat.mean(r_Sum2)
+            rmean2= jStat.mean(r_sum2)
             
 
             for (k=0; k<global_common.length; k++){
