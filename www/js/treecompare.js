@@ -5535,7 +5535,7 @@ var TreeCompare = function () {
                 sample_size=differences_list.length
                 mean_zero=0 // Don't know what to put now
                 paired_t2= diff2-mean_zero/(sd/Math.sqrt(sample_size))
-                pval_paired2 = jStat.ttest(paired_t, sample_size, 1)
+                pval_paired2 = jStat.ttest(paired_t2, sample_size, 1)
                 document.getElementById("pval_paired2").value = pval_paired2
                 document.getElementById("paired_t2").value = paired_t2
             }
