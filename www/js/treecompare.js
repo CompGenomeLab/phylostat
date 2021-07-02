@@ -5136,13 +5136,25 @@ var TreeCompare = function () {
             
             // r implementation here
             
+            r_second_up=0
+            r_second_down_left=0
+            r_second_down_right=0
+            r_second_down=0
             
+            for (i=0; i<wanted_leafs1.length; i++){
+                
+                first=wanted_leafs1[i]-r_mean1
+                second=wanted_leafs2[i]-r_mean2
+                r_second_up+=(first*second)
+                r_second_down_left+=(first*first)
+                r_second_down_right+=(second*second)
+                
+            }
             
-            
-     
-
-
-
+            r_second_down= r_second_down_left*r_second_down_right
+            r_second_down= Math.sqrt(r_second_down)
+            r_second= r_second_up/r_second_down
+           
             sp_up= ((n1_po-1)*stev1*stev1)+((n2_po-1)*stev2*stev2)
             sp_down= (n1_po-1)+(n2_po-1)
             sp= Math.sqrt(sp_up/sp_down)
