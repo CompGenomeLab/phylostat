@@ -5509,6 +5509,7 @@ var TreeCompare = function () {
                         if (check1 != -1 && check2 != -1){
 
                             diff2= (global_one[i].Distance)-(global_two[k].Distance)
+                            diff2= Math.abs(diff2)
                             differences_list.push(diff2)
                         }
 
@@ -5516,9 +5517,9 @@ var TreeCompare = function () {
 
                 }
 
-                diff2= Math.abs(diff2)
+                sum_differences_list= jStat.sum(differences_list)
 
-                X_d2= diff2/differences_list.length
+                X_d2= sum_differences_list/differences_list.length
                 up=0
                 for (i=0; i<differences_list.length;i++){
 
