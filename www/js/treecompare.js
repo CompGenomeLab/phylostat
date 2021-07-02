@@ -5048,9 +5048,6 @@ var TreeCompare = function () {
             }
 
             r= up_part/ Math.sqrt(left_down*right_down)
-
-
-
             sp_up= ((n1_po-1)*stev1*stev1)+((n2_po-1)*stev2*stev2)
             sp_down= (n1_po-1)+(n2_po-1)
             sp= Math.sqrt(sp_up/sp_down)
@@ -5063,115 +5060,13 @@ var TreeCompare = function () {
             
             
 
-            // Partially overlapping second criteria 
-
-            wanted_leafs1=[]
-            wanted_leafs2=[]
-
-            
-            for (let i=0; i<global_one.length; i++){
-
-                var myarray =(global_one[i].Between).match(regex_global)
-                taxid1= myarray[0]
-                taxid2= myarray[1]
-                var n= global_common.includes(taxid1)
-                var m= global_common.includes(taxid2)
-
-                if (m && n){
-
-                    wanted_leafs1.push(global_one[i].Distance)
-                }
-
-
-            }
-
-
-            for (i=0; i<global_two.length; i++){
-
-                var myarray =(global_two[i].Between).match(regex_global)
-                taxid1= myarray[0]
-                taxid2= myarray[1]
-                let n= global_common.includes(taxid1)
-                let m= global_common.includes(taxid2)
-                
-                if (m && n){
-
-                    wanted_leafs2.push(global_two[i].Distance)
-                }
-
-
-            }
-            
-            all_distances1=[]
-            all_distances2=[]
-            
-             for (i=0; i<leavesOneEachother_before_regex.length; i++){
-                 
-                 
-                 all_distances1.push(leavesOneEachother_before_regex[i].Distance)
-                
-            }
-            
-             for (i=0; i<leavesTwoEachother_before_regex.length; i++){
-                 
-                 
-                 all_distances2.push(leavesTwoEachother_before_regex[i].Distance)
-                
-            }
-            
-            x1_po= jStat.mean(all_distances1)
-            x2_po= jStat.mean(all_distances2)
-            
-            n1_po= all_distances1.length
-            n2_po= all_distances2.length
-            nc= global_common.length
-            na= n1_po - nc 
-            nb= n2_po - nc
-            stev1=jStat.stdev(all_distances1)
-            stev2=jStat.stdev(all_distances2)
-            
-            r_second=0
-            r_mean1=jStat.mean(wanted_leafs1)
-            r_mean2=jStat.mean(wanted_leafs2)
-            
-            // r implementation here
-            
-            r_second_up=0
-            r_second_down_left=0
-            r_second_down_right=0
-            r_second_down=0
-            
-            for (i=0; i<wanted_leafs1.length; i++){
-                
-                first=wanted_leafs1[i]-r_mean1
-                second=wanted_leafs2[i]-r_mean2
-                r_second_up+=(first*second)
-                r_second_down_left+=(first*first)
-                r_second_down_right+=(second*second)
-                
-            }
-            
-            r_second_down= r_second_down_left*r_second_down_right
-            r_second_down= Math.sqrt(r_second_down)
-            r_second= r_second_up/r_second_down
-           
-            sp_up= ((n1_po-1)*stev1*stev1)+((n2_po-1)*stev2*stev2)
-            sp_down= (n1_po-1)+(n2_po-1)
-            sp= Math.sqrt(sp_up/sp_down)
-            m=Math.sqrt(stev1*stev1/n1_po)
-            t_po2=(x1_po-x2_po)/(sp* Math.sqrt(m + (stev2*stev2/n2_po)- (2*r_second*stev1*stev2*nc/(n1_po*n2_po))))
-            weird1= ((stev1*stev1/n1_po)+ (stev2*stev2/n2_po))*((stev1*stev1/n1_po)+ (stev2*stev2/n2_po))/ ((stev1*stev1/n1_po)*(stev1*stev1/n1_po)/(n1_po-1) + (stev2*stev2/n2_po)*(stev2*stev2/n2_po)/(n2_po-1) ) 
-            df_po2= (nc-1) + (weird1-nc+1)/(na+nb+2*nc)*(na+nb)
-            t_po2=Math.abs(t_po2)
-            pval_po2= jStat.ttest(t_po2, df_po2, 1)
+          
             
             if(bool==false){ 
 
             document.getElementById("pval_po1").value = pval_po1
             document.getElementById("t_po1").value = t_po1
-            document.getElementById("pval_po2").value = pval_po2
-            document.getElementById("t_po2").value = t_po2
-
+            
             }
             
             
@@ -5456,26 +5351,21 @@ var TreeCompare = function () {
                 document.getElementById("pval_paired").value = pval_paired
             }
             
-            if (regex == "/.*/i"){ 
-                pval_paired2="N/A"
-                paired_t2="N/A"
-            }
+        
             
             bool= false
             
             if (regex == "/.*/i" || !regex){ 
 
                 bool = true 
-                pval_paired2="N/A"
-                paired_t2="N/A"
+               
                 p_val_mann_whitney2="N/A"
                 z_score_2="N/A"
                 p_val_mann_whitney1="N/A"
                 z_score="N/A"
                 pval_po1="N/A"
                 t_po1="N/A"
-                pval_po2="N/A"
-                t_po2="N/A"
+             
                 
                 document.getElementById("p_val_mann_whitney2").value = p_val_mann_whitney2
                 document.getElementById("z_score_2").value = z_score_2
@@ -5483,61 +5373,14 @@ var TreeCompare = function () {
                 document.getElementById("z_score").value = z_score
                 document.getElementById("pval_po1").value = pval_po1
                 document.getElementById("t_po1").value = t_po1
-                document.getElementById("pval_po2").value = pval_po2
-                document.getElementById("t_po2").value = t_po2
-                document.getElementById("pval_paired2").value = pval_paired2
-                document.getElementById("paired_t2").value = paired_t2
+            
+              
             }
 
             else {
 
-        
-                differences_list=[]
-
-                for(i=0; i<global_one.length ; i++){
-
-                    var myarray =(global_one[i].Between).match(regex_global)
-                    taxid1= myarray[0]
-                    taxid2= myarray[1]
-
-                    for(k=0; k<global_two.length; k++){
-
-                        var name1= global_two[k].Between
-                        var check1= name1.indexOf(taxid1)
-
-                        var check2= name1.indexOf(taxid2)
-                        if (check1 != -1 && check2 != -1){
-
-                            diff2= (global_one[i].Distance)-(global_two[k].Distance)
-                            diff2= Math.abs(diff2)
-                            differences_list.push(diff2)
-                        }
-
-                    }
-
-                }
-
-                sum_differences_list= jStat.sum(differences_list)
-
-                X_d2= sum_differences_list/differences_list.length
-                up=0
-                for (i=0; i<differences_list.length;i++){
-
-                    sol=0
-                    temp_n=differences_list[i]-X_d2
-                    sol=temp_n*temp_n
-                    up+=sol
-
-                }
-
-                sd_prev= up/((differences_list.length)-1)
-                sd = Math.sqrt(sd_prev)
-                sample_size=differences_list.length
-                mean_zero=0 // Don't know what to put now
-                paired_t2= diff2-mean_zero/(sd/Math.sqrt(sample_size))
-                pval_paired2 = jStat.ttest(paired_t2, sample_size, 1)
-                document.getElementById("pval_paired2").value = pval_paired2
-                document.getElementById("paired_t2").value = paired_t2
+               
+               
             }
          
      
