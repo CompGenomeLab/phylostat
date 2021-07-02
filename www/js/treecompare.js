@@ -4551,6 +4551,85 @@ var TreeCompare = function () {
             }
         }
     }
+    
+    function call_tree(tree,alieren){
+
+
+        if ("children" in tree){
+
+            for (let i=0; i<2; i++){
+
+                var child_ = tree.children[i]
+                var arr1= tree.name.match(regex_global)
+
+                if (!arr1){
+
+                  children_list=[]
+                  children_list.push(child_.children)
+                  children_list.push(child_.length)
+                  alieren[child_.name] = children_list
+
+                }
+
+
+                else if (arr1.length == 1 && global_common.includes(arr1[0])){
+
+                  children_list=[]
+                  children_list.push(child_.children)
+                  children_list.push(child_.length)
+                  alieren[child_.name] = children_list
+
+                }
+
+                call_tree(child_,alieren)
+           }
+
+        }
+    }
+
+    function eliminate_dict(dict){
+
+        for (let key in dict){
+
+            var elements = dict[key]
+
+
+            if (elements[0]){
+
+                count=0
+
+                for(i =0 ; i<2;i++){
+
+                   v_try= elements[0][i]
+                   arr1=[]
+                   arr1= (v_try.name).match(regex_global)
+                   if (!arr1){
+
+                       var elements2 = dict[v_try.name]
+                       if (elements2[1]==-1){
+
+                            count++
+                       }
+                   }
+
+                   else{
+
+                       if (!(global_common.includes(arr1[0]))){
+
+                           count++
+                       }
+                   }
+
+               }
+
+               if(count==2){
+
+                   elements[1]= -1
+               }
+          }
+      }
+
+    }
 
     //Distance from leaves
     function distFromLeaves(ancs, regex) {
@@ -4927,6 +5006,13 @@ var TreeCompare = function () {
             document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
             document.getElementById("z_score").value = z_score
                 
+            dict1={}
+            dict2={}
+            call_tree(clade_1_json,dict1)
+            call_tree(clade_2_json,dict2)
+            eliminate_dict(dict1)
+            eliminate_dict(dict2)
+                
         }
             
    
@@ -5193,6 +5279,8 @@ var TreeCompare = function () {
     
     global_common=[]
     regex_global=""
+    clade_1_json= multiSelected[0]
+    clade_2_json= multiSelected[1]
 
     function regexSearch(beginning) {
         if (multiSelected[0] && multiSelected[1]) {
