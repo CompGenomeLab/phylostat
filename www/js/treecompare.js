@@ -5071,9 +5071,9 @@ var TreeCompare = function () {
             
             for (let i=0; i<global_one.length; i++){
 
-                var list_name1= (global_one[i].Between).split("|")
-                taxid1=list_name1[2]+"|"+list_name1[3]
-                taxid2=list_name1[9]+"|"+list_name1[10]
+                var myarray =(global_one[i].Between).match(regex_global)
+                taxid1= myarray[0]
+                taxid2= myarray[1]
                 var n= global_common.includes(taxid1)
                 var m= global_common.includes(taxid2)
 
@@ -5088,9 +5088,9 @@ var TreeCompare = function () {
 
             for (i=0; i<global_two.length; i++){
 
-                let list_name1= (global_two[i].Between).split("|")
-                taxid1=list_name1[2]+"|"+list_name1[3]
-                taxid2=list_name1[9]+"|"+list_name1[10]
+                var myarray =(global_two[i].Between).match(regex_global)
+                taxid1= myarray[0]
+                taxid2= myarray[1]
                 let n= global_common.includes(taxid1)
                 let m= global_common.includes(taxid2)
                 
@@ -5297,6 +5297,7 @@ var TreeCompare = function () {
     }
     
     global_common=[]
+    regex_global=""
 
     function regexSearch(beginning) {
         if (multiSelected[0] && multiSelected[1]) {
@@ -5304,6 +5305,7 @@ var TreeCompare = function () {
             if (document.getElementById('regExSearch').value) {
                 var regTemp = document.getElementById('regExSearch').value
                 var regex = new RegExp(regTemp, "i");
+                regex_global= new RegExp(regTemp, "g")
             }
             else {
                 var regex = /.*/i;
@@ -5494,9 +5496,9 @@ var TreeCompare = function () {
 
                 for(i=0; i<global_one.length ; i++){
 
-                    var list_name= (global_one[i].Between).split("|")
-                    taxid1=list_name[2]+"|"+list_name[3]
-                    taxid2=list_name[9]+"|"+list_name[10]
+                    var myarray =(global_one[i].Between).match(regex_global)
+                    taxid1= myarray[0]
+                    taxid2= myarray[1]
 
                     for(k=0; k<global_two.length; k++){
 
