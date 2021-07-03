@@ -4580,6 +4580,8 @@ var TreeCompare = function () {
                  
                   children_list.push(child_.length)
                   children_list.push(child_.leaves.length)
+                  children_list.push(child_.parent)
+                  children_list.push("label")
                   alieren[child_.ID] = children_list
                   call_tree(child_,alieren)
 
@@ -4592,7 +4594,6 @@ var TreeCompare = function () {
           children_list=[]
           children_list.push(tree.name)
           children_list.push("label")
-          children_list.push(tree.parent.ID)
           children_list.push(tree.length)
           
           alieren[tree.ID] = children_list
@@ -4606,7 +4607,7 @@ var TreeCompare = function () {
         for (let key in dict){
 
             var elements = dict[key]
-            if (elements.length == 4){ // Only leaves
+            if (elements.length == 3){ // Only leaves
 
                 if (global_common.includes(elements[0])){
 
@@ -5105,12 +5106,53 @@ var TreeCompare = function () {
             document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
             document.getElementById("z_score").value = z_score
                 
-            //dict1={}
-            //dict2={}
-            //call_tree(clade_1_json,dict1)
-            //call_tree(clade_2_json,dict2)
-            //eliminate_dict(dict1)
-            //eliminate_dict(dict2)
+            dict1={}
+            dict2={}
+            call_tree(clade_1_json,dict1)
+            call_tree(clade_2_json,dict2)
+            let keys1 = Object.keys(dict1).filter(el=>dict1[el].length === 5).sort((first,second)=>dict1[first][2]-dict1[second][2])
+            let keys2 = Object.keys(dict2).filter(el=>dict2[el].length === 5).sort((first,second)=>dict2[first][2]-dict2[second][2])
+
+            label_changer(dict1)
+            label_changer(dict2)
+
+            // 2 -> both of them are included 
+            // 1 -> only one child included
+            // 0 -> none of the childs are included
+
+
+            for (i=0; i<keys1.length; i++){
+
+                var elements= dict1[keys1[i]]
+                childs= elements[0]
+                childs_len= childs.length
+                label=0
+                // Child could be a main node or a leaf we will find this using regex.
+                for(m=0; m<childs_len; m++){
+
+                    var arr1= childs[m].name.match(regex_global)
+                    if (!arr1){ // The child is a main node
+
+                        child_ID= childs[m].ID
+                        if (dict1[child_ID][4] == 2){
+                            label++
+                        }
+
+                    }
+
+                    else{ //child is a leaf
+
+                        if (global_common.includes(arr1[0])){
+
+                            label++
+
+                        }
+                    }
+                }
+
+                dict1[keys1[i]][4] = label 
+            }
+
                 
         }
             
@@ -8554,4 +8596,4 @@ var TreeCompare = function () {
     }
 };
 
-//last version6
+//last version7
