@@ -5493,7 +5493,7 @@ var TreeCompare = function () {
                 sd = Math.sqrt(sd_prev)
                 sample_size=common.length
                 mean_zero=0 // Don't know what to put now
-                paired_t= overall_diff-mean_zero/(sd/Math.sqrt(sample_size))
+                paired_t= (overall_diff-mean_zero)/(sd/Math.sqrt(sample_size))
                 pval_paired = jStat.ttest(paired_t, sample_size, 1)
                 document.getElementById("paired_t").value = paired_t
                 document.getElementById("pval_paired").value = pval_paired
@@ -8523,4 +8523,4 @@ var TreeCompare = function () {
     }
 };
 
-//last version4
+//last version5
