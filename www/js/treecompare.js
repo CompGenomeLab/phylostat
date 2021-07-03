@@ -5132,26 +5132,26 @@ var TreeCompare = function () {
                 target= global_common[k]
 
 
-                for (i=0; i<leave_one_before_regex.length ; i++){
+                for (i=0; i<leave_one_before_regex_dist.length ; i++){
 
-                    target_name= leave_one_before_regex[i].name
+                    target_name= leave_one_before_regex_dist[i].From
 
 
                     if (target_name.indexOf(target) != -1){
 
-                           r_sum1.push(leave_one_before_regex[i].length)
+                           r_sum1.push(leave_one_before_regex_dist[i].Distance)
                   
                            break
                     }
                  
                }
 
-               for (i=0; i<leave_two_before_regex.length ; i++){
+               for (i=0; i<leave_two_before_regex_dist.length ; i++){
 
 
-                   if ((leave_two_before_regex[i].name).indexOf(target) != -1){
+                   if ((leave_two_before_regex_dist[i].From).indexOf(target) != -1){
 
-                        r_sum2.push(leave_two_before_regex[i].length)
+                        r_sum2.push(leave_two_before_regex_dist[i].Distance)
                         break
 
                    }
@@ -5170,14 +5170,14 @@ var TreeCompare = function () {
                 target= global_common[k]
 
 
-                for (i=0; i<leave_one_before_regex.length ; i++){
+                for (i=0; i<leave_one_before_regex_dist.length ; i++){
 
-                    target_name= leave_one_before_regex[i].name
+                    target_name= leave_one_before_regex_dist[i].From
 
 
                     if (target_name.indexOf(target) != -1){
 
-                           one_find=leave_one_before_regex[i].length-rmean1
+                           one_find=leave_one_before_regex_dist[i].Distance-rmean1
                            wanted_diff= one_find*one_find
                            left_down+=wanted_diff
                            break
@@ -5185,12 +5185,12 @@ var TreeCompare = function () {
                  
                 }
 
-               for (i=0; i<leave_two_before_regex.length ; i++){
+               for (i=0; i<leave_two_before_regex_dist.length ; i++){
 
 
-                   if ((leave_two_before_regex[i].name).indexOf(target) != -1){
+                   if ((leave_two_before_regex_dist[i].From).indexOf(target) != -1){
 
-                        two_find=leave_two_before_regex[i].length-rmean2
+                        two_find=leave_two_before_regex_dist[i].Distance-rmean2
                         wanted_diff= two_find*two_find
                         right_down+=wanted_diff
                         break
@@ -8523,4 +8523,4 @@ var TreeCompare = function () {
     }
 };
 
-//last version
+//last version2
