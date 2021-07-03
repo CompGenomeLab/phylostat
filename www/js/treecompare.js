@@ -4762,6 +4762,42 @@ var TreeCompare = function () {
 
             }
             
+            // try
+            
+            leaves_one_before_regex_dist=[]
+            leaves_two_before_regex_dist=[]
+            
+           for (i = 0; i < leave_one_before_regex.length; i++) {
+                distance = 0
+                temp = leave_one_before_regex[i]
+                while (temp != ancs) {
+                    distance += temp.length
+                    temp = temp.parent
+                }
+                var tmp = {
+                    From: leavesOne[i].name,
+                    where:"",
+                    Distance: distance
+                }
+                leaves_one_before_regex_dist.push(tmp)
+            }
+            for (i = 0; i < leave_two_before_regex.length; i++) {
+                distance = 0
+                temp = leave_two_before_regex[i]
+                while (temp != ancs) {
+                    distance += temp.length
+                    temp = temp.parent
+                }
+                var tmp = {
+                    From: leave_two_before_regex[i].name,
+                    where:"",
+                    Distance: distance
+                }
+                leaves_two_before_regex_dist.push(tmp)
+
+            }
+            
+            
             // Mann Whitney first criteria 
             if (bool == false){
                 
@@ -5054,17 +5090,19 @@ var TreeCompare = function () {
              
             // Partially Overlapping implementation
             
-            leave_one_before_regex_distances=[]
-            for (i=0; i<leave_one_before_regex.length; i++){
+          
+            leaves_one_before_regex_distances=[]
+            for (i=0; i<leaves_one_before_regex_dist.length; i++){
 
-                leave_one_before_regex_distances.push(leave_one_before_regex[i].length)
+                leave_one_before_regex_distances.push(leaves_one_before_regex_dist[i].Distance)
             }
 
             leave_two_before_regex_distances=[]
-            for (i=0; i<leave_two_before_regex.length; i++){
+            for (i=0; i<leaves_two_before_regex_dist.length; i++){
 
-                leave_two_before_regex_distances.push(leave_two_before_regex[i].length)
+                leave_two_before_regex_distances.push(leaves_two_before_regex_dist[i].Distance)
             }
+            
             
             
 
