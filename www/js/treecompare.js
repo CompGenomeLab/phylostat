@@ -4741,7 +4741,7 @@ var TreeCompare = function () {
                 }
                 var tmp = {
                     From: leavesOne[i].name,
-                    Name_e:leavesOne[i].name,
+                    where:"",
                     Distance: distance
                 }
                 leavesOneDist.push(tmp)
@@ -4755,7 +4755,7 @@ var TreeCompare = function () {
                 }
                 var tmp = {
                     From: leavesTwo[i].name,
-                    Name_e:leavesTwo[i].name,
+                    where:"",
                     Distance: distance
                 }
                 leavesTwoDist.push(tmp)
@@ -4806,14 +4806,14 @@ var TreeCompare = function () {
                 all_lengths_1=[]
                 for(i=0; i<temp_leaves.length; i++){
 
-                    temp_leaves[i].From = "A"
+                    temp_leaves[i].where = "A"
                     all_lengths_1.push(temp_leaves[i])
 
                 }
 
                 for(i=0; i<temp_leaves2.length; i++){
 
-                    temp_leaves2[i].From = "B"
+                    temp_leaves2[i].where = "B"
                     all_lengths_1.push(temp_leaves2[i])
 
                 }
@@ -4827,7 +4827,7 @@ var TreeCompare = function () {
 
                 }
 
-                // Ali Parlakci implementation
+                // Ali Parlakci implementation.
 
                 for (let i = 0; i < all_lengths_sorted.length;) {
                     let occurence = 1;
@@ -4857,14 +4857,14 @@ var TreeCompare = function () {
 
                 for (i=0;i<all_lengths_sorted.length;i++){
 
-                    if (all_lengths_sorted[i].From == "A"){
+                    if (all_lengths_sorted[i].where == "A"){
 
 
                         rank_sum1+=all_lengths_sorted[i].rank
                     }
 
 
-                    if (all_lengths_sorted[i].From == "B"){
+                    if (all_lengths_sorted[i].where == "B"){
 
 
                         rank_sum2+=all_lengths_sorted[i].rank
@@ -5091,7 +5091,7 @@ var TreeCompare = function () {
             // Partially Overlapping implementation
             
           
-            leaves_one_before_regex_distances=[]
+            leave_one_before_regex_distances=[]
             for (i=0; i<leaves_one_before_regex_dist.length; i++){
 
                 leave_one_before_regex_distances.push(leaves_one_before_regex_dist[i].Distance)
@@ -8522,3 +8522,5 @@ var TreeCompare = function () {
         leavesTwo: leavesTwo,
     }
 };
+
+//last version
