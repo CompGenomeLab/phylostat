@@ -4556,36 +4556,67 @@ var TreeCompare = function () {
 
 
         if ("children" in tree){
+            
+            var len= 0
+            len= tree.children.length
 
-            for (let i=0; i<2; i++){
+            for (let i=0; i<len; i++){
 
                 var child_ = tree.children[i]
                 var arr1= tree.name.match(regex_global)
 
-                if (!arr1){
-
                   children_list=[]
-                  children_list.push(child_.children)
+
+                  if ("children" in child_){
+
+                     children_list.push(child_.children)
+
+                  }
+
+                  else{
+
+                      children_list.push("NaN")
+                  }
+                 
                   children_list.push(child_.length)
-                  alieren[child_.name] = children_list
+                  children_list.push(child_.leaves.length)
+                  alieren[child_.ID] = children_list
+                  call_tree(child_,alieren)
 
+          }
+              
+       }
+
+       else{
+
+          children_list=[]
+          children_list.push(tree.name)
+          children_list.push("label")
+          children_list.push(tree.parent.ID)
+          children_list.push(tree.length)
+          
+          alieren[tree.ID] = children_list
+
+       }
+   }
+    
+   
+    function label_changer(dict){
+
+        for (let key in dict){
+
+            var elements = dict[key]
+            if (elements.length == 4){ // Only leaves
+
+                if (global_common.includes(elements[0])){
+
+
+                    elements[1]="yes"
                 }
-
-
-                else if (arr1.length == 1 && global_common.includes(arr1[0])){
-
-                  children_list=[]
-                  children_list.push(child_.children)
-                  children_list.push(child_.length)
-                  alieren[child_.name] = children_list
-
-                }
-
-                call_tree(child_,alieren)
-           }
-
+            }
         }
-    }
+   }
+
 
     function eliminate_dict(dict){
 
@@ -8523,4 +8554,4 @@ var TreeCompare = function () {
     }
 };
 
-//last version5
+//last version6
