@@ -4741,6 +4741,7 @@ var TreeCompare = function () {
                 }
                 var tmp = {
                     From: leavesOne[i].name,
+                    Name_e:leavesOne[i].name,
                     Distance: distance
                 }
                 leavesOneDist.push(tmp)
@@ -4754,6 +4755,7 @@ var TreeCompare = function () {
                 }
                 var tmp = {
                     From: leavesTwo[i].name,
+                    Name_e:leavesTwo[i].name,
                     Distance: distance
                 }
                 leavesTwoDist.push(tmp)
@@ -5409,23 +5411,23 @@ var TreeCompare = function () {
                     one_diff=0
                     two_diff=0
 
-                    for (j=0;j<leavesOne.length;j++){
+                    for (j=0;j<leavesOneDist.length;j++){
 
 
-                        if ((leavesOne[j].name).includes(common[i])){
+                        if ((leavesOneDist[j].Name_e).includes(common[i])){
 
-                            one_diff=leavesOne[i].length
+                            one_diff=leavesOneDist[i].Distance
                             break
                         }
 
                     }
 
-                    for (a=0;a<leavesTwo.length;a++){
+                    for (a=0;a<leavesTwoDist.length;a++){
 
 
-                        if((leavesTwo[a].name).includes(common[i])){
+                        if((leavesTwoDist[a].name).includes(common[i])){
 
-                            two_diff=leavesTwo[i].length
+                            two_diff=leavesTwoDist[i].Distance
                             break
 
                          }
@@ -8026,7 +8028,7 @@ var TreeCompare = function () {
         doc.setFontSize(12);
         doc.setFontType("bold");
         doc.text("Common Ancestor: ", 1.5, 2)
-
+ 
         var img_plot_1 = document.getElementById('jpg_plot1')
         doc.addImage(img_plot_1, 'PNG', 1, 6, 7.9375, 8.73125)
         var img_plot_2 = document.getElementById('jpg_plot2')
