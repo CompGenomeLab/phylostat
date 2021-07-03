@@ -5452,7 +5452,7 @@ var TreeCompare = function () {
                     for (j=0;j<leavesOneDist.length;j++){
 
 
-                        if ((leavesOneDist[j].Name_e).includes(common[i])){
+                        if ((leavesOneDist[j].From).includes(common[i])){
 
                             one_diff=leavesOneDist[i].Distance
                             break
@@ -5463,7 +5463,7 @@ var TreeCompare = function () {
                     for (a=0;a<leavesTwoDist.length;a++){
 
 
-                        if((leavesTwoDist[a].name).includes(common[i])){
+                        if((leavesTwoDist[a].From).includes(common[i])){
 
                             two_diff=leavesTwoDist[i].Distance
                             break
