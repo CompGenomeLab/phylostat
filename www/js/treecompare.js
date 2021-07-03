@@ -5074,12 +5074,12 @@ var TreeCompare = function () {
             document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
             document.getElementById("z_score").value = z_score
                 
-            dict1={}
-            dict2={}
-            call_tree(clade_1_json,dict1)
-            call_tree(clade_2_json,dict2)
-            eliminate_dict(dict1)
-            eliminate_dict(dict2)
+            //dict1={}
+            //dict2={}
+            //call_tree(clade_1_json,dict1)
+            //call_tree(clade_2_json,dict2)
+            //eliminate_dict(dict1)
+            //eliminate_dict(dict2)
                 
         }
             
