@@ -4775,7 +4775,7 @@ var TreeCompare = function () {
                     temp = temp.parent
                 }
                 var tmp = {
-                    From: leavesOne[i].name,
+                    From: leave_one_before_regex[i].name,
                     where:"",
                     Distance: distance
                 }
@@ -8523,4 +8523,4 @@ var TreeCompare = function () {
     }
 };
 
-//last version3
+//last version4
