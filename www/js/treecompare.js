@@ -4597,6 +4597,7 @@ var TreeCompare = function () {
             if (elements[0]){
 
                 count=0
+                temp_list=[] // add who increases the count 
 
                 for(i =0 ; i<2;i++){
 
@@ -4609,6 +4610,12 @@ var TreeCompare = function () {
                        if (elements2[1]==-1){
 
                             count++
+                            
+                       }
+
+                       else{
+
+                           temp_list.push(v_try)
                        }
                    }
 
@@ -4617,14 +4624,37 @@ var TreeCompare = function () {
                        if (!(global_common.includes(arr1[0]))){
 
                            count++
+                          
+                       }
+
+                       else{
+
+                           temp_list.push(v_try)
                        }
                    }
 
                }
 
-               if(count==2){
+               if(count==2){ // Parent node's length should added to its parent and current 
+               // parent should be equal to -1.
 
+                    
+                   parent_name= elements[2].name
+                   var elements3= dict[parent_name]
+                   elements3[1]+=temp_length
                    elements[1]= -1
+                   
+               }
+
+               else if (count==1){ // Remaining one's length should added to parent's parent 
+               // and parent should equal to -1.
+
+                    temp_length= temp_list[0].length
+                    parent_name= elements[2].name
+                    var elements3= dict[parent_name]
+                    elements3[1]+=temp_length
+                    elements3[1]+=temp_length
+                    elements[1]= -1
                }
           }
       }
