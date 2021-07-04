@@ -4552,6 +4552,58 @@ var TreeCompare = function () {
         }
     }
     
+   function label_changer(dict){
+        key_list= Object.keys(dict)
+        for (let i=0; i<key_list.length; i++){
+            var elements = dict[key_list[i]]
+            if (elements.length == 3){ // Only leaves
+                arr1= elements[0].match(regex_global)
+                if (global_common.includes(arr1[0])){
+                    elements[1]="yes"
+                }
+                else{
+                        elements[1]="no"
+                }
+            }
+        }
+   }
+
+    
+        function call_tree(tree,alieren){
+        if ("children" in tree){
+            
+            var len= 0
+            len= tree.children.length
+            for (let i=0; i<len; i++){
+                var child_ = tree.children[i]
+                var arr1= tree.name.match(regex_global)
+                  children_list=[]
+                  if ("children" in child_){
+                     children_list.push(child_.children)
+                  }
+                  else{
+                      children_list.push("NaN")
+                  }
+                 
+                  children_list.push(child_.length)
+                  children_list.push(child_.leaves.length)
+                  children_list.push(child_.parent)
+                  children_list.push("label")
+                  alieren[child_.ID] = children_list
+                  call_tree(child_,alieren)
+          }
+              
+       }
+       else{
+          children_list=[]
+          children_list.push(tree.name)
+          children_list.push("label")
+          children_list.push(tree.length)
+          
+          alieren[tree.ID] = children_list
+       }
+   }
+    
      function eliminate_dict(dict,main_list){
 
         names_temp=[]
@@ -8772,4 +8824,4 @@ var TreeCompare = function () {
     }
 };
 
-//tukendim333 version
+//tukendimrr version
