@@ -4703,6 +4703,126 @@ var TreeCompare = function () {
       }
 
     }
+    
+    
+    function leaf_handler(dict,length_list,sample_size){
+
+        key_list= Object.keys(dict)
+
+        for (let i=0; i<key_list.length; i++){
+
+            var elements = dict[key_list[i]]
+
+            if (elements.length == 3){ // Only leaves
+                
+                if (elements[1] == "yes"){
+
+
+                    length_list.push(elements[2])
+                    sample_size=sample_size+1
+
+                }
+
+                else{
+
+                    elements[2]=0
+                }
+          
+            }
+       } 
+
+       return sample_size
+
+    }
+
+
+    function main_node_handler(dict,length_list,sample_size,key_list){
+
+
+        for (let i=0; i<key_list.length; i++){
+
+            var elements = dict[key_list[i]]
+
+            if (elements.length == 5){ // Only nodes
+
+
+                // 2 durumu:
+                
+                if(elements[4].length == elements[0].length){
+
+
+                    elements[1]=0
+
+                } 
+
+                // 0 durumu
+
+                else if(elements[4].length == 0){
+
+                    sample_size=sample_size+1
+                    length_list.push(elements[1])
+
+                }
+
+
+                // En az bir cocugunun olmasi durumu 
+
+                else{
+
+
+                    child_size= elements[0].length
+                    let temp_sum=0
+                    // child can be a node or a leaf the index changes
+                    // call children by IDs, its dynamic 
+                    for (let m=0; m<child_size; m++){
+
+                        var temp_ID= elements[0][m].ID
+
+                        var elements2 = dict[temp_ID]
+
+
+                        if (!(elements2)){
+
+                            continue
+
+                        }
+
+                        else if (elements2.length == 3){
+
+
+                            temp_sum+=elements2[2]
+                            length_list.push(-1*elements2[2])
+                            sample_size=sample_size-1
+                            elements2[2]=0
+                        }
+
+                        else{
+
+
+                            temp_sum+= elements2[1]
+                            length_list.push(-1*elements2[1])
+                            sample_size=sample_size-1
+                            elements2[1]=0
+                        }
+
+                    }
+
+                    
+                    length_list.push(temp_sum)
+
+                }
+
+
+ 
+          
+            }
+       } 
+
+       return sample_size
+
+    }
+
+
 
     //Distance from leaves
     function distFromLeaves(ancs, regex) {
@@ -5210,13 +5330,26 @@ var TreeCompare = function () {
 
                 dict2[keys2[i]][4] = label 
             }
+                
+                
+            let length_list1=[]
+            let length_list2=[]
+            let sample_size2=0
+            let sample_size1=0
+            
+            sample_size1= leaf_handler(dict1,length_list1,sample_size1)
+            sample_size2= leaf_handler(dict2,length_list2,sample_size2)
+            sample_size1= main_node_handler(dict1,length_list1,sample_size1,keys1)
+            sample_size2= main_node_handler(dict2,length_list2,sample_size2,keys2)
 
-             
-                
-                
-                
-                
-                
+            var sum1= jStat.sum(length_list1)
+            // you need to have standart deviation of both of them 
+            var sum2= jStat.sum(length_list2)
+            var mean_1= sum1/sample_size1
+            var mean_2= sum2/sample_size2
+
+
+           
                 
                 
         }
@@ -8661,4 +8794,4 @@ var TreeCompare = function () {
     }
 };
 
-//last version7
+//tukendim version
