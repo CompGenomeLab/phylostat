@@ -4552,155 +4552,34 @@ var TreeCompare = function () {
         }
     }
     
-    function call_tree(tree,alieren){
+     function eliminate_dict(dict,main_list){
 
+        names_temp=[]
 
-        if ("children" in tree){
-            
-            var len= 0
-            len= tree.children.length
+        for (let k=0; k<main_list.length; k++){
 
-            for (let i=0; i<len; i++){
+            names_temp.push(main_list[k].From)
 
-                var child_ = tree.children[i]
-                var arr1= tree.name.match(regex_global)
+        }
 
-                  children_list=[]
-
-                  if ("children" in child_){
-
-                     children_list.push(child_.children)
-
-                  }
-
-                  else{
-
-                      children_list.push("NaN")
-                  }
-                 
-                  children_list.push(child_.length)
-                  children_list.push(child_.leaves.length)
-                  children_list.push(child_.parent)
-                  children_list.push("label")
-                  alieren[child_.ID] = children_list
-                  call_tree(child_,alieren)
-
-          }
-              
-       }
-
-       else{
-
-          children_list=[]
-          children_list.push(tree.name)
-          children_list.push("label")
-          children_list.push(tree.length)
-          
-          alieren[tree.ID] = children_list
-
-       }
-   }
-    
-   
-    function label_changer(dict){
-
-        key_list= Object.keys(dict)
+         key_list= Object.keys(dict)
 
         for (let i=0; i<key_list.length; i++){
 
             var elements = dict[key_list[i]]
 
-            if (elements.length == 3){ // Only leaves
+            if (elements.length == 3){ 
 
-                arr1= elements[0].match(regex_global)
-
-                if (global_common.includes(arr1[0])){
+                if (!(names_temp.includes(elements[0]))){
 
 
-                    elements[1]="yes"
+                    delete dict[key_list[i]]
                 }
 
-                else{
-                        elements[1]="no"
-
-                }
+                
             }
         }
-   }
-
-
-
-    function eliminate_dict(dict){
-
-        for (let key in dict){
-
-            var elements = dict[key]
-
-
-            if (elements[0]){
-
-                count=0
-                temp_list=[] // add who increases the count 
-
-                for(i =0 ; i<2;i++){
-
-                   v_try= elements[0][i]
-                   arr1=[]
-                   arr1= (v_try.name).match(regex_global)
-                   if (!arr1){
-
-                       var elements2 = dict[v_try.name]
-                       if (elements2[1]==-1){
-
-                            count++
-                            
-                       }
-
-                       else{
-
-                           temp_list.push(v_try)
-                       }
-                   }
-
-                   else{
-
-                       if (!(global_common.includes(arr1[0]))){
-
-                           count++
-                          
-                       }
-
-                       else{
-
-                           temp_list.push(v_try)
-                       }
-                   }
-
-               }
-
-               if(count==2){ // Parent node's length should added to its parent and current 
-               // parent should be equal to -1.
-
-                    
-                   parent_name= elements[2].name
-                   var elements3= dict[parent_name]
-                   elements3[1]+=temp_length
-                   elements[1]= -1
-                   
-               }
-
-               else if (count==1){ // Remaining one's length should added to parent's parent 
-               // and parent should equal to -1.
-
-                    temp_length= temp_list[0].length
-                    parent_name= elements[2].name
-                    var elements3= dict[parent_name]
-                    elements3[1]+=temp_length
-                    elements3[1]+=temp_length
-                    elements[1]= -1
-               }
-          }
-      }
+       
 
     }
     
@@ -4775,26 +4654,43 @@ var TreeCompare = function () {
 
                         var temp_ID= elements[0][m].ID
                         var elements2 = dict[temp_ID]
+
                         if (!(elements2)){
 
                             continue
 
                         }
 
-                        else if (elements2.length == 3){
+                        else if (elements2.length == 3){ // its a leaf 
 
+                            if (elements2[1] == "no"){
+
+                                continue;
+                            }
+
+                            else{
                             temp_sum+=elements2[2]
                             length_list.push(-1*elements2[2])
                             sample_size=sample_size-1
                             elements2[2]=0
+                            }
                         }
 
-                        else{
+                        else{ // its a node 
+
+                            if(temp_ID == elements[4][0] ){
+
+                                elements2[1]=0
+                            }
+
+                            else{
                             
                             temp_sum+= elements2[1]
                             length_list.push(-1*elements2[1])
                             sample_size=sample_size-1
                             elements2[1]=0
+
+                            }
                         }
 
                     }
@@ -4841,6 +4737,36 @@ var TreeCompare = function () {
        return sample_size
 
     }
+
+    function get_data_points(length_list){
+
+
+        len_t= length_list.length 
+        for(let i=0; i<len_t; i++){
+
+            if (length_list[i]<0){
+                
+                search_val= length_list[i]*-1
+                temp_target= length_list.indexOf(search_val)
+                length_list[i]=0
+                length_list[temp_target]=0
+
+            }
+        }
+
+        temp_points=[]
+        for(let i=0; i<len_t; i++){
+
+            if (length_list[i] != 0){
+
+                temp_points.push(length_list[i])
+            }
+
+        }
+
+        return temp_points
+    }
+
 
 
 
@@ -5257,15 +5183,18 @@ var TreeCompare = function () {
             document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
             document.getElementById("z_score").value = z_score
                 
+                            
             dict1={}
             dict2={}
             call_tree(clade_1_json,dict1)
             call_tree(clade_2_json,dict2)
+            eliminate_dict(dict1, leavesOneDist)
+            eliminate_dict(dict2, leavesTwoDist)
             let keys1 = Object.keys(dict1).filter(el=>dict1[el].length === 5).sort((first,second)=>dict1[first][2]-dict1[second][2])
             let keys2 = Object.keys(dict2).filter(el=>dict2[el].length === 5).sort((first,second)=>dict2[first][2]-dict2[second][2])
 
-            //label_changer(dict1)
-            //label_changer(dict2)
+            label_changer(dict1)
+            label_changer(dict2)
 
             // label list= 0 -> both of them are included 
             // label list= 1 -> only one child included
@@ -5287,12 +5216,21 @@ var TreeCompare = function () {
                     if (!arr1){ // The child is a main node
 
                         
-                        if (dict1[child_ID][4].length != dict1[child_ID][0].length){
-                            label.push(child_ID)
+                        if (dict1[child_ID][4].length == 0){
+                            continue;
                         }
 
-                        else if (dict1[child_ID][4].length == dict1[child_ID][0].length-1){
+                        else if(dict1[child_ID][4].length < dict1[child_ID][0].length){
+
+                            continue
+
+                        }
+
+
+                        else{
+
                             label.push(child_ID)
+
                         }
 
                     }
@@ -5312,7 +5250,7 @@ var TreeCompare = function () {
             }
                 
             
-             for (i=0; i<keys2.length; i++){
+           for (i=0; i<keys2.length; i++){
 
                 var elements= dict2[keys2[i]]
                 childs= elements[0]
@@ -5327,12 +5265,21 @@ var TreeCompare = function () {
                     if (!arr1){ // The child is a main node
 
                         
-                        if (dict2[child_ID][4].length != dict2[child_ID][0].length){
-                            label.push(child_ID)
+                        if (dict2[child_ID][4].length == 0){
+                            continue;
                         }
 
-                        else if (dict2[child_ID][4].length == dict2[child_ID][0].length-1){
+                        else if(dict2[child_ID][4].length < dict2[child_ID][0].length){
+
+                            continue
+                            
+                        }
+
+
+                        else{
+
                             label.push(child_ID)
+
                         }
 
                     }
@@ -5352,6 +5299,7 @@ var TreeCompare = function () {
             }
                 
                 
+                
             let length_list1=[]
             let length_list2=[]
             let sample_size2=0
@@ -5363,10 +5311,20 @@ var TreeCompare = function () {
             sample_size2= main_node_handler(dict2,length_list2,sample_size2,keys2)
 
             var sum1= jStat.sum(length_list1)
-            // you need to have standart deviation of both of them 
             var sum2= jStat.sum(length_list2)
+
             var mean_1= sum1/sample_size1
             var mean_2= sum2/sample_size2
+
+            data_points_1= get_data_points(length_list1)
+            data_points_2= get_data_points(length_list2)
+            stev11=jStat.stdev(data_points_1)
+            stev22=jStat.stdev(data_points_2)
+            below=(stev11*stev11/sample_size1) + (stev22*stev22/sample_size2) 
+            welchs_t3= (mean_1-mean_2)/ Math.sqrt(below)
+            welchs_t3= Math.abs(welchs_t3)
+            df= sample_size1+sample_size2-2
+            pval_welch_3= jStat.ttest(welchs_t3, df, 1)
 
 
            
@@ -8814,4 +8772,4 @@ var TreeCompare = function () {
     }
 };
 
-//tukendim version
+//tukendim333 version
