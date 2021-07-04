@@ -4763,13 +4763,10 @@ var TreeCompare = function () {
                     length_list.push(elements[1])
 
                 }
-
-
-                // En az bir cocugunun olmasi durumu 
-
-                else{
-
-
+                
+                
+                else if (elements[4].length == elements[0].length-1){
+                    
                     child_size= elements[0].length
                     let temp_sum=0
                     // child can be a node or a leaf the index changes
@@ -4777,10 +4774,7 @@ var TreeCompare = function () {
                     for (let m=0; m<child_size; m++){
 
                         var temp_ID= elements[0][m].ID
-
                         var elements2 = dict[temp_ID]
-
-
                         if (!(elements2)){
 
                             continue
@@ -4789,7 +4783,6 @@ var TreeCompare = function () {
 
                         else if (elements2.length == 3){
 
-
                             temp_sum+=elements2[2]
                             length_list.push(-1*elements2[2])
                             sample_size=sample_size-1
@@ -4797,8 +4790,7 @@ var TreeCompare = function () {
                         }
 
                         else{
-
-
+                            
                             temp_sum+= elements2[1]
                             length_list.push(-1*elements2[1])
                             sample_size=sample_size-1
@@ -4807,8 +4799,36 @@ var TreeCompare = function () {
 
                     }
 
-                    
                     length_list.push(temp_sum)
+
+                }
+
+
+                // 
+
+                else{
+                    
+                    temp_len=elements[4].length
+                    for (let n=0; n<temp_len;n++){
+                        
+                        curr_ID=elements[4][n]
+                        
+                        if (dict[curr_ID]){
+                            
+                            if( dict[curr_ID].length == 3) {
+                                
+                                dict[curr_ID][2]=0
+                                 
+                            }
+                            
+                            else {
+     
+                                dict[curr_ID][1]= 0
+                            }
+                            
+                        }
+                        
+                    }
 
                 }
 
