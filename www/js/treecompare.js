@@ -4604,19 +4604,30 @@ var TreeCompare = function () {
    
     function label_changer(dict){
 
-        for (let key in dict){
+        key_list= Object.keys(dict)
 
-            var elements = dict[key]
+        for (let i=0; i<key_list.length; i++){
+
+            var elements = dict[key_list[i]]
+
             if (elements.length == 3){ // Only leaves
 
-                if (global_common.includes(elements[0])){
+                arr1= elements[0].match(regex_global)
+
+                if (global_common.includes(arr1[0])){
 
 
                     elements[1]="yes"
                 }
+
+                else{
+                        elements[1]="no"
+
+                }
             }
         }
    }
+
 
 
     function eliminate_dict(dict){
