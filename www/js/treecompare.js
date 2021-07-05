@@ -4981,7 +4981,7 @@ var TreeCompare = function () {
             
             
             // Mann Whitney first criteria 
-            if (bool == false){
+            
                 
                 temp_leaves=leavesOneDist
                 temp_leaves2=leavesTwoDist
@@ -5072,7 +5072,7 @@ var TreeCompare = function () {
                 z_score= z_score_top/Math.sqrt(z_score_bottom)          
                 p_val_mann_whitney1=jStat.ztest(z_score,2)
                 
-            }
+            
             
             boxPlotEachOther(leavesOneDist, leavesTwoDist)
 
@@ -5116,7 +5116,7 @@ var TreeCompare = function () {
             }
             
             
-            if(bool == false) {
+           
             
             
             leavesOneEachother_before_regex=[]
@@ -5256,154 +5256,157 @@ var TreeCompare = function () {
             document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
             document.getElementById("z_score").value = z_score
                 
-                            
-            dict1={}
-            dict2={}
-            call_tree(clade_1_json,dict1)
-            call_tree(clade_2_json,dict2)
-            eliminate_dict(dict1, leavesOneDist)
-            eliminate_dict(dict2, leavesTwoDist)
-            let keys1 = Object.keys(dict1).filter(el=>dict1[el].length === 5).sort((first,second)=>dict1[first][2]-dict1[second][2])
-            let keys2 = Object.keys(dict2).filter(el=>dict2[el].length === 5).sort((first,second)=>dict2[first][2]-dict2[second][2])
-
-            label_changer(dict1)
-            label_changer(dict2)
-
-            // label list= 0 -> both of them are included 
-            // label list= 1 -> only one child included
-            // label list= 2 -> none of the childs are included
+            if (bool==false) {
+                
             
-            
-            for (i=0; i<keys1.length; i++){
+                dict1={}
+                dict2={}
+                call_tree(clade_1_json,dict1)
+                call_tree(clade_2_json,dict2)
+                eliminate_dict(dict1, leavesOneDist)
+                eliminate_dict(dict2, leavesTwoDist)
+                let keys1 = Object.keys(dict1).filter(el=>dict1[el].length === 5).sort((first,second)=>dict1[first][2]-dict1[second][2])
+                let keys2 = Object.keys(dict2).filter(el=>dict2[el].length === 5).sort((first,second)=>dict2[first][2]-dict2[second][2])
 
-                var elements= dict1[keys1[i]]
-                childs= elements[0]
-                childs_len= childs.length
-                label=[]
-                // Child could be a main node or a leaf we will find this using regex.
-                for(m=0; m<childs_len; m++){
+                label_changer(dict1)
+                label_changer(dict2)
 
-                    child_ID= childs[m].ID
+                // label list= 0 -> both of them are included 
+                // label list= 1 -> only one child included
+                // label list= 2 -> none of the childs are included
 
-                    var arr1= childs[m].name.match(regex_global)
-                    if (!arr1){ // The child is a main node
 
-                        
-                        if (dict1[child_ID][4].length == 0){
-                            continue;
+                for (i=0; i<keys1.length; i++){
+
+                    var elements= dict1[keys1[i]]
+                    childs= elements[0]
+                    childs_len= childs.length
+                    label=[]
+                    // Child could be a main node or a leaf we will find this using regex.
+                    for(m=0; m<childs_len; m++){
+
+                        child_ID= childs[m].ID
+
+                        var arr1= childs[m].name.match(regex_global)
+                        if (!arr1){ // The child is a main node
+
+
+                            if (dict1[child_ID][4].length == 0){
+                                continue;
+                            }
+
+                            else if(dict1[child_ID][4].length < dict1[child_ID][0].length){
+
+                                continue
+
+                            }
+
+
+                            else{
+
+                                label.push(child_ID)
+
+                            }
+
                         }
 
-                        else if(dict1[child_ID][4].length < dict1[child_ID][0].length){
+                        else{ //child is a leaf
 
-                            continue
+                            if (!(global_common.includes(arr1[0]))){
 
-                        }
+                                label.push(child_ID)
 
-
-                        else{
-
-                            label.push(child_ID)
+                            }
 
                         }
-
                     }
 
-                    else{ //child is a leaf
-
-                        if (!(global_common.includes(arr1[0]))){
-
-                            label.push(child_ID)
-
-                        }
-                        
-                    }
+                    dict1[keys1[i]][4] = label 
                 }
 
-                dict1[keys1[i]][4] = label 
-            }
-                
-            
-           for (i=0; i<keys2.length; i++){
 
-                var elements= dict2[keys2[i]]
-                childs= elements[0]
-                childs_len= childs.length
-                label=[]
-                // Child could be a main node or a leaf we will find this using regex.
-                for(m=0; m<childs_len; m++){
+               for (i=0; i<keys2.length; i++){
 
-                    child_ID= childs[m].ID
+                    var elements= dict2[keys2[i]]
+                    childs= elements[0]
+                    childs_len= childs.length
+                    label=[]
+                    // Child could be a main node or a leaf we will find this using regex.
+                    for(m=0; m<childs_len; m++){
 
-                    var arr1= childs[m].name.match(regex_global)
-                    if (!arr1){ // The child is a main node
+                        child_ID= childs[m].ID
 
-                        
-                        if (dict2[child_ID][4].length == 0){
-                            continue;
+                        var arr1= childs[m].name.match(regex_global)
+                        if (!arr1){ // The child is a main node
+
+
+                            if (dict2[child_ID][4].length == 0){
+                                continue;
+                            }
+
+                            else if(dict2[child_ID][4].length < dict2[child_ID][0].length){
+
+                                continue
+
+                            }
+
+
+                            else{
+
+                                label.push(child_ID)
+
+                            }
+
                         }
 
-                        else if(dict2[child_ID][4].length < dict2[child_ID][0].length){
+                        else{ //child is a leaf
 
-                            continue
-                            
-                        }
+                            if (!(global_common.includes(arr1[0]))){
 
+                                label.push(child_ID)
 
-                        else{
-
-                            label.push(child_ID)
+                            }
 
                         }
-
                     }
 
-                    else{ //child is a leaf
-
-                        if (!(global_common.includes(arr1[0]))){
-
-                            label.push(child_ID)
-
-                        }
-                        
-                    }
+                    dict2[keys2[i]][4] = label 
                 }
 
-                dict2[keys2[i]][4] = label 
+
+
+                let length_list1=[]
+                let length_list2=[]
+                let sample_size2=0
+                let sample_size1=0
+
+                sample_size1= leaf_handler(dict1,length_list1,sample_size1)
+                sample_size2= leaf_handler(dict2,length_list2,sample_size2)
+                sample_size1= main_node_handler(dict1,length_list1,sample_size1,keys1)
+                sample_size2= main_node_handler(dict2,length_list2,sample_size2,keys2)
+
+                var sum1= jStat.sum(length_list1)
+                var sum2= jStat.sum(length_list2)
+
+                var mean_1= sum1/sample_size1
+                var mean_2= sum2/sample_size2
+
+                data_points_1= get_data_points(length_list1)
+                data_points_2= get_data_points(length_list2)
+                stev11=jStat.stdev(data_points_1)
+                stev22=jStat.stdev(data_points_2)
+                below=(stev11*stev11/sample_size1) + (stev22*stev22/sample_size2) 
+                welchs_t3= (mean_1-mean_2)/ Math.sqrt(below)
+                df= sample_size1+sample_size2-2
+                pval_welch_3= jStat.ttest(welchs_t3, df, 2)
+                document.getElementById("pval_welch_3").value = pval_welch_3
+                document.getElementById("welchs_t3").value = welchs_t3
+
             }
-                
-                
-                
-            let length_list1=[]
-            let length_list2=[]
-            let sample_size2=0
-            let sample_size1=0
-            
-            sample_size1= leaf_handler(dict1,length_list1,sample_size1)
-            sample_size2= leaf_handler(dict2,length_list2,sample_size2)
-            sample_size1= main_node_handler(dict1,length_list1,sample_size1,keys1)
-            sample_size2= main_node_handler(dict2,length_list2,sample_size2,keys2)
-
-            var sum1= jStat.sum(length_list1)
-            var sum2= jStat.sum(length_list2)
-
-            var mean_1= sum1/sample_size1
-            var mean_2= sum2/sample_size2
-
-            data_points_1= get_data_points(length_list1)
-            data_points_2= get_data_points(length_list2)
-            stev11=jStat.stdev(data_points_1)
-            stev22=jStat.stdev(data_points_2)
-            below=(stev11*stev11/sample_size1) + (stev22*stev22/sample_size2) 
-            welchs_t3= (mean_1-mean_2)/ Math.sqrt(below)
-            welchs_t3= Math.abs(welchs_t3)
-            df= sample_size1+sample_size2-2
-            pval_welch_3= jStat.ttest(welchs_t3, df, 1)
-
-
            
                 
                 
-        }
+        
             
    
 
@@ -8869,4 +8872,4 @@ var TreeCompare = function () {
     }
 };
 
-//tukendimmm version
+//end nolur
