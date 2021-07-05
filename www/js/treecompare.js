@@ -5429,8 +5429,34 @@ var TreeCompare = function () {
             nc= global_common.length
             na= n1_po - nc 
             nb= n2_po - nc
-            stev1=jStat.stdev(leave_one_before_regex_distances)
-            stev2=jStat.stdev(leave_two_before_regex_distances)
+                
+            sum1=0
+                
+            for (let m=0; m<leave_one_before_regex_distances.length;m++){
+                
+                temp=0
+                temp= x1_po-leave_one_before_regex_distances[m]
+                temp_s= temp*temp
+                sum1+=temp_s
+            }
+
+            stev1= sum1/(n1_po-1)
+            stev1= Math.sqrt(stev1)
+
+            sum2=0
+                
+            for (let m=0; m<leave_two_before_regex_distances.length;m++){
+                
+                temp=0
+                temp= x2_po-leave_two_before_regex_distances[m]
+                temp_s= temp*temp
+                sum2+=temp_s
+            }
+
+            stev2= sum2/(n2_po-1)
+            stev2= Math.sqrt(stev2)
+
+
             r=0
            
             difference1=[]
@@ -5523,7 +5549,7 @@ var TreeCompare = function () {
             sp_up= ((n1_po-1)*stev1*stev1)+((n2_po-1)*stev2*stev2)
             sp_down= (n1_po-1)+(n2_po-1)
             sp= Math.sqrt(sp_up/sp_down)
-            m=Math.sqrt(stev1*stev1/n1_po)
+            m=stev1*stev1/n1_po
             t_po1=(x1_po-x2_po)/(sp* Math.sqrt(m + (stev2*stev2/n2_po)- (2*r*stev1*stev2*nc/(n1_po*n2_po))))
             weird1= ((stev1*stev1/n1_po)+ (stev2*stev2/n2_po))*((stev1*stev1/n1_po)+ (stev2*stev2/n2_po))/ ((stev1*stev1/n1_po)*(stev1*stev1/n1_po)/(n1_po-1) + (stev2*stev2/n2_po)*(stev2*stev2/n2_po)/(n2_po-1) ) 
             df_po1= (nc-1) + (weird1-nc+1)/(na+nb+2*nc)*(na+nb)
