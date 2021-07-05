@@ -5068,7 +5068,7 @@ var TreeCompare = function () {
                 }
 
                 z_score_top = main_u-(n1*n2)/2
-                z_score_bottom= (n1*n2)*(n1+n2+1)/2
+                z_score_bottom= (n1*n2)*(n1+n2+1)/12
                 z_score= z_score_top/Math.sqrt(z_score_bottom)          
                 p_val_mann_whitney1=jStat.ztest(z_score,2)
                 
