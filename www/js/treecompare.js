@@ -4312,16 +4312,20 @@ var TreeCompare = function () {
                 temp = temp * temp
                 stdev1 += temp
             }
-            stdev1 = stdev1 / one.length
+            
+            len1= one.length-1
+            stdev1 = stdev1 / len1
             stdev1 = Math.sqrt(stdev1)
 
             stdev2 = 0
             for (i = 0; i < two.length; i++) {
-                temp = mean1 - two[i]
+                temp = mean2 - two[i]
                 temp = temp * temp
                 stdev2 += temp
             }
-            stdev2 = stdev2 / two.length
+            
+            len2= two.length-1
+            stdev2 = stdev2 / len2
             stdev2 = Math.sqrt(stdev2)
 
             x1 = stdev1 * stdev1 / one.length
@@ -4347,8 +4351,7 @@ var TreeCompare = function () {
             tmp = Math.sqrt(tmp);
 
             //T distribution is symmetric so there is no need for negative values, it makes p value weird 
-            tTest = Math.abs(tTest)
-            welchs_t= Math.abs(welchs_t)
+         
             //tTest = tTest / x
             tTest = tTest / tmp;
             document.getElementById('ttest1').value = tTest
@@ -4365,11 +4368,11 @@ var TreeCompare = function () {
                             )
                     });
             if (two) {
-                pval = jStat.ttest(tTest, df, 1)
+                pval = jStat.ttest(tTest, df, 2)
                 document.getElementById("pval1").value = pval
                 
                 // Elif's implementation
-                pval_welch_1= jStat.ttest(welchs_t, df, 1)
+                pval_welch_1= jStat.ttest(welchs_t, df, 2)
                 document.getElementById("pval_welch_1").value = pval_welch_1
                 // end
             }
@@ -4489,16 +4492,20 @@ var TreeCompare = function () {
                 temp = temp * temp
                 stdev1 += temp
             }
-            stdev1 = stdev1 / one.length
+            
+            len1= one.length-1
+            stdev1 = stdev1 / len1
             stdev1 = Math.sqrt(stdev1)
 
             stdev2 = 0
             for (i = 0; i < two.length; i++) {
-                temp = mean1 - two[i]
+                temp = mean2 - two[i]
                 temp = temp * temp
                 stdev2 += temp
             }
-            stdev2 = stdev2 / two.length
+            
+            len2= two.length-1
+            stdev2 = stdev2 / len2
             stdev2 = Math.sqrt(stdev2)
 
             x1 = stdev1 * stdev1 / one.length
@@ -4522,8 +4529,7 @@ var TreeCompare = function () {
             tmp = Math.sqrt(tmp);
 
             //T distribution is symmetric so there is no need for negative values, it makes p value weird 
-            tTest = Math.abs(tTest)
-            welchs_t= Math.abs(welchs_t)
+           
             //tTest = tTest / x
             //console.log("x: ", tTest / x, "\n")
             //console.log("tmp: ", tTest / tmp)
@@ -4541,11 +4547,11 @@ var TreeCompare = function () {
                             )
                     });
             if (two) {
-                pval = jStat.ttest(tTest, df, 1)
+                pval = jStat.ttest(tTest, df, 2)
                 document.getElementById("pval2").value = pval
                 
                 // Elif's implementation
-                pval_welch_2= jStat.ttest(welchs_t, df, 1)
+                pval_welch_2= jStat.ttest(welchs_t, df, 2)
                 document.getElementById("pval_welch_2").value = pval_welch_2
                 // end
             }
