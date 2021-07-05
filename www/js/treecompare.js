@@ -5527,8 +5527,7 @@ var TreeCompare = function () {
             t_po1=(x1_po-x2_po)/(sp* Math.sqrt(m + (stev2*stev2/n2_po)- (2*r*stev1*stev2*nc/(n1_po*n2_po))))
             weird1= ((stev1*stev1/n1_po)+ (stev2*stev2/n2_po))*((stev1*stev1/n1_po)+ (stev2*stev2/n2_po))/ ((stev1*stev1/n1_po)*(stev1*stev1/n1_po)/(n1_po-1) + (stev2*stev2/n2_po)*(stev2*stev2/n2_po)/(n2_po-1) ) 
             df_po1= (nc-1) + (weird1-nc+1)/(na+nb+2*nc)*(na+nb)
-            t_po1=Math.abs(t_po1)
-            pval_po1= jStat.ttest(t_po1, df_po1, 1)
+            pval_po1= jStat.ttest(t_po1, df_po1, 2)
             
             
 
@@ -5809,7 +5808,7 @@ var TreeCompare = function () {
                 sample_size=common.length
                 mean_zero=0 // Don't know what to put now
                 paired_t= (X_d-mean_zero)/(sd/Math.sqrt(sample_size))
-                pval_paired = jStat.ttest(paired_t, sample_size, 1)
+                pval_paired = jStat.ttest(paired_t, sample_size, 2)
                 document.getElementById("paired_t").value = paired_t
                 document.getElementById("pval_paired").value = pval_paired
                 
