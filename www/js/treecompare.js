@@ -4604,7 +4604,7 @@ var TreeCompare = function () {
        }
    }
     
-     function eliminate_dict(dict,main_list){
+    function eliminate_dict(dict,main_list){
 
         names_temp=[]
 
@@ -4672,6 +4672,8 @@ var TreeCompare = function () {
 
         for (let i=0; i<key_list.length; i++){
 
+           
+
             var elements = dict[key_list[i]]
 
             if (elements.length == 5){ // Only nodes
@@ -4690,13 +4692,20 @@ var TreeCompare = function () {
 
                 else if(elements[4].length == 0){
 
+                    if (i==key_list.length-1){ //not internal length
+
+                        continue
+                    }
+
+                    else{
                     sample_size=sample_size+1
                     length_list.push(elements[1])
+                    }
 
                 }
                 
                 
-                else if (elements[4].length == elements[0].length-1){
+                else if (elements[4].length == 1){
                     
                     child_size= elements[0].length
                     let temp_sum=0
@@ -4715,12 +4724,15 @@ var TreeCompare = function () {
 
                         else if (elements2.length == 3){ // its a leaf 
 
+
                             if (elements2[1] == "no"){
 
+                             
                                 continue;
                             }
 
                             else{
+                                
                             temp_sum+=elements2[2]
                             length_list.push(-1*elements2[2])
                             sample_size=sample_size-1
@@ -4737,10 +4749,10 @@ var TreeCompare = function () {
 
                             else{
                             
-                            temp_sum+= elements2[1]
-                            length_list.push(-1*elements2[1])
-                            sample_size=sample_size-1
-                            elements2[1]=0
+                                temp_sum+= elements2[1]
+                                length_list.push(-1*elements2[1])
+                                sample_size=sample_size-1
+                                elements2[1]=0
 
                             }
                         }
@@ -4748,6 +4760,7 @@ var TreeCompare = function () {
                     }
 
                     length_list.push(temp_sum)
+                    sample_size+=1
 
                 }
 
@@ -4789,6 +4802,7 @@ var TreeCompare = function () {
        return sample_size
 
     }
+    
 
     function get_data_points(length_list){
 
@@ -4796,12 +4810,12 @@ var TreeCompare = function () {
         len_t= length_list.length 
         for(let i=0; i<len_t; i++){
 
-            if (length_list[i]<0){
+            if (length_list[i]<0 && length_list[i]!=-10){
                 
                 search_val= length_list[i]*-1
                 temp_target= length_list.indexOf(search_val)
-                length_list[i]=0
-                length_list[temp_target]=0
+                length_list[i]=-10
+                length_list[temp_target]=-10
 
             }
         }
@@ -4809,7 +4823,7 @@ var TreeCompare = function () {
         temp_points=[]
         for(let i=0; i<len_t; i++){
 
-            if (length_list[i] != 0){
+            if (length_list[i] != -10){
 
                 temp_points.push(length_list[i])
             }
@@ -4818,6 +4832,7 @@ var TreeCompare = function () {
 
         return temp_points
     }
+
 
 
 
@@ -5774,7 +5789,6 @@ var TreeCompare = function () {
 
 
                     diff= two_diff-one_diff
-                    diff= Math.abs(diff)
                     each_diff.push(diff)
                     overall_diff+=diff
                 }
@@ -8824,4 +8838,4 @@ var TreeCompare = function () {
     }
 };
 
-//tukendimrr version
+//tukendimmm version
