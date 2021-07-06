@@ -4413,11 +4413,11 @@ var TreeCompare = function () {
 
             tempOne = []
             for (i = 0; i < one.length; i++) {
-                tempOne.push(one[i].Distance)
+                tempOne.push(one[i])
             }
             tempTwo = []
             for (i = 0; i < two.length; i++) {
-                tempTwo.push(two[i].Distance)
+                tempTwo.push(two[i])
             }
             
             global_one= one
@@ -5162,9 +5162,41 @@ var TreeCompare = function () {
                 }
             }
             
-            temp_leaves3=leavesOneEachother
-            temp_leaves4=leavesTwoEachother
+            temp_leaves3=[]
+            temp_leaves4=[]
+
+            for (let m=0; m<data_points_1.length; m++){
+
+                str=""
+                dis= data_points_1[m]
+                rank=0
+                var tmp = {
+                        From: str,
+                        Distance: dis,
+                        rank:rank
+                }
+                temp_leaves3.push(tmp)
+            }
+
+            for (let m=0; m<data_points_2.length; m++){
+
+                str=""
+                dis= data_points_2[m]
+                rank=0
+                var tmp = {
+                        From: str,
+                        Distance: dis,
+                        rank:rank
+                }
+                temp_leaves4.push(tmp)
+            }
+
+            
+            
+   
+            
             all_lengths_2=[]
+            
             for(i=0; i<temp_leaves3.length; i++){
                 
                 temp_leaves3[i].From = "A"
@@ -5385,32 +5417,24 @@ var TreeCompare = function () {
                 sample_size1= main_node_handler(dict1,length_list1,sample_size1,keys1)
                 sample_size2= main_node_handler(dict2,length_list2,sample_size2,keys2)
 
-                var sum1= jStat.sum(length_list1)
-                var sum2= jStat.sum(length_list2)
-
-                var mean_1= sum1/sample_size1
-                var mean_2= sum2/sample_size2
+            
 
                 data_points_1= get_data_points(length_list1)
                 data_points_2= get_data_points(length_list2)
-                stev11=jStat.stdev(data_points_1)
-                stev22=jStat.stdev(data_points_2)
-                below=(stev11*stev11/sample_size1) + (stev22*stev22/sample_size2) 
-                welchs_t3= (mean_1-mean_2)/ Math.sqrt(below)
-                df= sample_size1+sample_size2-2
-                pval_welch_3= jStat.ttest(welchs_t3, df, 2)
-                document.getElementById("pval_welch_3").value = pval_welch_3
-                document.getElementById("welchs_t3").value = welchs_t3
+                
+                //stev11=jStat.stdev(data_points_1)
+                //stev22=jStat.stdev(data_points_2)
+                //below=(stev11*stev11/sample_size1) + (stev22*stev22/sample_size2) 
+                //welchs_t3= (mean_1-mean_2)/ Math.sqrt(below)
+                //df= sample_size1+sample_size2-2
+                //pval_welch_3= jStat.ttest(welchs_t3, df, 2)
+                //document.getElementById("pval_welch_3").value = pval_welch_3
+                //document.getElementById("welchs_t3").value = welchs_t3
 
             }
            
-                
-                
-        
-            
-   
 
-            boxPlotLeaves(leavesOneEachother, leavesTwoEachother)
+            boxPlotLeaves(data_points_1, data_points_2)
             
              
             // Partially Overlapping implementation
