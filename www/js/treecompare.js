@@ -5449,9 +5449,21 @@ var TreeCompare = function () {
                 data_points_1=[]
                 data_points_2=[]
 
+            let keys1 = Object.keys(dict1).filter(el=>dict1[el].length === 5).sort((first,second)=>dict1[first][2]-dict1[second][2])
+            let keys2 = Object.keys(dict2).filter(el=>dict2[el].length === 5).sort((first,second)=>dict2[first][2]-dict2[second][2])
+
+            ancs1_ID= keys1[keys1.length-1]
+            ancs2_ID= keys2[keys2.length-1]
+
+
             key_list= Object.keys(dict1)
 
             for (let i=0; i<key_list.length; i++){
+
+                if (key_list[i]==ancs1_ID){
+
+                    continue
+                }
 
                 var elements = dict1[key_list[i]]
 
@@ -5474,6 +5486,11 @@ var TreeCompare = function () {
 
             for (let i=0; i<key_list.length; i++){
 
+                if (key_list[i]==ancs2_ID){
+
+                    continue
+                }
+
                 var elements = dict2[key_list[i]]
 
                 if (elements.length == 3){ // Only leaves
@@ -5490,6 +5507,7 @@ var TreeCompare = function () {
                      data_points_2.push(elements[1]) 
                 }
           }
+
 
           temp_leaves3=[]
             temp_leaves4=[]
@@ -5793,6 +5811,34 @@ var TreeCompare = function () {
         }
         else { //beginning_tree
             
+               for (i = 0; i < leavesOne.length; i++) {
+                distance = 0
+                temp = leavesOne[i]
+                while (temp != ancs) {
+                    distance += temp.length
+                    temp = temp.parent
+                }
+                var tmp = {
+                    From: leavesOne[i].name,
+                    Distance: distance
+                }
+                leavesOneDist.push(tmp)
+            }
+            for (i = 0; i < leavesTwo.length; i++) {
+                distance = 0
+                temp = leavesTwo[i]
+                while (temp != ancs) {
+                    distance += temp.length
+                    temp = temp.parent
+                }
+                var tmp = {
+                    From: leavesTwo[i].name,
+                    Distance: distance
+                }
+                leavesTwoDist.push(tmp)
+
+            }
+            
            clade_1_json= multiSelected[0]
             clade_2_json= multiSelected[1]
 
@@ -5805,9 +5851,21 @@ var TreeCompare = function () {
                 data_points_1=[]
                 data_points_2=[]
 
+              let keys1 = Object.keys(dict1).filter(el=>dict1[el].length === 5).sort((first,second)=>dict1[first][2]-dict1[second][2])
+            let keys2 = Object.keys(dict2).filter(el=>dict2[el].length === 5).sort((first,second)=>dict2[first][2]-dict2[second][2])
+
+            ancs1_ID= keys1[keys1.length-1]
+            ancs2_ID= keys2[keys2.length-1]
+
+
             key_list= Object.keys(dict1)
 
             for (let i=0; i<key_list.length; i++){
+
+                if (key_list[i]==ancs1_ID){
+
+                    continue
+                }
 
                 var elements = dict1[key_list[i]]
 
@@ -5830,6 +5888,11 @@ var TreeCompare = function () {
 
             for (let i=0; i<key_list.length; i++){
 
+                if (key_list[i]==ancs2_ID){
+
+                    continue
+                }
+
                 var elements = dict2[key_list[i]]
 
                 if (elements.length == 3){ // Only leaves
@@ -5846,6 +5909,7 @@ var TreeCompare = function () {
                      data_points_2.push(elements[1]) 
                 }
           }
+
 
           temp_leaves3=[]
             temp_leaves4=[]
@@ -5971,33 +6035,7 @@ var TreeCompare = function () {
             document.getElementById("p_val_mann_whitney2").value = p_val_mann_whitney2
             document.getElementById("z_score_2").value = z_score_2
          
-            for (i = 0; i < leavesOne.length; i++) {
-                distance = 0
-                temp = leavesOne[i]
-                while (temp != ancs) {
-                    distance += temp.length
-                    temp = temp.parent
-                }
-                var tmp = {
-                    From: leavesOne[i].name,
-                    Distance: distance
-                }
-                leavesOneDist.push(tmp)
-            }
-            for (i = 0; i < leavesTwo.length; i++) {
-                distance = 0
-                temp = leavesTwo[i]
-                while (temp != ancs) {
-                    distance += temp.length
-                    temp = temp.parent
-                }
-                var tmp = {
-                    From: leavesTwo[i].name,
-                    Distance: distance
-                }
-                leavesTwoDist.push(tmp)
-
-            }
+         
 
              temp_leaves=leavesOneDist
                 temp_leaves2=leavesTwoDist
@@ -9109,4 +9147,4 @@ var TreeCompare = function () {
     }
 };
 
-//end_bakalim nolur
+//enddd
