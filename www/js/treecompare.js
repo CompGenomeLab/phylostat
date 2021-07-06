@@ -8558,6 +8558,8 @@ var TreeCompare = function () {
         else {
             concObj.venn = 4
         }
+        
+        doc.save("report.pdf");
 
 
       
