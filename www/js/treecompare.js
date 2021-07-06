@@ -5793,7 +5793,7 @@ var TreeCompare = function () {
         }
         else { //beginning_tree
             
-            clade_1_json= multiSelected[0]
+           clade_1_json= multiSelected[0]
             clade_2_json= multiSelected[1]
 
             dict1={}
@@ -5970,9 +5970,7 @@ var TreeCompare = function () {
                 
             document.getElementById("p_val_mann_whitney2").value = p_val_mann_whitney2
             document.getElementById("z_score_2").value = z_score_2
-            document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
-            document.getElementById("z_score").value = z_score
- 
+         
             for (i = 0; i < leavesOne.length; i++) {
                 distance = 0
                 temp = leavesOne[i]
@@ -6000,6 +5998,98 @@ var TreeCompare = function () {
                 leavesTwoDist.push(tmp)
 
             }
+
+             temp_leaves=leavesOneDist
+                temp_leaves2=leavesTwoDist
+                all_lengths_1=[]
+                for(i=0; i<temp_leaves.length; i++){
+
+                    temp_leaves[i].where = "A"
+                    all_lengths_1.push(temp_leaves[i])
+
+                }
+
+                for(i=0; i<temp_leaves2.length; i++){
+
+                    temp_leaves2[i].where = "B"
+                    all_lengths_1.push(temp_leaves2[i])
+
+                }
+
+                // kucukten buyuge siraliyor
+                all_lengths_sorted = all_lengths_1.sort((first, second) => first.Distance - second.Distance)
+
+                for (i=0;i<all_lengths_sorted.length;i++){
+
+                    all_lengths_sorted[i].rank = i+1
+
+                }
+
+                // Ali Parlakci implementation.
+
+                for (let i = 0; i < all_lengths_sorted.length;) {
+                    let occurence = 1;
+                    while ((i + occurence < all_lengths_sorted.length) && (all_lengths_sorted[i].Distance == all_lengths_sorted[i+occurence].Distance)) {
+                        occurence++;
+                    }
+
+
+                    ranks = 0;
+                    for (let j = i; j < i + occurence; j++) {
+                        ranks += all_lengths_sorted[j].rank;
+                    }
+
+                    for (let j = i; j < i + occurence; j++) {
+                        all_lengths_sorted[j].rank = ranks / occurence;
+                    }
+
+                    i += occurence;
+                }
+
+                // Ali Parlakci implementation
+
+                n1= temp_leaves.length
+                n2= temp_leaves2.length
+                rank_sum1=0
+                rank_sum2=0
+
+                for (i=0;i<all_lengths_sorted.length;i++){
+
+                    if (all_lengths_sorted[i].where == "A"){
+
+
+                        rank_sum1+=all_lengths_sorted[i].rank
+                    }
+
+
+                    if (all_lengths_sorted[i].where == "B"){
+
+
+                        rank_sum2+=all_lengths_sorted[i].rank
+                    }
+
+                }
+
+                u1_first= n1*n2+ (n1*(n1+1))/2 - rank_sum1
+                u2_first=n1*n2+ (n2*(n2+1))/2 - rank_sum2
+
+                if (u1_first> u2_first){
+
+                    main_u= u2_first
+                }
+
+                else {
+
+                    main_u= u1_first
+                }
+
+                z_score_top = main_u-(n1*n2)/2
+                z_score_bottom= (n1*n2)*(n1+n2+1)/12
+                z_score= z_score_top/Math.sqrt(z_score_bottom)          
+                p_val_mann_whitney1=jStat.ztest(z_score,2)
+             document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
+            document.getElementById("z_score").value = z_score
+ 
 
             boxPlotEachOther(leavesOneDist, leavesTwoDist)
 
@@ -6043,6 +6133,8 @@ var TreeCompare = function () {
             }
 
             boxPlotLeaves(data_points_1, data_points_2)
+        
+
         
 
         }
