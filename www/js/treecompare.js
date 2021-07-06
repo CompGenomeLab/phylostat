@@ -5791,7 +5791,188 @@ var TreeCompare = function () {
           
             
         }
-        else {
+        else { //beginning_tree
+            
+            clade_1_json= multiSelected[0]
+            clade_2_json= multiSelected[1]
+
+            dict1={}
+                dict2={}
+                call_tree(clade_1_json,dict1)
+                call_tree(clade_2_json,dict2)
+                eliminate_dict(dict1, leavesOneDist)
+                eliminate_dict(dict2, leavesTwoDist)
+                data_points_1=[]
+                data_points_2=[]
+
+            key_list= Object.keys(dict1)
+
+            for (let i=0; i<key_list.length; i++){
+
+                var elements = dict1[key_list[i]]
+
+                if (elements.length == 3){ // Only leaves
+
+    
+                       data_points_1.push(elements[2]) 
+                        
+                 }
+                    
+
+                else{
+
+
+                     data_points_1.push(elements[1]) 
+                }
+          } 
+
+           key_list= Object.keys(dict2)
+
+            for (let i=0; i<key_list.length; i++){
+
+                var elements = dict2[key_list[i]]
+
+                if (elements.length == 3){ // Only leaves
+
+    
+                       data_points_2.push(elements[2]) 
+                        
+                 }
+                    
+
+                else{
+
+
+                     data_points_2.push(elements[1]) 
+                }
+          }
+
+          temp_leaves3=[]
+            temp_leaves4=[]
+
+            for (let m=0; m<data_points_1.length; m++){
+
+                str=""
+                dis= data_points_1[m]
+                rank=0
+                var tmp = {
+                        From: str,
+                        Distance: dis,
+                        rank:rank
+                }
+                temp_leaves3.push(tmp)
+            }
+
+            for (let m=0; m<data_points_2.length; m++){
+
+                str=""
+                dis= data_points_2[m]
+                rank=0
+                var tmp = {
+                        From: str,
+                        Distance: dis,
+                        rank:rank
+                }
+                temp_leaves4.push(tmp)
+            }
+
+            
+            
+   
+            
+            all_lengths_2=[]
+            
+            for(i=0; i<temp_leaves3.length; i++){
+                
+                temp_leaves3[i].From = "A"
+                all_lengths_2.push(temp_leaves3[i])
+
+            }
+
+            for(i=0; i<temp_leaves4.length; i++){
+                
+                temp_leaves4[i].From = "B"
+                all_lengths_2.push(temp_leaves4[i])
+
+            }
+
+            // kucukten buyuge siraliyor
+            all_lengths_sorted2 = all_lengths_2.sort((first, second) => first.Distance - second.Distance)
+            
+            for (i=0;i<all_lengths_sorted2.length;i++){
+                
+                all_lengths_sorted2[i].rank = i+1
+              
+            }
+
+            // Ali Parlakci implementation
+
+            for (let i = 0; i < all_lengths_sorted2.length;) {
+                let occurence = 1;
+                while ((i + occurence < all_lengths_sorted2.length) && (all_lengths_sorted2[i].Distance == all_lengths_sorted2[i+occurence].Distance)) {
+                    occurence++;
+                }
+
+
+                ranks = 0;
+                for (let j = i; j < i + occurence; j++) {
+                    ranks += all_lengths_sorted2[j].rank;
+                }
+
+                for (let j = i; j < i + occurence; j++) {
+                    all_lengths_sorted2[j].rank = ranks / occurence;
+                }
+
+                i += occurence;
+            }
+            
+            // Ali Parlakci implementation
+
+            n3= temp_leaves3.length
+            n4= temp_leaves4.length
+            rank_sum3=0
+            rank_sum4=0
+
+            for (i=0;i<all_lengths_sorted2.length;i++){
+
+                if (all_lengths_sorted2[i].From == "A"){
+
+
+                    rank_sum3+=all_lengths_sorted2[i].rank
+                }
+
+
+                if (all_lengths_sorted2[i].From == "B"){
+
+
+                    rank_sum4+=all_lengths_sorted2[i].rank
+                }
+
+            }
+
+            u1_second= n3*n4+ (n3*(n3+1))/2 - rank_sum3
+            u2_second=n3*n4+ (n4*(n4+1))/2 - rank_sum4
+
+            if (u1_second > u2_second){
+
+                main_u2= u2_second
+            }
+
+            else {
+
+                main_u2= u1_second
+            }
+
+            z_score_top2 = main_u2-(n3*n4)/2
+            z_score_bottom2= (n3*n4)*(n3+n4+1)/12
+            z_score_2= z_score_top2/Math.sqrt(z_score_bottom2)          
+            p_val_mann_whitney2=jStat.ztest(z_score_2,2)
+                
+            document.getElementById("p_val_mann_whitney2").value = p_val_mann_whitney2
+            document.getElementById("z_score_2").value = z_score_2
+            document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
+            document.getElementById("z_score").value = z_score
+ 
             for (i = 0; i < leavesOne.length; i++) {
                 distance = 0
                 temp = leavesOne[i]
@@ -5861,7 +6042,9 @@ var TreeCompare = function () {
                 }
             }
 
-            boxPlotLeaves(leavesOneEachother, leavesTwoEachother)
+            boxPlotLeaves(data_points_1, data_points_2)
+        
+
         }
 
     }
