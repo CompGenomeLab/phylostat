@@ -4913,6 +4913,42 @@ var TreeCompare = function () {
                     leavesTwo.push(leavesTwoTemp[i])
                 }
             }
+            
+            // New addition
+            
+            leavesOneNew=[]
+
+           for (let i=0; i<leavesOne.length; i++){
+
+
+                var arr2= leavesOne[i].name.match(regex_global)
+
+                if (global_common.includes(arr2[0])){
+
+                    leavesOneNew.push(leavesOne[i])
+
+                }
+
+            }
+
+            
+            leavesTwoNew=[]
+
+            for (let i=0; i<leavesTwo.length; i++){
+
+
+                var arr2= leavesTwo[i].name.match(regex_global)
+                
+                if (global_common.includes(arr2[0])){
+
+                    leavesTwoNew.push(leavesTwo[i])
+
+                }
+
+            }
+
+            leavesTwo= leavesTwoNew
+            leavesOne= leavesOneNew
 
             for (i = 0; i < leavesOne.length; i++) {
                 distance = 0
@@ -4943,6 +4979,8 @@ var TreeCompare = function () {
                 leavesTwoDist.push(tmp)
 
             }
+            
+            
             
             // try
             
