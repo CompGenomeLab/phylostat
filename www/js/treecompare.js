@@ -4641,6 +4641,37 @@ var TreeCompare = function () {
 
     }
     
+    function isoform_eliminate(list,new_iso_list){
+
+        
+        for (let i=0; i<list.length;i++){
+
+            var arr1 = list[i].From.match(regex_global)
+            target_taxa= arr1[0]
+            
+            min=10000
+
+            for (let k=0; k<list.length; k++){
+
+                if (target_taxa == list[k].From.match(regex_global)){
+
+                    if (min>list[k].Distance){
+
+                        min=list[k].Distance
+                        min_name= list[k].From
+                    }
+                }
+            }
+
+            if (!(new_iso_list.includes(min_name))){
+
+
+                new_iso_list.push(min_name)
+            }
+        }
+
+    }
+    
     
     function leaf_handler(dict,length_list,sample_size){
 
@@ -4863,94 +4894,8 @@ var TreeCompare = function () {
         }
 
         if (regex) {
-            leavesOneTemp = regex.searchOne
-            leavesTwoTemp = regex.searchTwo
-
-            leavesOne = []
-            leavesTwo = []
-            for (i = 0; i < leavesOneTemp.length; i++) {
-                var temp = []
-                for (j = i + 1; j < leavesOneTemp.length; j++) {
-                    if (i != j) {
-                        if (leavesOneTemp[i].name == leavesOneTemp[j].name) {
-                            temp.push(leavesOneTemp[i])
-                        }
-                    }
-                }
-                if (temp.length > 0) {
-                    var min = Number.MAX_SAFE_INTEGER;
-                    for (k = 0; k < temp.length; k++) {
-                        if (min > temp[i].length) {
-                            min = temp[i]
-                        }
-                    }
-                    leavesOne.push(min)
-                }
-                else {
-                    leavesOne.push(leavesOneTemp[i])
-                }
-            }
-
-            for (i = 0; i < leavesTwoTemp.length; i++) {
-                var temp = []
-                for (j = 0; j < leavesTwoTemp.length; j++) {
-                    if (i != j) {
-                        if (leavesTwoTemp[i].name == leavesTwoTemp[j].name) {
-                            temp.push(leavesTwoTemp[i])
-                        }
-                    }
-                }
-                if (temp.length > 0) {
-                    var min = Number.MAX_SAFE_INTEGER;
-                    for (k = 0; k < temp.length; k++) {
-                        if (min > temp[i].length) {
-                            min = temp[i]
-                        }
-                    }
-                    leavesTwo.push(min)
-                }
-                else {
-                    leavesTwo.push(leavesTwoTemp[i])
-                }
-            }
             
-            // New addition
-            
-            leavesOneNew=[]
-
-           for (let i=0; i<leavesOne.length; i++){
-
-
-                var arr2= leavesOne[i].name.match(regex_global)
-
-                if (global_common.includes(arr2[0])){
-
-                    leavesOneNew.push(leavesOne[i])
-
-                }
-
-            }
-
-            
-            leavesTwoNew=[]
-
-            for (let i=0; i<leavesTwo.length; i++){
-
-
-                var arr2= leavesTwo[i].name.match(regex_global)
-                
-                if (global_common.includes(arr2[0])){
-
-                    leavesTwoNew.push(leavesTwo[i])
-
-                }
-
-            }
-
-            leavesTwo= leavesTwoNew
-            leavesOne= leavesOneNew
-
-            for (i = 0; i < leavesOne.length; i++) {
+               for (i = 0; i < leavesOne.length; i++) {
                 distance = 0
                 temp = leavesOne[i]
                 while (temp != ancs) {
@@ -4978,8 +4923,83 @@ var TreeCompare = function () {
                 }
                 leavesTwoDist.push(tmp)
 
+           }
+
+           if (global_common.length != 0){
+
+
+               list1=[]
+               list2=[]
+               isoform_eliminate(leavesOneDist,list1)
+               isoform_eliminate(leavesTwoDist,list2)
+               new_list1=[]
+               new_list2=[]
+
+               
+               for (let i=0; i<leavesOne.length; i++){
+
+                   var arr2= leavesOne[i].name.match(regex_global)
+
+                   if(list1.includes(leavesOne[i].name) && global_common.includes(arr2[0])){
+
+                       new_list1.push(leavesOne[i])
+
+
+                   }
+
+               }
+
+                for (let i=0; i<leavesTwo.length; i++){
+
+                   var arr2= leavesTwo[i].name.match(regex_global)
+
+                   if(list2.includes(leavesTwo[i].name) && global_common.includes(arr2[0]) ){
+
+                       new_list2.push(leavesTwo[i])
+
+
+                   }
+
+               }
+
+               leavesOne=new_list1
+               leavesTwo=new_list2
+
+               new_list1=[]
+               new_list2=[]
+
+
+               for (let i=0; i<leavesOneDist.length; i++){
+
+                    var arr2= leavesOneDist[i].From.match(regex_global)
+
+                   if(list1.includes(leavesOneDist[i].From) && global_common.includes(arr2[0]) ){
+
+                       new_list1.push(leavesOneDist[i])
+
+
+                   }
+
+               }
+
+
+                for (let i=0; i<leavesTwoDist.length; i++){
+
+                   var arr2= leavesTwoDist[i].From.match(regex_global)
+
+                   if(list2.includes(leavesTwoDist[i].From) && global_common.includes(arr2[0])){
+
+                       new_list2.push(leavesTwoDist[i])
+
+                   }
+
+               }
+
+
+               leavesOneDist=new_list1
+               leavesTwoDist=new_list2
+
             }
-            
             
             
             // try
@@ -6261,7 +6281,7 @@ var TreeCompare = function () {
     }
     
     global_common=[]
-    regex_global=""
+    regex_global= /.*/i
     clade_1_json= multiSelected[0]
     clade_2_json= multiSelected[1]
 
