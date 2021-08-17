@@ -5244,6 +5244,21 @@ var TreeCompare = function () {
                 // label list= 2 -> none of the childs are included
 
 
+                               
+                wanted_names1=[]
+                for (let i=0; i<leavesOneDist.length; i++){
+                    
+                    wanted_names1.push(leavesOneDist[i].From)
+
+                }
+
+                wanted_names2=[]
+                for (let i=0; i<leavesTwoDist.length; i++){
+                    
+                    wanted_names2.push(leavesTwoDist[i].From)
+
+                }
+
                 for (i=0; i<keys1.length; i++){
 
                     var elements= dict1[keys1[i]]
@@ -5280,7 +5295,7 @@ var TreeCompare = function () {
 
                         else{ //child is a leaf
 
-                            if (!(global_common.includes(arr1[0]))){
+                            if (!(wanted_names1.includes(childs[m].name))){
 
                                 label.push(child_ID)
 
@@ -5299,6 +5314,7 @@ var TreeCompare = function () {
                     childs= elements[0]
                     childs_len= childs.length
                     label=[]
+         
                     // Child could be a main node or a leaf we will find this using regex.
                     for(m=0; m<childs_len; m++){
 
@@ -5321,7 +5337,7 @@ var TreeCompare = function () {
 
                             else{
 
-                                label.push(child_ID)
+                                label.push(child_ID) // Add the one which we do not want
 
                             }
 
@@ -5329,7 +5345,7 @@ var TreeCompare = function () {
 
                         else{ //child is a leaf
 
-                            if (!(global_common.includes(arr1[0]))){
+                            if (!(wanted_names2.includes(childs[m].name))){
 
                                 label.push(child_ID)
 
@@ -5340,7 +5356,6 @@ var TreeCompare = function () {
 
                     dict2[keys2[i]][4] = label 
                 }
-
 
 
                 let length_list1=[]
