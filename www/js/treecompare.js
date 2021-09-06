@@ -4573,6 +4573,113 @@ var TreeCompare = function () {
             }
         }
    }
+    
+   // new functions
+    
+   
+       function clade_json(clade,dict,first_zero){
+
+            if ("children" in clade){
+
+                var len= 0
+                len= clade.children.length
+
+                for (let i=0; i<len; i++){
+
+                    var child_ = clade.children[i]
+
+                    if (child_.ID == first_zero){
+
+                        dict["child1"]= child_.parent.children[0].ID
+                        dict["child2"]= child_.parent.children[1].ID
+
+
+                    }
+
+                    else {
+
+                       clade_json(child_,dict,first_zero)
+
+                    }
+
+
+                }
+
+            }
+
+        }
+
+
+ function check_parent(clade,dict){
+
+            if ("ID" in clade){
+
+                var len= 0
+                var child1= dict[clade.children[0].ID]
+                var child2= dict[clade.children[1].ID]
+                lengths=[]
+
+                // handle the leaf situation too. 
+
+                if (child1){ // could be a deleted leaf 
+
+                    
+                    if (child1.length == 5){
+
+                        lengths.push(child1[4].length)
+                    }
+
+
+                    else{ // Its a leaf && since its in dictionary its included. 
+
+                        lengths.push(0)
+                    }
+
+                   
+                }
+
+                else{ // The leaf is not in dictionary, which means that it should be deleted. 
+
+                    lengths.push(2)
+                }
+
+
+
+                if (child2){ // could be a deleted leaf 
+
+                    
+                    if (child2.length == 5){
+
+                        lengths.push(child2[4].length)
+                    }
+                    
+
+                    else{ // Its a leaf && since its in dictionary its included. 
+
+                        lengths.push(0)
+                    }
+
+                   
+                }
+
+                else{ // The leaf is not in dictionary, which means that it should be deleted. 
+
+                    lengths.push(2)
+                }
+
+            }
+
+            if (lengths.includes(2)){
+
+
+                return 0;
+            }
+
+
+            return 1; 
+
+        }
+
 
     
         function call_tree(tree,alieren){
@@ -4729,15 +4836,12 @@ var TreeCompare = function () {
 
                 else if(elements[4].length == 0){
 
-                    if (i==key_list.length-1){ //not internal length
+                  
 
-                        continue
-                    }
-
-                    else{
+                    
                     sample_size=sample_size+1
                     length_list.push(elements[1])
-                    }
+                    
 
                 }
                 
@@ -5356,6 +5460,187 @@ var TreeCompare = function () {
 
                     dict2[keys2[i]][4] = label 
                 }
+                
+                                  // new ancs try
+
+
+
+                // Checking if they really require a new ancestor
+
+
+                new_ancs1=""
+                new_ancs2=""
+
+
+                let check1= check_parent(clade_1_json,dict1)
+                let check2= check_parent(clade_2_json,dict2)
+
+
+                // If they require we will find the new one 
+
+                if (!check1){
+
+                for (i=keys1.length-1; -1<i ; i--){
+
+                    var elements= dict1[keys1[i]]
+                    keep_num= elements[4]
+                    if (keep_num.length == 0){
+                       
+                       first_zero1= keys1[i]
+                       break
+
+
+
+                    }
+            
+                   
+                 }
+
+                clade_json(clade_1_json,dict1,first_zero1)
+
+                check_parent11= dict1["child1"]
+                check_parent11= dict1[check_parent11]
+
+                check_parent12= dict1["child2"]
+                check_parent12= dict1[check_parent12]
+
+
+                if (!check_parent11){
+
+                    check_parent11=0
+                }
+
+                else if(!check_parent12) {
+
+
+                    check_parent12=0
+                }
+
+
+
+                
+                new_ancs1=""
+
+                if (check_parent11 == 0 && check_parent12[4].length == 0){
+
+                    new_ancs1=first_zero1
+
+                }
+
+                 else if (check_parent12 == 0 && check_parent11[4].length == 0){
+
+                    new_ancs1=first_zero1
+
+                }
+                
+                else if (check_parent11.length == 5 && check_parent12.length == 5){
+
+                    if (check_parent11[4].length == 0 && check_parent12[4].length == 2){
+
+                        new_ancs1= first_zero1
+                    }
+
+                    else if(check_parent11[4].length == 2 && check_parent12[4].length == 0){
+
+                        new_ancs1= first_zero1
+                    }
+
+
+                }
+
+               if(new_ancs1 != ""){
+                    
+                   len1_excluded= dict1[new_ancs1][1]
+
+                }
+
+
+              }
+
+
+
+
+                // second clade's new ancestor: 
+
+
+
+                if (!check2){
+
+               
+                for (i=keys2.length-1; -1<i ; i--){
+
+                    var elements= dict2[keys2[i]]
+                    keep_num= elements[4]
+                    if (keep_num.length == 0){
+                       
+                       first_zero2= keys2[i]
+                       break
+
+                    }
+                   
+                 }
+
+
+                clade_json(clade_2_json,dict2,first_zero2)
+               
+                check_parent21= dict2["child1"]
+                check_parent21= dict2[check_parent21]
+
+                check_parent22= dict2["child2"]
+                check_parent22= dict2[check_parent22]
+
+                if(!check_parent21){
+
+
+                    check_parent21=0
+                }
+
+                else if (!check_parent22){
+
+
+                    check_parent22=0
+                }
+
+              
+
+                new_ancs2=""
+
+                 if (check_parent21 == 0 && check_parent22[4].length == 0){
+
+                    new_ancs2=first_zero2
+
+
+                }
+
+                 else if (check_parent22 == 0 && check_parent21[4].length == 0){
+
+                    new_ancs2=first_zero2
+
+                }
+
+                else if (check_parent21.length == 5 && check_parent22.length == 5){
+
+                    if (check_parent21[4].length == 0 && check_parent22[4].length == 2){
+
+                        new_ancs2= first_zero2
+                    }
+
+                    else if(check_parent21[4].length == 2 && check_parent22[4].length == 0){
+
+                        new_ancs2= first_zero2
+                    }
+                }
+
+              
+                if(new_ancs2 != ""){
+
+                    len2_excluded= dict2[new_ancs2][1]
+                }
+
+
+            }
+                
+                
 
 
                 let length_list1=[]
