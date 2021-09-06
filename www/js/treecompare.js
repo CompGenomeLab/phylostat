@@ -4573,44 +4573,9 @@ var TreeCompare = function () {
             }
         }
    }
-    
-   // new functions
-    
-   
-       function clade_json(clade,dict,first_zero){
-
-            if ("children" in clade){
-
-                var len= 0
-                len= clade.children.length
-
-                for (let i=0; i<len; i++){
-
-                    var child_ = clade.children[i]
-
-                    if (child_.ID == first_zero){
-
-                        dict["child1"]= child_.parent.children[0].ID
-                        dict["child2"]= child_.parent.children[1].ID
 
 
-                    }
-
-                    else {
-
-                       clade_json(child_,dict,first_zero)
-
-                    }
-
-
-                }
-
-            }
-
-        }
-
-
- function check_parent(clade,dict){
+     function check_parent(clade,dict){
 
             if ("ID" in clade){
 
@@ -4677,6 +4642,39 @@ var TreeCompare = function () {
 
 
             return 1; 
+
+        }
+
+
+       function clade_json(clade,dict,first_zero){
+
+            if ("children" in clade){
+
+                var len= 0
+                len= clade.children.length
+
+                for (let i=0; i<len; i++){
+
+                    var child_ = clade.children[i]
+
+                    if (child_.ID == first_zero){
+
+                        dict["child1"]= child_.parent.children[0].ID
+                        dict["child2"]= child_.parent.children[1].ID
+
+
+                    }
+
+                    else {
+
+                       clade_json(child_,dict,first_zero)
+
+                    }
+
+
+                }
+
+            }
 
         }
 
@@ -4836,9 +4834,9 @@ var TreeCompare = function () {
 
                 else if(elements[4].length == 0){
 
-                  
+                 
 
-                    
+                   
                     sample_size=sample_size+1
                     length_list.push(elements[1])
                     
@@ -5460,8 +5458,8 @@ var TreeCompare = function () {
 
                     dict2[keys2[i]][4] = label 
                 }
-                
-                                  // new ancs try
+
+                  // new ancs try
 
 
 
@@ -5639,8 +5637,10 @@ var TreeCompare = function () {
 
 
             }
-                
-                
+
+
+            // processing the info 
+            
 
 
                 let length_list1=[]
@@ -5653,19 +5653,38 @@ var TreeCompare = function () {
                 sample_size1= main_node_handler(dict1,length_list1,sample_size1,keys1)
                 sample_size2= main_node_handler(dict2,length_list2,sample_size2,keys2)
 
-            
-
+        
+        
                 data_points_1= get_data_points(length_list1)
                 data_points_2= get_data_points(length_list2)
+
+
+
+                if(new_ancs1 != ""){
+
+
+
+                    const index1 = data_points_1.indexOf(len1_excluded);
+                    if (index1 > -1) {
+                      data_points_1.splice(index1, 1);
+                    }
+
+                }
+
+                if(new_ancs2 != ""){
+
+                    const index2 = data_points_2.indexOf(len2_excluded);
+                    if (index2 > -1) {
+                      data_points_2.splice(index2, 1);
+                    }
+
+
+                }
                 
-                //stev11=jStat.stdev(data_points_1)
-                //stev22=jStat.stdev(data_points_2)
-                //below=(stev11*stev11/sample_size1) + (stev22*stev22/sample_size2) 
-                //welchs_t3= (mean_1-mean_2)/ Math.sqrt(below)
-                //df= sample_size1+sample_size2-2
-                //pval_welch_3= jStat.ttest(welchs_t3, df, 2)
-                //document.getElementById("pval_welch_3").value = pval_welch_3
-                //document.getElementById("welchs_t3").value = welchs_t3
+
+
+
+
                 
              temp_leaves3=[]
             temp_leaves4=[]
