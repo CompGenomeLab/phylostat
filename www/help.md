@@ -81,19 +81,23 @@ After that, 2 box plots are generated.
 
 <img src="figures/fig10.png" width="30%"></img>
 
-*The distance of each leaf-root from each clade (node 1 and node 2). Root is termed as the most recent common ancestral node of the two clades. Right below that, t-test score of those differences and p-value are given. If p-value is accepted as significant (e.g. <0.05) the clades are considered as differentially diverged from the most recent common ancestor*
+*FIRST CRITERIA NEW EXPLANATION*
 
 <img src="figures/fig11.png" width="30%"></img>
 
 *Internal branch length calculations.*
 
 
-* Second one shows distance of each nodes' leaves with eachother. As in blue plot shows differences of the first selected node's leaves' distance difference with eachother and orange plot shows differences of the second selected node's leaves' distance difference with eachother. Right below those plots, you can see t-test score of those differences with eachother and p-value.
+*SECOND CRITERIA NEW EXPLANATION*
 
 
 Then there is a search option. It searches with Regular Expression in nodes. When it is left blank, it will search for same taxIds as default and will show search results with a venn diagram. You can enter custom RegEx to do a search. Examples of when it is left blank and when entered a custom RegEx is shown below.
 
 <img src="figures/fig12.png" width="30%"></img>
+
+*RegEx examples with leaf names :*
+
+
 
 
 ## Visualization Features
