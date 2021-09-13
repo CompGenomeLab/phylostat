@@ -4361,8 +4361,8 @@ var TreeCompare = function () {
          
             //tTest = tTest / x
             tTest = tTest / tmp;
-            document.getElementById('ttest1').value = tTest
-            document.getElementById('ttest1_w').value = welchs_t
+            //document.getElementById('ttest1').value = tTest
+            //document.getElementById('ttest1_w').value = welchs_t
 
             Plotly.newPlot('boxPlotID', data)
                 .then(
@@ -4376,11 +4376,11 @@ var TreeCompare = function () {
                     });
             if (two) {
                 pval = jStat.ttest(tTest, df, 2)
-                document.getElementById("pval1").value = pval
+                //document.getElementById("pval1").value = pval
                 
                 // Elif's implementation
                 pval_welch_1= jStat.ttest(welchs_t, df, 2)
-                document.getElementById("pval_welch_1").value = pval_welch_1
+                //document.getElementById("pval_welch_1").value = pval_welch_1
                 // end
             }
         }
@@ -5330,8 +5330,8 @@ var TreeCompare = function () {
             }
             
          
-            document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
-            document.getElementById("z_score").value = z_score
+            //document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
+            //document.getElementById("z_score").value = z_score
                 
             if (bool==false) {
                 
@@ -5816,8 +5816,8 @@ var TreeCompare = function () {
 
                 document.getElementById("p_val_mann_whitney2").value = p_val_mann_whitney2
                 document.getElementById("z_score_2").value = z_score_2
-                document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
-                document.getElementById("z_score").value = z_score
+                //document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
+                //document.getElementById("z_score").value = z_score
 
 
             }
@@ -6016,8 +6016,8 @@ var TreeCompare = function () {
                 
             document.getElementById("p_val_mann_whitney2").value = p_val_mann_whitney2
             document.getElementById("z_score_2").value = z_score_2
-            document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
-            document.getElementById("z_score").value = z_score
+            //document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
+           // document.getElementById("z_score").value = z_score
  
 
         }
@@ -6184,8 +6184,8 @@ var TreeCompare = function () {
             
             if(bool==false){ 
 
-            document.getElementById("pval_po1").value = pval_po1
-            document.getElementById("t_po1").value = t_po1
+            //document.getElementById("pval_po1").value = pval_po1
+            //document.getElementById("t_po1").value = t_po1
             
             }
             
@@ -6509,8 +6509,8 @@ var TreeCompare = function () {
                 z_score_bottom= (n1*n2)*(n1+n2+1)/12
                 z_score= z_score_top/Math.sqrt(z_score_bottom)          
                 p_val_mann_whitney1=jStat.ztest(z_score,2)
-             document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
-            document.getElementById("z_score").value = z_score
+             //document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
+            //document.getElementById("z_score").value = z_score
  
 
             boxPlotEachOther(leavesOneDist, leavesTwoDist)
@@ -6753,8 +6753,8 @@ var TreeCompare = function () {
                 mean_zero=0 // Don't know what to put now
                 paired_t= (X_d-mean_zero)/(sd/Math.sqrt(sample_size))
                 pval_paired = jStat.ttest(paired_t, sample_size, 2)
-                document.getElementById("paired_t").value = paired_t
-                document.getElementById("pval_paired").value = pval_paired
+                //document.getElementById("paired_t").value = paired_t
+                //document.getElementById("pval_paired").value = pval_paired
                 
             }
             
@@ -6763,8 +6763,8 @@ var TreeCompare = function () {
 
                 paired_t="N/A"
                 pval_paired="N/A"
-                document.getElementById("paired_t").value = paired_t
-                document.getElementById("pval_paired").value = pval_paired
+                //document.getElementById("paired_t").value = paired_t
+                //document.getElementById("pval_paired").value = pval_paired
             }
             
         
@@ -6787,8 +6787,8 @@ var TreeCompare = function () {
                 //document.getElementById("z_score_2").value = z_score_2
                 //document.getElementById("p_val_mann_whitney1").value = p_val_mann_whitney1
                 //document.getElementById("z_score").value = z_score
-                document.getElementById("pval_po1").value = pval_po1
-                document.getElementById("t_po1").value = t_po1
+                //document.getElementById("pval_po1").value = pval_po1
+                //document.getElementById("t_po1").value = t_po1
             
               
             }
