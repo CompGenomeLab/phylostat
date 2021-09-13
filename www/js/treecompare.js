@@ -12,6 +12,8 @@ var leavesTwo = [];
 
 
 var TreeCompare = function () {
+    alert("If a selected clade includes less than 10 leafs the calculation will be failed.")
+    alert("To get correct calculations on criteria 2 please click main node of the selected clades and choose expand all option.")
     //console.log("multiChildren1: ", multiChildren1)
     //console.log("leavesOne: ", leavesOne)
     var longestNode = {};
