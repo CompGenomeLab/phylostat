@@ -9,11 +9,16 @@ var multiChildren1 = [];
 var multiChildren2 = [];
 var leavesOne = [];
 var leavesTwo = [];
+var check_alert= false
 
 
 var TreeCompare = function () {
-    alert("If a selected clade includes less than 10 leafs the calculation will be failed.")
-    alert("To get correct calculations on criteria 2 please click main node of the selected clades and choose expand all option.")
+    
+    if (check_alert == false){
+        alert("If a selected clade includes less than 10 leafs the calculation will be failed.")
+        alert("To get correct calculations on criteria 2 please click main node of the selected clades and choose expand all option.")
+        check_alert= true
+    }
     //console.log("multiChildren1: ", multiChildren1)
     //console.log("leavesOne: ", leavesOne)
     var longestNode = {};
