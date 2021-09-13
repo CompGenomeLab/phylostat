@@ -77,7 +77,7 @@ First, you can see their common ancestor node and information on that node. Its 
 
 
 
-After that, 2 box plots are generated.
+After that, 2 box plots are generated:
 
 <img src="figures/fig10.png" width="30%"></img>
 
@@ -96,6 +96,10 @@ Then there is a search option. It searches with Regular Expression in nodes. Whe
 <img src="figures/fig12.png" width="30%"></img>
 
 *RegEx examples with leaf names :*
+
+Leaf name: sp_P28069_PIT1_HUMAN_9606 RegEx: _[0-9]{4,} (catches the taxaid’s in the end)
+
+Leaf name: tr|H2PYM2lH2PY_PANTR_ZMYM4_isoform_1_OS_Pan_troglodytes_OX_(cont’) RegEx: _OS[A-z_]* (catches the taxa name after OS)
 
 
 
