@@ -15,8 +15,8 @@ var check_alert= false
 var TreeCompare = function () {
     
     if (check_alert == false){
-        alert("If a selected clade includes less than 10 leafs the calculation will be failed.")
-        alert("To get correct calculations on criteria 2 please click main node of the selected clades and choose expand all option.")
+        //alert("If a selected clade includes less than 10 leafs the calculation will be failed.")
+        alert("To get correct calculations please click main node of the selected clades and choose expand all option & enter a RegEx.")
         check_alert= true
     }
     //console.log("multiChildren1: ", multiChildren1)
