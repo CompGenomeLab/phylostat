@@ -73,23 +73,9 @@ First, you can see their common ancestor node and information on that node. Its 
 
 <img src="figures/fig9.png" width="30%"></img>
 
-*Information regarding the common ancestral node of the selected nodes.*
-
-
-
-After that, 2 box plots are generated:
-
-<img src="figures/fig10.png" width="30%"></img>
-
-*FIRST CRITERIA NEW EXPLANATION*
+After that, box plots is generated which corresponds to the visualization of internal difference of the leaves with statistical test values:
 
 <img src="figures/fig11.png" width="30%"></img>
-
-*Internal branch length calculations.*
-
-
-*SECOND CRITERIA NEW EXPLANATION*
-
 
 Then there is a search option. It searches with Regular Expression in nodes. When it is left blank, it will search for same taxIds as default and will show search results with a venn diagram. You can enter custom RegEx to do a search. Examples of when it is left blank and when entered a custom RegEx is shown below.
 
