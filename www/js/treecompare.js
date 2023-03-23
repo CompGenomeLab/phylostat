@@ -2590,14 +2590,15 @@ var TreeCompare = function () {
      Functions for handling actions of tree spacing controls
      */
     function sizeHorizontal(treeData, increase) {
+        
         if (increase) {
             treeData.treeWidth = parseInt(treeData.treeWidth) + 40;
             treeData.treeWidth = (treeData.treeWidth > 5) ? treeData.treeWidth : 5;
-
-        } else {
+        } 
+        
+        else {
             treeData.treeWidth = parseInt(treeData.treeWidth) - 40;
             treeData.treeWidth = (treeData.treeWidth > 5) ? treeData.treeWidth : 5;
-
         }
     }
 
